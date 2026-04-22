@@ -1,0 +1,214 @@
+/* ── Componentes de perfil de usuario ── */
+.perfil-initials {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(135deg, #696cff, #9155fd);
+    color: #fff; font-size: 1.1rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.perfil-initials.lg {
+    width: 64px; height: 64px;
+    font-size: 1.5rem;
+}
+.role-chip {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .2rem .65rem; border-radius: 20px;
+    font-size: .75rem; font-weight: 600;
+}
+.navbar-perfil-btn {
+    background: none; border: none; padding: 0; width: 100%;
+    text-align: left; cursor: pointer;
+    border-radius: .375rem;
+    transition: background .15s;
+}
+.navbar-perfil-btn:hover {
+    background: rgba(105, 108, 255, .06);
+}
+
+/* ── Botón hamburguesa animado ── */
+.hamburger-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.hamburger-btn:hover {
+    background: rgba(105, 108, 255, 0.08);
+}
+
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20px;
+    height: 14px;
+    position: relative;
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #566a7f;
+    border-radius: 2px;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity   0.28s ease,
+                width     0.28s ease;
+    transform-origin: center;
+}
+
+/* Estado abierto: convierte ☰ en ✕ */
+.hamburger-btn.is-open .hamburger-icon span:nth-child(1),
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+}
+.hamburger-btn.is-open .hamburger-icon span:nth-child(2),
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+    width: 0;
+}
+.hamburger-btn.is-open .hamburger-icon span:nth-child(3),
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+}
+
+
+/* ── Hamburguesa como ítem del sidebar ── */
+/* Elimina la flecha que el template agrega a menu-link */
+#sidebar-close-btn::after,
+#sidebar-close-btn::before { display: none !important; }
+.sidebar-hamburger-btn .hamburger-icon {
+    width: 18px;
+    height: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-hamburger-btn .hamburger-icon span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease, width 0.28s ease;
+    transform-origin: center;
+}
+
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(2) { opacity: 0; width: 0; }
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/* ── Paginación en tablas ── */
+.card-footer:has(.pagination) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .75rem 1.25rem;
+    background: transparent;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+.card-footer .pagination {
+    margin-bottom: 0;
+}
+
+.card-footer .pagination .page-link {
+    border-radius: 6px !important;
+    margin: 0 2px;
+    min-width: 32px;
+    text-align: center;
+    font-size: .85rem;
+}
+
+/* ── Menú lateral (animaciones) ── */
+#layout-menu {
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.28s ease;
+  will-change: transform;
+}
+
+/* Anima el desplazamiento del contenido principal al plegar/desplegar */
+.layout-page {
+  transition: padding-inline-start 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Overlay semitransparente (solo en móvil cuando el menú está desplegado) */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(67, 89, 113, 0.55);
+  z-index: 1048;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0s 0.28s;
+  cursor: pointer;
+}
+
+.menu-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.28s ease, visibility 0s 0s;
+}
+
+/* ── Botón hamburguesa en navbar (móvil) ── */
+.navbar-hamburger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.navbar-hamburger-btn:hover {
+  background: rgba(105, 108, 255, 0.08);
+}
+.navbar-hamburger-btn .hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 14px;
+}
+.navbar-hamburger-btn .hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: #566a7f;
+  border-radius: 2px;
+}
+
+/* ── Dropdown de usuario: responsivo ── */
+.navbar-dropdown .dropdown-menu {
+  min-width: 280px;
+}
+
+@media (max-width: 480px) {
+  .navbar-dropdown .dropdown-menu {
+    min-width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    top: calc(100% + 8px) !important;
+  }
+}
+
+/* ── Navbar: ajustes móvil ── */
+@media (max-width: 575.98px) {
+  #layout-navbar {
+    padding-left: .75rem;
+    padding-right: .75rem;
+  }
+
+  .navbar-dropdown .perfil-initials {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: .8rem !important;
+  }
+}
