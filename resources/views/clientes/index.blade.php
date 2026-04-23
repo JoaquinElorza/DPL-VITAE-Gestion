@@ -35,11 +35,11 @@
                         <td>{{ $cliente->usuario->email ?? '—' }}</td>
                         <td>{{ $cliente->usuario->telefono ?? '—' }}</td>
                         <td>
-                            <a href="{{ route('clientes.show', $cliente) }}" class="btn btn-sm btn-info"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                            <a href="{{ route('clientes.show', $cliente) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
+                            <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar"><i class="bx bx-edit"></i></a>
                             <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este cliente?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
                             </form>
                         </td>
                     </tr>

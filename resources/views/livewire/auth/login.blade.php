@@ -91,7 +91,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 @endsection
 
 <div>
-    <x-auth-header :title="__('Welcome to :app!', ['app' => config('app.name')])" :description="__('Enter your email and password below to log in')" />
+    <x-auth-header :title="__('Bienvenido a :app!', ['app' => config('app.name')])" :description="__('Ingresa tu correo y contraseña para iniciar sesión')" />
 
     <!-- Session Status -->
     @if (session('status'))
@@ -102,7 +102,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <form wire:submit="login" class="mb-6">
         <div class="mb-6">
-            <label for="email" class="form-label">{{ __('Email or Username') }}</label>
+            <label for="email" class="form-label">{{ __('Correo Electrónico o Nombre de Usuario') }}</label>
             <input
                 wire:model="email"
                 type="email"
@@ -111,7 +111,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="{{ __('Enter your email') }}"
+                placeholder="{{ __('Ingresa tu correo') }}"
             >
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -120,14 +120,14 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         <div class="mb-6 form-password-toggle">
             <div class="d-flex justify-content-between">
-                <label for="password" class="form-label">{{ __('Password') }}</label>
+                <label for="password" class="form-label">{{ __('Contraseña') }}</label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}" wire:navigate>
-                        <span>{{ __('Forgot Password?') }}</span>
+                        <span>{{ __('¿Olvidaste tu Contraseña?') }}</span>
                     </a>
                 @endif
             </div>
-            <div class="input-group input-group-merge">
+            <div class="input-group input-group-merge password-input-group">
                 <input
                     wire:model="password"
                     type="password"
@@ -137,7 +137,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
                     autocomplete="current-password"
                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                 >
-                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                <span class="input-group-text cursor-pointer toggle-password" id="togglePassword" data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar contraseña">
+                    <i class="bx bx-show"></i>
+                </span>
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -149,23 +151,57 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 <div class="form-check mb-0 ms-2">
                     <input wire:model="remember" type="checkbox" class="form-check-input" id="remember">
                     <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
+                        {{ __('Recuérdame') }}
                     </label>
                 </div>
             </div>
         </div>
 
         <div class="mb-6">
-            <button type="submit" class="btn btn-primary d-grid w-100">{{ __('Login') }}</button>
+            <button type="submit" class="btn btn-primary d-grid w-100">{{ __('Iniciar Sesión') }}</button>
         </div>
     </form>
 
     @if (Route::has('register'))
         <p class="text-center">
-            <span>{{ __('New on our platform?') }}</span>
+            <span>{{ __('¿Nuevo en nuestra plataforma?') }}</span>
             <a href="{{ route('register') }}" wire:navigate>
-                <span>{{ __('Create an account') }}</span>
+                <span>{{ __('Crea una cuenta') }}</span>
             </a>
         </p>
     @endif
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const passwordGroup = document.querySelector('.password-input-group');
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Cambiar icono
+                const icon = togglePassword.querySelector('i');
+                if (type === 'text') {
+                    icon.className = 'bx bx-hide';
+                    togglePassword.setAttribute('data-bs-original-title', 'Ocultar contraseña');
+                } else {
+                    icon.className = 'bx bx-show';
+                    togglePassword.setAttribute('data-bs-original-title', 'Mostrar contraseña');
+                }
+                
+                // Actualizar tooltip
+                const tooltip = bootstrap.Tooltip.getInstance(togglePassword);
+                if (tooltip) {
+                    tooltip.update();
+                }
+            });
+            
+            // Inicializar tooltip
+            new bootstrap.Tooltip(togglePassword);
+        }
+    });
+</script>
