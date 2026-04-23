@@ -1,20 +1,16 @@
 @php
-    $user        = auth()->user()?->loadMissing(['operador','paramedico','cliente']);
+    $user        = auth()->user()?->loadMissing(['operador', 'paramedico', 'cliente']);
     $esEmpleado  = $user && $user->esEmpleado();
-    $iniciales   = $user ? strtoupper(mb_substr($user->nombre,0,1)).strtoupper(mb_substr($user->ap_paterno,0,1)) : '';
-    $ambulancias = ($user && $user->operador) ? $user->operador->ambulancias : collect();
+    $iniciales   = $user ? strtoupper(mb_substr($user->nombre, 0, 1)) . strtoupper(mb_substr($user->ap_paterno, 0, 1)) : '';
+    // Definimos un fallback vacío por si el controlador no envía la variable
+    $ambulancias = $ambulancias ?? (($user && $user->operador) ? $user->operador->ambulancias : collect());
 @endphp
 
-<nav
-  class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-  id="layout-navbar">
+<nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
 
   <div class="navbar-nav-right d-flex align-items-center w-100 justify-content-between" id="navbar-collapse">
 
-    {{-- Hamburguesa visible solo en móvil (sidebar oculto en pantallas pequeñas) --}}
-    <button id="navbar-hamburger-btn"
-            class="d-xl-none btn btn-sm p-1 me-2 navbar-hamburger-btn"
-            aria-label="Abrir menú">
+    <button id="navbar-hamburger-btn" class="d-xl-none btn btn-sm p-1 me-2 navbar-hamburger-btn" aria-label="Abrir menú">
       <span class="hamburger-icon">
         <span></span>
         <span></span>
@@ -23,7 +19,6 @@
     </button>
 
     @if($esEmpleado)
-    {{-- nombre del empleado --}}
     <span class="fw-semibold text-muted small">
       <i class="bx bx-calendar-check me-1"></i>
       {{ $user->nombre }} {{ $user->ap_paterno }}
@@ -31,22 +26,16 @@
       @if($user->operador) Operador @else Paramédico @endif
     </span>
     @else
-    {{-- buscador solo para admin --}}
     <div class="navbar-nav align-items-center me-auto">
       <div class="nav-item d-flex align-items-center">
         <span class="w-px-22 h-px-22"><i class="icon-base bx bx-search icon-md"></i></span>
-        <input
-          type="text"
-          class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none"
-          placeholder="Search..."
-          aria-label="Search..." />
+        <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2 d-md-block d-none" placeholder="Search..." aria-label="Search..." />
       </div>
     </div>
     @endif
 
     <ul class="navbar-nav flex-row align-items-center ms-auto gap-1">
 
-      {{-- dropdown usuario --}}
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
         @if(Auth::check())
           <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -54,11 +43,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <button class="navbar-perfil-btn px-3 py-2"
-                      type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modal-editar-perfil"
-                      data-bs-dismiss="dropdown">
+              <button class="navbar-perfil-btn px-3 py-2" type="button" data-bs-toggle="modal" data-bs-target="#modal-editar-perfil" data-bs-dismiss="dropdown">
                 <div class="d-flex align-items-center gap-3">
                   <div class="perfil-initials">{{ $iniciales }}</div>
                   <div class="flex-grow-1 min-width-0">
@@ -69,11 +54,14 @@
                       @if($esEmpleado)
                         @if($user->operador)
                           <span class="role-chip bg-label-primary"><i class="bx bx-id-card"></i>Operador</span>
-                          @foreach($ambulancias as $amb)
-                            <span class="badge bg-label-secondary" style="font-size:.7rem;">
-                              <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
-                            </span>
-                          @endforeach
+                          {{-- VALIDACIÓN ANTI-ERROR --}}
+                          @if(isset($ambulancias) && count($ambulancias) > 0)
+                            @foreach($ambulancias as $amb)
+                              <span class="badge bg-label-secondary" style="font-size:.7rem;">
+                                <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
+                              </span>
+                            @endforeach
+                          @endif
                         @else
                           <span class="role-chip bg-label-success"><i class="bx bx-plus-medical"></i>Paramédico</span>
                         @endif
