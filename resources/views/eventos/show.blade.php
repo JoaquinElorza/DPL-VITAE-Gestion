@@ -3,7 +3,8 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Evento #{{ $evento->id_evento }}</h5>
             <div>
-                <a href="{{ route('eventos.edit', $evento) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit me-1"></i>Editar</a>
+                <a href="{{ route('eventos.edit', $evento) }}" class="btn btn-sm btn-warning"><i
+                        class="bx bx-edit me-1"></i>Editar</a>
                 <a href="{{ route('eventos.index') }}" class="btn btn-sm btn-secondary ms-1">Volver</a>
             </div>
         </div>

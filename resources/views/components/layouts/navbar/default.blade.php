@@ -97,7 +97,7 @@
             <li>
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button class="dropdown-item" type="submit">
+                <button class="dropdown-item dropdown-item-logout" type="submit">
                   <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Cerrar sesión</span>
                 </button>
               </form>

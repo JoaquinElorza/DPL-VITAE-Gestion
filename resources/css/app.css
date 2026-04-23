@@ -1,7 +1,7 @@
 /* ── Componentes de perfil de usuario ── */
 .perfil-initials {
     width: 46px; height: 46px; border-radius: 50%;
-    background: linear-gradient(135deg, #696cff, #9155fd);
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
     color: #fff; font-size: 1.1rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -212,3 +212,207 @@
     font-size: .8rem !important;
   }
 }
+
+/* ── Custom Theme Styles: Blanco, Morado y Azul ── */
+
+::selection {
+    background-color: rgba(139, 92, 246, 0.2);
+    color: #8b5cf6;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39) !important;
+    transition: all 0.3s ease;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+    transform: translateY(-2px);
+}
+
+body {
+    background: #ffffff; /* Blanco de base */
+    background: linear-gradient(135deg, #ffffff 0%, #f4f7ff 100%) !important;
+    background-attachment: fixed !important;
+}
+
+/* Efectos en tarjetas para mantener el contraste sobre blanco */
+.card {
+    border: 1px solid rgba(139, 92, 246, 0.08);
+    box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.03);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
+}
+
+/* ── Estilos Premium para Tablas ── */
+
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 15px 0 rgba(139, 92, 246, 0.05);
+}
+
+.table {
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+}
+
+.table thead th {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: none !important;
+    border-top: none !important;
+    padding: 1rem;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(139, 92, 246, 0.04) !important;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ── Estilos Premium para Sidebar (Menú Izquierdo) ── */
+
+#layout-menu {
+    background: linear-gradient(180deg, #8b5cf6 0%, #3b82f6 100%) !important;
+    box-shadow: 4px 0 20px rgba(139, 92, 246, 0.15) !important;
+    border-right: none !important;
+}
+
+#layout-menu .app-brand-text {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-link,
+#layout-menu .menu-horizontal-wrapper .menu-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#layout-menu .menu-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#layout-menu .menu-item.active > .menu-link {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+#layout-menu .menu-item.active > .menu-link .menu-icon {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-item > .menu-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-item > .menu-link:hover .menu-icon {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-header-text {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#layout-menu .menu-sub {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Color del botón hamburguesa del sidebar */
+#layout-menu .sidebar-hamburger-btn .hamburger-icon span {
+    background: #ffffff !important;
+}
+
+/* ── Estilo personalizado para el botón Limpiar ── */
+.btn-limpiar {
+    background-color: #ffffff;
+    color: #8b5cf6;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-limpiar:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1)) !important;
+    color: #7c3aed !important;
+    border-color: rgba(139, 92, 246, 0.6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* ── Estilo personalizado para el botón Cerrar sesión ── */
+.dropdown-item-logout {
+    color: #8b5cf6 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin: 0 8px;
+    width: calc(100% - 16px) !important;
+}
+
+.dropdown-item-logout:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1)) !important;
+    color: #7c3aed !important;
+    transform: translateX(4px);
+}
+
+/* ── Estilos unificados para botones secundarios (Cancelar) ── */
+.btn-secondary {
+    background-color: #ffffff !important;
+    color: #8b5cf6 !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.05) !important;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08)) !important;
+    color: #7c3aed !important;
+    border-color: rgba(139, 92, 246, 0.6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15) !important;
+}
+
