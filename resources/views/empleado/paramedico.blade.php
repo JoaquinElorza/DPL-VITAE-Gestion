@@ -154,16 +154,20 @@
                 <div class="flex-grow-1 min-width-0">
                     <div class="fw-bold text-truncate">{{ $nombreCompleto }}</div>
                     <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
-                        @if($rol === 'operador')
+                        {{-- CAMBIO REALIZADO AQUÍ: Se eliminó $rol por $user->operador --}}
+                        @if($user->operador)
                             <span class="role-chip bg-label-primary"><i class="bx bx-id-card"></i>Operador</span>
-                            @foreach($ambulancias as $amb)
-                                <span class="badge bg-label-secondary" style="font-size:.7rem;">
-                                    <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
-                                </span>
-                            @endforeach
+                            @if(isset($ambulancias))
+                                @foreach($ambulancias as $amb)
+                                    <span class="badge bg-label-secondary" style="font-size:.7rem;">
+                                        <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
+                                    </span>
+                                @endforeach
+                            @endif
                         @else
                             <span class="role-chip bg-label-success"><i class="bx bx-plus-medical"></i>Paramédico</span>
                         @endif
+                        
                         @if($user->telefono)
                             <span class="text-muted small"><i class="bx bx-phone me-1"></i>{{ $user->telefono }}</span>
                         @endif
@@ -243,6 +247,7 @@
 
 </div>
 
+{{-- Modales mantenidos igual para funcionalidad de edición y calendario --}}
 <div class="modal fade" id="modal-perfil" tabindex="-1" aria-labelledby="modal-perfil-label">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
