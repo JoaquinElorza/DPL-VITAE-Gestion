@@ -18,29 +18,34 @@
                     <tr>
                         <th>#</th>
                         <th>Servicio</th>
-                        <th>Duración</th>
+                        <th>Duración (No. horas)</th>
                         <th>Personas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($eventos as $evento)
-                    <tr>
-                        <td>{{ $evento->id_evento }}</td>
-                        <td>{{ $evento->id_servicio }}</td>
-                        <td>{{ $evento->duracion }}</td>
-                        <td>{{ $evento->personas }}</td>
-                        <td>
-                            <a href="{{ route('eventos.show', $evento) }}" class="btn btn-sm btn-info"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('eventos.edit', $evento) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('eventos.destroy', $evento) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $evento->id_evento }}</td>
+                            <td>{{ $evento->id_servicio }}</td>
+                            <td>{{ $evento->duracion }}</td>
+                            <td>{{ $evento->personas }}</td>
+                            <td>
+                                <a href="{{ route('eventos.show', $evento) }}" class="btn btn-sm btn-info"><i
+                                        class="bx bx-show"></i></a>
+                                <a href="{{ route('eventos.edit', $evento) }}" class="btn btn-sm btn-warning"><i
+                                        class="bx bx-edit"></i></a>
+                                <form action="{{ route('eventos.destroy', $evento) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('¿Eliminar?')">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
                     @empty
-                    <tr><td colspan="5" class="text-center text-muted py-4">Sin registros</td></tr>
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">Sin registros</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>

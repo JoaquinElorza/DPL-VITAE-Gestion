@@ -12,6 +12,67 @@
         body { font-family: 'Public Sans', sans-serif; background: #f5f5f9; }
         .navbar-brand img { height: 45px; object-fit: contain; }
         .status-badge { font-size: .78rem; }
+
+        /* Overrides de colores unificados */
+        .text-primary { color: #8b5cf6 !important; }
+        .text-info { color: #3b82f6 !important; }
+        .btn-primary { 
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6); 
+            border: none; 
+            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39); 
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #7c3aed, #2563eb); 
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); 
+            transform: translateY(-2px); 
+        }
+        .btn-outline-primary { 
+            color: #8b5cf6; 
+            border-color: #8b5cf6; 
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover { 
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            color: #fff; 
+            border-color: transparent;
+        }
+        .btn-outline-secondary {
+            color: #6b7280;
+            border-color: #d1d5db;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-secondary:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
+            color: #8b5cf6;
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Estilo premium para la tabla */
+        .table thead {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+        }
+        .table thead th {
+            background-color: transparent !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: none !important;
+            border-top: none !important;
+            padding: 1rem;
+        }
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(139, 92, 246, 0.04) !important;
+            transform: scale(1.002);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.05);
+            z-index: 10;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -131,9 +192,9 @@
     </div>
 </section>
 
-<footer class="py-4 mt-5" style="background:#1a1a2e; color:#b0b0c0;">
+<footer class="py-4 mt-5" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #ffffff;">
     <div class="container text-center">
-        <p class="mb-0">&copy; {{ date('Y') }} <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong></p>
+        <p class="mb-0">&copy; {{ date('Y') }} <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong> — Todos los derechos reservados.</p>
     </div>
 </footer>
 
