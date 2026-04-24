@@ -16,7 +16,6 @@
     .estado-Cancelado  { background:#ffe0dc; color:#ff3e1d; }
     .estado-default    { background:#fff4de; color:#ffab00; }
 
-    /* Calendario */
     .fc .fc-toolbar-title { font-size:1.05rem; font-weight:700; }
     .fc .fc-button-primary { background:#696cff; border-color:#696cff; }
     .fc .fc-button-primary:hover,
@@ -25,7 +24,6 @@
     .fc-event { cursor:pointer; border-radius:6px !important; font-size:.78rem; }
     .fc-daygrid-event { padding:2px 5px !important; }
 
-    /* Tarjeta de perfil compacta */
     .perfil-card-compact {
         cursor: pointer;
         transition: box-shadow .2s, transform .15s;
@@ -34,16 +32,13 @@
         box-shadow: 0 6px 24px rgba(105,108,255,.18) !important;
         transform: translateY(-2px);
     }
-    /* Próximas rutas */
     .ruta-item { display:flex; align-items:center; gap:.75rem; padding:.55rem .75rem; border-radius:10px; transition:background .15s; }
     .ruta-item:hover { background:#f5f5ff; }
     .ruta-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-    /* toggle pass */
     .toggle-pass { cursor:pointer; }
 </style>
 @endsection
 
-{{-- alertas --}}
 @if(session('success'))
 <div class="alert alert-success alert-dismissible mb-4">
     <i class="bx bx-check-circle me-1"></i>{{ session('success') }}
@@ -51,7 +46,6 @@
 </div>
 @endif
 
-{{-- estadísticas --}}
 <div class="row g-4 mb-4">
     <div class="col-6 col-xl-3">
         <div class="card">
@@ -111,7 +105,6 @@
     </div>
 </div>
 
-{{-- rutas de hoy --}}
 @if($serviciosHoy->isNotEmpty())
 <div class="card border-start border-4 border-primary mb-4">
     <div class="card-body py-2">
@@ -132,6 +125,14 @@
                     </div>
                 </div>
                 <span class="badge bg-label-{{ $badgeHoy }} ms-1">{{ $s->estado }}</span>
+                @if($s->estado === 'Activo')
+                    <form action="{{ route('empleado.servicio.finalizar', $s->id_servicio) }}" method="POST" onsubmit="return confirm('¿Estás seguro de finalizar este servicio?');" class="ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="bx bx-check-circle"></i> Finalizar
+                        </button>
+                    </form>
+                @endif
             </div>
             @endforeach
         </div>
@@ -139,13 +140,10 @@
 </div>
 @endif
 
-{{-- fila principal --}}
 <div class="row g-4">
 
-    {{-- columna izquierda --}}
     <div class="col-12 col-xl-8 d-flex flex-column gap-4">
 
-        {{-- tarjeta de perfil --}}
         <div class="card perfil-card-compact mb-0"
              data-bs-toggle="modal" data-bs-target="#modal-perfil"
              title="Editar mi perfil">
@@ -156,16 +154,20 @@
                 <div class="flex-grow-1 min-width-0">
                     <div class="fw-bold text-truncate">{{ $nombreCompleto }}</div>
                     <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
-                        @if($rol === 'operador')
+                        {{-- CAMBIO REALIZADO AQUÍ: Se eliminó $rol por $user->operador --}}
+                        @if($user->operador)
                             <span class="role-chip bg-label-primary"><i class="bx bx-id-card"></i>Operador</span>
-                            @foreach($ambulancias as $amb)
-                                <span class="badge bg-label-secondary" style="font-size:.7rem;">
-                                    <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
-                                </span>
-                            @endforeach
+                            @if(isset($ambulancias))
+                                @foreach($ambulancias as $amb)
+                                    <span class="badge bg-label-secondary" style="font-size:.7rem;">
+                                        <i class="bx bx-ambulance me-1"></i>{{ $amb->placa }}
+                                    </span>
+                                @endforeach
+                            @endif
                         @else
                             <span class="role-chip bg-label-success"><i class="bx bx-plus-medical"></i>Paramédico</span>
                         @endif
+                        
                         @if($user->telefono)
                             <span class="text-muted small"><i class="bx bx-phone me-1"></i>{{ $user->telefono }}</span>
                         @endif
@@ -178,7 +180,6 @@
             </div>
         </div>
 
-        {{-- calendario --}}
         <div class="card">
             <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h5 class="card-title m-0">
@@ -198,7 +199,6 @@
 
     </div>
 
-    {{-- columna derecha --}}
     <div class="col-12 col-xl-4">
         <div class="card h-100">
             <div class="card-header py-3">
@@ -247,7 +247,7 @@
 
 </div>
 
-{{-- modal editar perfil --}}
+{{-- Modales mantenidos igual para funcionalidad de edición y calendario --}}
 <div class="modal fade" id="modal-perfil" tabindex="-1" aria-labelledby="modal-perfil-label">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -270,7 +270,6 @@
 
                 <div class="modal-body">
 
-                    {{-- datos personales --}}
                     <p class="fw-semibold small text-uppercase text-muted mb-2">Datos personales</p>
                     <div class="row g-3 mb-3">
                         <div class="col-12">
@@ -296,7 +295,6 @@
                         </div>
                     </div>
 
-                    {{-- contacto --}}
                     <p class="fw-semibold small text-uppercase text-muted mb-2">Contacto</p>
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
@@ -319,7 +317,6 @@
                         </div>
                     </div>
 
-                    {{-- contraseña --}}
                     <p class="fw-semibold small text-uppercase text-muted mb-2">
                         Cambiar contraseña <span class="fw-normal text-lowercase">(dejar vacío para no cambiar)</span>
                     </p>
@@ -362,7 +359,6 @@
     </div>
 </div>
 
-{{-- modal detalle evento --}}
 <div class="modal fade" id="modal-evento" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -374,7 +370,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                {{-- datos del servicio --}}
                 <dl class="row small mb-0" id="detalle-servicio">
                     <dt class="col-5 text-muted">Fecha inicio</dt><dd class="col-7" id="md-inicio">—</dd>
                     <dt class="col-5 text-muted">Fecha fin</dt><dd class="col-7" id="md-fin">—</dd>
@@ -385,7 +380,6 @@
                     <dt id="lbl-per" class="col-5 text-muted d-none">Personas</dt><dd id="md-per" class="col-7 d-none">—</dd>
                     <dt class="col-5 text-muted">Observaciones</dt><dd class="col-7" id="md-obs">—</dd>
                 </dl>
-                {{-- datos de la reserva --}}
                 <dl class="row small mb-0 d-none" id="detalle-reserva">
                     <dt class="col-5 text-muted">N° Guía</dt><dd class="col-7" id="md-guia">—</dd>
                     <dt class="col-5 text-muted">Fecha</dt><dd class="col-7" id="md-res-fecha">—</dd>
@@ -409,7 +403,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Calendario ──
     var cal = new FullCalendar.Calendar(document.getElementById('mi-calendario'), {
         locale: 'es',
         initialView: 'dayGridMonth',
@@ -494,7 +487,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     cal.render();
 
-    // ── Toggle contraseña ──
     window.togglePass = function(btn) {
         var input = btn.closest('.input-group').querySelector('input');
         var icon  = btn.querySelector('i');
@@ -503,7 +495,6 @@ document.addEventListener('DOMContentLoaded', function () {
         icon.classList.toggle('bx-show', input.type === 'text');
     };
 
-    // ── Abrir modal de perfil si hay errores de validación ──
     @if($errors->any())
         new bootstrap.Modal(document.getElementById('modal-perfil')).show();
     @endif

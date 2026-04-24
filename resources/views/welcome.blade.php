@@ -12,7 +12,7 @@
         body { font-family: 'Public Sans', sans-serif; }
         .navbar-brand img { height: 45px; object-fit: contain; }
         #hero-carousel .carousel-item {
-            height: 90vh; min-height: 500px; background-color: #1a1a2e;
+            height: 90vh; min-height: 500px; background-color: #4c1d95;
         }
         #hero-carousel .carousel-item img {
             width: 100%; height: 100%; object-fit: cover; opacity: .45;
@@ -32,7 +32,7 @@
             display: block;
             width: 60px;
             height: 4px;
-            background: #696cff;
+            background: #8b5cf6;
             margin: 8px auto 0;
         }
         .section-title-left {
@@ -44,14 +44,66 @@
             display: block;
             width: 60px;
             height: 4px;
-            background: #696cff;
+            background: #8b5cf6;
             margin-top: 8px;
         }
         .card-info { border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: transform .2s; }
         .card-info:hover { transform: translateY(-4px); }
-        footer { background: #1a1a2e; color: #b0b0c0; }
-        footer a { color: #696cff; text-decoration: none; }
-        footer a:hover { color: #fff; }
+        footer { background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #ffffff; }
+        footer a { color: #ffffff; text-decoration: underline; }
+        footer a:hover { color: #e0e7ff; text-decoration: none; }
+
+        /* Overrides for primary/info colors to match dashboard */
+        .text-primary { color: #8b5cf6 !important; }
+        .text-info { color: #3b82f6 !important; }
+        .bg-primary { background-color: #8b5cf6 !important; }
+        .bg-info { background-color: #3b82f6 !important; }
+        .btn-primary { 
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
+            border: none; 
+            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39); 
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #7c3aed, #6d28d9); 
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); 
+            transform: translateY(-2px); 
+        }
+        .btn-outline-primary { 
+            color: #8b5cf6; 
+            border-color: #8b5cf6; 
+        }
+        .btn-outline-primary:hover { 
+            background-color: #8b5cf6; 
+            color: #fff; 
+        }
+        .border-primary { border-color: #8b5cf6 !important; }
+
+        /* Estilos animados para los enlaces del Navbar */
+        .navbar .nav-link {
+            color: #4b5563;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0.2rem;
+            margin: 0 0.8rem;
+        }
+        .navbar .nav-link:hover {
+            color: #8b5cf6;
+        }
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        .navbar .nav-link:hover::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -120,7 +172,7 @@
     </div>
 
     <div class="carousel-inner">
-        <div class="carousel-item active" style="background: linear-gradient(135deg,#1a1a2e,#16213e);">
+        <div class="carousel-item active" style="background: linear-gradient(135deg, #4c1d95, #3b82f6);">
             @if($empresa && $empresa->imagen_nombre)
                 <img src="{{ asset('storage/' . $empresa->imagen_nombre) }}" alt="">
             @endif
@@ -139,7 +191,7 @@
         </div>
 
         @if($empresa && $empresa->mision)
-        <div class="carousel-item" style="background: linear-gradient(135deg,#16213e,#0f3460);">
+        <div class="carousel-item" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
             <div class="carousel-caption text-center">
                 <h2 class="fw-bold mb-3"><i class="bx bx-target-lock me-2"></i>Nuestra Misión</h2>
                 <p class="lead col-md-8 mx-auto">{{ $empresa->mision }}</p>
@@ -148,7 +200,7 @@
         @endif
 
         @if($empresa && $empresa->vision)
-        <div class="carousel-item" style="background: linear-gradient(135deg,#0f3460,#533483);">
+        <div class="carousel-item" style="background: linear-gradient(135deg, #1d4ed8, #8b5cf6);">
             <div class="carousel-caption text-center">
                 <h2 class="fw-bold mb-3"><i class="bx bx-binoculars me-2"></i>Nuestra Visión</h2>
                 <p class="lead col-md-8 mx-auto">{{ $empresa->vision }}</p>
@@ -187,7 +239,7 @@
                          alt="{{ $empresa->nombre }}" class="img-fluid rounded-3 shadow">
                 @else
                     <div class="rounded-3 p-5 d-flex align-items-center justify-content-center"
-                         style="min-height:300px; background: linear-gradient(135deg,#696cff,#5f61e6);">
+                         style="min-height:300px; background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
                         <i class="bx bx-ambulance text-white" style="font-size:8rem;"></i>
                     </div>
                 @endif

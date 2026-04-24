@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
         DB::table('empresa')->insertOrIgnore([
             'nombre'      => 'Vitae Ambulancias',
             'slogan'      => 'Tu salud, nuestra prioridad',
-            'descripcion' => 'Somos una empresa dedicada a brindar servicios de traslado médico y atención prehospitalaria con los más altos estándares de calidad. Contamos con personal capacitado y unidades equipadas para atender cualquier emergencia.',
-            'mision'      => 'Proporcionar servicios de atención médica prehospitalaria y traslado de pacientes con rapidez, seguridad y calidez humana, garantizando la integridad de quienes confían en nosotros.',
-            'vision'      => 'Ser la empresa líder en servicios de ambulancias y atención prehospitalaria en la región, reconocida por nuestra excelencia, tecnología y compromiso con la vida.',
+            'descripcion' => 'Somos una empresa dedicada a brindar servicios de traslado médico y atención prehospitalaria con los más altos estándares de calidad.',
+            'mision'      => 'Proporcionar servicios de atención médica prehospitalaria con rapidez y seguridad.',
+            'vision'      => 'Ser la empresa líder en servicios de ambulancias reconocida por nuestra excelencia.',
             'valores'     => "Responsabilidad\nCompromiso\nHonestidad\nRespeto\nCalidad\nEmpatía",
             'telefono'    => '951 123 4567',
             'correo'      => 'contacto@vitae.com',
@@ -27,18 +27,31 @@ class DatabaseSeeder extends Seeder
 
         // ── USUARIOS ───────────────────────────────────────────────────────
         for ($i = 1; $i <= 30; $i++) {
+            $nombre = 'Nombre' . $i;
+            $email = 'usuario' . $i . '@correo.com';
+
+            // Personalización de Pedro (ID 1 - Operador) y Pablo (ID 21 - Paramédico)
+            if ($i === 1) {
+                $nombre = 'Pedro';
+                $email = 'operador@dpl.com';
+            } elseif ($i === 21) {
+                $nombre = 'Pablo';
+                $email = 'paramedico@dpl.com';
+            }
+
             DB::table('users')->insert([
-                'nombre'     => 'Nombre' . $i,
+                'nombre'     => $nombre,
                 'ap_paterno' => 'ApellidoP' . $i,
                 'ap_materno' => 'ApellidoM' . $i,
-                'email'      => 'usuario' . $i . '@correo.com',
-                'password'   => Hash::make('password'),
+                'email'      => $email,
+                'password'   => Hash::make('12345678'), // Password solicitado
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
 
         // ── OPERADORES ─────────────────────────────────────────────────────
+        // El ID 1 corresponde a Pedro
         for ($i = 1; $i <= 10; $i++) {
             DB::table('operador')->insert([
                 'id_usuario'   => $i,
@@ -54,6 +67,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // ── PARAMEDICOS ────────────────────────────────────────────────────
+        // El ID 21 corresponde a Pablo
         for ($i = 21; $i <= 30; $i++) {
             DB::table('paramedico')->insert([
                 'id_usuario'   => $i,
@@ -111,6 +125,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // ── SERVICIOS ──────────────────────────────────────────────────────
+        // IMPORTANTE: Aseguramos que el operador sea el ID 1 (Pedro) en los servicios
         for ($i = 1; $i <= 10; $i++) {
             DB::table('servicio')->insert([
                 'costo_total'   => rand(500, 3000),
@@ -121,30 +136,22 @@ class DatabaseSeeder extends Seeder
                 'tipo'          => 'Traslado',
                 'id_ambulancia' => rand(1, 10),
                 'id_cliente'    => rand(11, 20),
+                'id_operador'   => 1, // Asignado a Pedro
             ]);
         }
 
         // ── PACIENTES ──────────────────────────────────────────────────────
         for ($i = 1; $i <= 10; $i++) {
             DB::table('paciente')->insert([
-                'nombre'          => 'Paciente ' . $i,
-                'ap_paterno'      => 'ApellidoP ' . $i,
-                'ap_materno'      => 'ApellidoM ' . $i,
-                'oxigeno'         => 'No',
+                'nombre'           => 'Paciente ' . $i,
+                'ap_paterno'       => 'ApellidoP ' . $i,
+                'ap_materno'       => 'ApellidoM ' . $i,
+                'oxigeno'          => 'No',
                 'fecha_nacimiento' => '1990-01-01',
-                'sexo'            => 'Masculino',
-                'peso'            => rand(60, 90),
-                'id_servicio'     => rand(1, 10),
-                'id_direccion'    => rand(1, 10),
-            ]);
-        }
-
-        // ── EVENTOS ────────────────────────────────────────────────────────
-        for ($i = 1; $i <= 10; $i++) {
-            DB::table('evento')->insert([
-                'id_servicio' => rand(1, 10),
-                'duracion'    => '2 horas',
-                'personas'    => rand(5, 50),
+                'sexo'             => 'Masculino',
+                'peso'             => rand(60, 90),
+                'id_servicio'      => rand(1, 10),
+                'id_direccion'     => rand(1, 10),
             ]);
         }
 
@@ -176,7 +183,7 @@ class DatabaseSeeder extends Seeder
         // ── PACIENTE_PADECIMIENTO ──────────────────────────────────────────
         for ($i = 1; $i <= 20; $i++) {
             DB::table('paciente_padecimiento')->insertOrIgnore([
-                'id_paciente'    => rand(1, 10),
+                'id_paciente'     => rand(1, 10),
                 'id_padecimiento' => rand(1, 10),
             ]);
         }

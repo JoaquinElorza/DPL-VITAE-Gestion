@@ -4,47 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\Servicio;
 use App\Models\Cotizacion;
+use App\Models\Ambulancia;
+use App\Models\Paramedico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class EmpleadoController extends Controller
 {
     public function miPanel()
     {
-        $user = auth()->user();
-        $user->load(['operador.ambulancias.tipo', 'paramedico']);
+        $user = Auth::user();
+        $user->load(['operador', 'paramedico']);
 
-        $rol         = null;
         $servicios   = collect();
+        $reservas    = collect();
         $ambulancias = collect();
-
-        $reservas = collect();
+        $ambulanciasDisponibles = collect();
+        $todosParamedicos = collect();
 
         if ($user->operador) {
-            $rol         = 'operador';
-            $ambulancias = $user->operador->ambulancias;
-            $ids         = $ambulancias->pluck('id_ambulancia');
+            // Obtenemos todas las ambulancias para el navbar y el listado general
+            $ambulancias = Ambulancia::with('tipo')->get();
+            $ambulanciasDisponibles = Ambulancia::where('estado', 'Disponible')->get();
+            $todosParamedicos = Paramedico::with('usuario')->get();
 
-            $servicios = Servicio::whereIn('id_ambulancia', $ids)
-                ->with(['evento', 'paramedicos.usuario', 'cliente.usuario', 'ambulancia.tipo'])
+            // Consulta de servicios sin la relación 'evento'
+            $servicios = Servicio::with(['paramedicos.usuario', 'cliente.usuario', 'ambulancia.tipo'])
                 ->orderBy('fecha_hora')
                 ->get();
 
-            $reservas = Cotizacion::whereIn('id_ambulancia', $ids)
-                ->where('decision_cliente', 'confirmada')
+            $reservas = Cotizacion::where('decision_cliente', 'confirmada')
                 ->whereNotNull('fecha_requerida')
                 ->get();
 
         } elseif ($user->paramedico) {
-            $rol = 'paramedico';
-
             $servicios = $user->paramedico->servicios()
-                ->with(['evento', 'ambulancia.tipo', 'cliente.usuario'])
+                ->with(['ambulancia.tipo', 'cliente.usuario', 'pacientes.direccion'])
                 ->orderBy('fecha_hora')
                 ->get();
 
-            // JSON stores IDs as strings; search both variants to be safe
             $idStr = (string) $user->paramedico->id_usuario;
             $reservas = Cotizacion::where('decision_cliente', 'confirmada')
                 ->whereNotNull('fecha_requerida')
@@ -55,12 +55,12 @@ class EmpleadoController extends Controller
                 ->get();
         }
 
-        $hoy       = Carbon::now();
-        $inicioMes = $hoy->copy()->startOfMonth();
-        $finMes    = $hoy->copy()->endOfMonth();
+        $hoy         = Carbon::now();
+        $inicioMes   = $hoy->copy()->startOfMonth();
+        $finMes      = $hoy->copy()->endOfMonth();
 
-        $esteMes    = $servicios->filter(fn($s) => Carbon::parse($s->fecha_hora)->between($inicioMes, $finMes));
-        $proximos   = $servicios->filter(fn($s) => Carbon::parse($s->fecha_hora)->isFuture() && $s->estado !== 'Cancelado')
+        $esteMes     = $servicios->filter(fn($s) => Carbon::parse($s->fecha_hora)->between($inicioMes, $finMes));
+        $proximos    = $servicios->filter(fn($s) => Carbon::parse($s->fecha_hora)->isFuture() && $s->estado !== 'Cancelado')
                                 ->sortBy('fecha_hora')
                                 ->take(6);
         $completados = $servicios->where('estado', 'Finalizado')->count();
@@ -74,28 +74,21 @@ class EmpleadoController extends Controller
         $eventosServicios = $servicios->map(function ($s) use ($colorPorEstado) {
             $color  = $colorPorEstado[$s->estado] ?? '#ffab00';
             $titulo = ($s->tipo ?? 'Servicio');
-            if ($s->evento) {
-                $titulo = 'Evento: ' . $titulo;
-            }
-
+            
             return [
                 'id'    => 'srv-' . $s->id_servicio,
                 'title' => $titulo,
                 'start' => Carbon::parse($s->fecha_hora)->toIso8601String(),
-                'end'   => $s->hora_salida
-                    ? Carbon::parse($s->hora_salida)->toIso8601String()
+                'end'   => $s->hora_salida 
+                    ? Carbon::parse($s->hora_salida)->toIso8601String() 
                     : Carbon::parse($s->fecha_hora)->addHours(2)->toIso8601String(),
                 'backgroundColor' => $color,
                 'borderColor'     => $color,
                 'extendedProps'   => [
                     'tipo_evento' => 'servicio',
                     'estado'      => $s->estado,
-                    'tipo'        => $s->tipo ?? '—',
                     'ambulancia'  => $s->ambulancia?->placa ?? '—',
                     'tipo_amb'    => $s->ambulancia?->tipo?->nombre_tipo ?? '—',
-                    'es_evento'   => $s->evento !== null,
-                    'duracion'    => $s->evento?->duracion ?? '—',
-                    'personas'    => $s->evento?->personas ?? '—',
                     'observaciones' => $s->observaciones ?? '—',
                 ],
             ];
@@ -112,31 +105,45 @@ class EmpleadoController extends Controller
                 'backgroundColor' => '#ff9f43',
                 'borderColor'     => '#ff9f43',
                 'extendedProps'   => [
-                    'tipo_evento'  => 'reserva',
-                    'guia'         => $c->numero_guia,
-                    'tipo_servicio'=> $c->tipo_servicio,
-                    'cliente'      => $c->nombre,
-                    'telefono'     => $c->telefono,
-                    'origen'       => $c->origen ?? '—',
-                    'destino'      => $c->destino ?? '—',
-                    'horas'        => $horas,
-                    'costo'        => $c->costo ? '$' . number_format($c->costo, 2) . ' MXN' : '—',
-                    'paciente'     => $c->datos_paciente['nombre'] ?? null,
+                    'tipo_evento'   => 'reserva',
+                    'guia'          => $c->numero_guia,
+                    'cliente'       => $c->nombre,
+                    'origen'        => $c->origen ?? '—',
+                    'destino'       => $c->destino ?? '—',
+                    'costo'         => $c->costo ? '$' . number_format($c->costo, 2) . ' MXN' : '—',
                 ],
             ];
         });
 
         $eventosCalendario = $eventosServicios->concat($eventosReservas)->values();
 
-        return view('empleado.mi-panel', compact(
-            'user', 'rol', 'ambulancias', 'servicios',
-            'esteMes', 'proximos', 'completados', 'eventosCalendario'
-        ));
+        // Agregamos todas las variables necesarias al compact para evitar errores en las vistas y navbar
+        $data = compact(
+            'user', 
+            'ambulancias', 
+            'servicios', 
+            'esteMes', 
+            'proximos', 
+            'completados', 
+            'eventosCalendario',
+            'ambulanciasDisponibles',
+            'todosParamedicos'
+        );
+
+        if ($user->operador) {
+            return view('empleado.operador', $data);
+        }
+
+        if ($user->paramedico) {
+            return view('empleado.paramedico', $data);
+        }
+
+        return redirect('/')->with('error', 'No tienes un rol de empleado asignado.');
     }
 
     public function actualizarPerfil(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         $request->validate([
             'nombre'     => 'required|string|max:100',
@@ -157,5 +164,44 @@ class EmpleadoController extends Controller
 
         return redirect()->route('empleado.mi-panel')
             ->with('success', 'Perfil actualizado correctamente.');
+    }
+
+    public function finalizarServicio(Servicio $servicio)
+    {
+        $servicio->update([
+            'estado' => 'Finalizado',
+            'hora_salida' => Carbon::now()
+        ]);
+
+        return back()->with('success', 'Servicio finalizado exitosamente.');
+    }
+
+    public function despacharReserva(Request $request, Cotizacion $cotizacion)
+    {
+        $request->validate([
+            'id_ambulancia' => 'required|exists:ambulancia,id_ambulancia',
+            'paramedicos'   => 'required|array',
+            'paramedicos.*' => 'exists:paramedico,id_usuario'
+        ]);
+
+        $servicio = Servicio::create([
+            'costo_total'   => $cotizacion->costo,
+            'estado'        => 'Activo',
+            'fecha_hora'    => $cotizacion->fecha_requerida,
+            'tipo'          => $cotizacion->tipo_servicio,
+            'id_ambulancia' => $request->id_ambulancia,
+            'id_cliente'    => $cotizacion->user_id,
+            'id_operador'   => Auth::id(),
+            'observaciones' => $cotizacion->descripcion
+        ]);
+
+        $servicio->paramedicos()->attach($request->paramedicos);
+
+        Ambulancia::where('id_ambulancia', $request->id_ambulancia)
+            ->update(['estado' => 'En Servicio']);
+
+        $cotizacion->update(['estado' => 'Finalizada']);
+
+        return back()->with('success', 'Unidad despachada y servicio iniciado exitosamente.');
     }
 }

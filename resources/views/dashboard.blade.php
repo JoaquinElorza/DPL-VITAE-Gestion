@@ -97,51 +97,73 @@
 
     </div>
 
-    <form method="GET" action="{{ url()->current() }}">
-        
+    <div class="card mb-4 border-0 shadow-sm" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.04), rgba(59, 130, 246, 0.04));">
+        <div class="card-body p-3">
+            <form method="GET" action="{{ url()->current() }}" class="row g-3 align-items-end">
+                
+                <!-- filtro tipo -->
+                <div class="col-md-2">
+                    <label class="form-label text-primary fw-bold" style="font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-category me-1"></i>Tipo</label>
+                    <select name="tipo" class="form-select border-0 shadow-sm">
+                        <option value="">Todos los tipos</option>
+                        @foreach ($tipos as $value => $label)
+                            <option value="{{ $value }}" {{ request('tipo') == $value ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-    <button type="submit">Filtrar</button>
+                <!-- filtro estado -->
+                <div class="col-md-2">
+                    <label class="form-label text-primary fw-bold" style="font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-check-circle me-1"></i>Estado</label>
+                    <select name="estado" class="form-select border-0 shadow-sm">
+                        <option value="">Todos los estados</option>
+                        @foreach ($estados as $value => $label)
+                            <option value="{{ $value }}" {{ request('estado') == $value ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-    <!-- filtro tipo -->
-    <select name="tipo">
-            <option value="">Todos los tipos</option>
-            @foreach ($tipos as $value => $label)
-                <option value="{{ $value }}" {{ request('tipo') == $value ? 'selected' : '' }}>
-                    {{ $label }}
-                </option>
-            @endforeach
-        </select>
+                <!-- filtro ambulancia -->
+                <div class="col-md-2">
+                    <label class="form-label text-primary fw-bold" style="font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-ambulance me-1"></i>Ambulancia</label>
+                    <select name="ambulancia" class="form-select border-0 shadow-sm">
+                        <option value="">Todas</option>
+                        @foreach ($ambulancias as $ambulancia)
+                            <option value="{{ $ambulancia->id_ambulancia }}" {{ request('ambulancia') == $ambulancia->id_ambulancia ? 'selected' : '' }}>
+                                {{ $ambulancia->placa }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-     <!-- filtro estado -->
-    <select name="estado">
-        <option value="">Todos los estados</option>
-            @foreach ($estados as $value => $label)
-                <option value="{{ $value }}" {{ request('estado') == $value ? 'selected' : '' }}>
-                    {{ $label }}
-                </option>
-            @endforeach
-        </select>
+                <!-- filtro fecha -->
+                <div class="col-md-2">
+                    <label class="form-label text-primary fw-bold" style="font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-calendar me-1"></i>Desde</label>
+                    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}" class="form-control border-0 shadow-sm">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-primary fw-bold" style="font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-calendar-event me-1"></i>Hasta</label>
+                    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}" class="form-control border-0 shadow-sm">
+                </div>
 
-     <!-- filtro ambulancia -->
-    <select name="ambulancia">
-        <option value="">Todas las ambulancias</option>
-            @foreach ($ambulancias as $ambulancia)
-                <option value="{{ $ambulancia->id_ambulancia }}"
-                {{ request('ambulancia') == $ambulancia->id_ambulancia ? 'selected' : '' }}>
-                    {{ $ambulancia->placa }}
-                </option>
-            @endforeach
-        </select>
-
-    <br>
-
-    <!-- filtro fecha -->
-     <form method="GET" action="{{ url()->current() }}">
-
-    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}">
-    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}">
-
-    </form> 
+                <!-- Botones -->
+                <div class="col-md-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100" title="Aplicar Filtros">
+                        <i class="bx bx-filter-alt me-1"></i> Filtrar
+                    </button>
+                    @if(request()->hasAny(['tipo', 'estado', 'ambulancia', 'fecha_inicio', 'fecha_fin']))
+                        <a href="{{ url()->current() }}" class="btn btn-limpiar w-100 shadow-sm" title="Limpiar filtros">
+                            <i class="bx bx-x me-1"></i> Limpiar
+                        </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row g-4">
 

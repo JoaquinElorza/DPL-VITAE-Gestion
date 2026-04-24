@@ -29,4 +29,5 @@ class Operador extends Model
     {
         return $this->hasMany(Servicio::class,'id_operador');
     }
+
 }
