@@ -19,7 +19,7 @@
                         <th>Nombre completo</th>
                         <th>Email</th>
                         <th>Salario/Hora</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,12 +34,24 @@
                         </td>
                         <td>{{ $paramedico->usuario->email ?? '—' }}</td>
                         <td>${{ number_format($paramedico->salario_hora, 2) }}</td>
-                        <td>
-                            <a href="{{ route('paramedicos.show', $paramedico) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('paramedicos.edit', $paramedico) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('paramedicos.destroy', $paramedico) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <td class="text-center">
+                            <a href="{{ route('paramedicos.show', $paramedico) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('paramedicos.edit', $paramedico) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('paramedicos.destroy', $paramedico) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este paramédico?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

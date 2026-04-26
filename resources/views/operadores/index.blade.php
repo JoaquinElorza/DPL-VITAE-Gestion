@@ -20,7 +20,7 @@
                         <th>Email</th>
                         <th>Salario/Hora</th>
                         <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,12 +42,24 @@
                                 <span class="badge bg-success">Disponible</span>
                             @endif
                         </td>
-                        <td>
-                            <a href="{{ route('operadores.show', $operador) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('operadores.edit', $operador) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('operadores.destroy', $operador) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <td class="text-center">
+                            <a href="{{ route('operadores.show', $operador) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('operadores.edit', $operador) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('operadores.destroy', $operador) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este operador?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

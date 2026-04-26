@@ -22,7 +22,7 @@
                         <th>Fecha requerida</th>
                         <th>Estado</th>
                         <th>Recibida</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,11 +46,19 @@
                             <span class="badge bg-label-{{ $color }}">{{ $cotizacion->estado }}</span>
                         </td>
                         <td>{{ $cotizacion->created_at->format('d/m/Y H:i') }}</td>
-                        <td>
-                            <a href="{{ route('cotizaciones.show', $cotizacion) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
-                            <form action="{{ route('cotizaciones.destroy', $cotizacion) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar esta cotización?')">
+                        <td class="text-center">
+                            <a href="{{ route('cotizaciones.show', $cotizacion) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <form action="{{ route('cotizaciones.destroy', $cotizacion) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar esta cotización?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

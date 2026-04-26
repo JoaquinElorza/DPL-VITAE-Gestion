@@ -20,7 +20,7 @@
                         <th>Nombre completo</th>
                         <th>Email</th>
                         <th>Teléfono</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,12 +34,24 @@
                         </td>
                         <td>{{ $cliente->usuario->email ?? '—' }}</td>
                         <td>{{ $cliente->usuario->telefono ?? '—' }}</td>
-                        <td>
-                            <a href="{{ route('clientes.show', $cliente) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('clientes.destroy', $cliente) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este cliente?')">
+                        <td class="text-center">
+                            <a href="{{ route('clientes.show', $cliente) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('clientes.edit', $cliente) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('clientes.destroy', $cliente) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este cliente?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

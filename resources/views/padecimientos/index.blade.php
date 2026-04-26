@@ -20,7 +20,7 @@
                         <th>Nombre</th>
                         <th>Nivel de Riesgo</th>
                         <th>Costo Extra</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,12 +30,24 @@
                         <td>{{ $padecimiento->nombre_padecimiento }}</td>
                         <td>{{ $padecimiento->nivel_riesgo }}</td>
                         <td>${{ number_format($padecimiento->costo_extra, 2) }}</td>
-                        <td>
-                            <a href="{{ route('padecimientos.show', $padecimiento) }}" class="btn btn-sm btn-info"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('padecimientos.edit', $padecimiento) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('padecimientos.destroy', $padecimiento) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <td class="text-center">
+                            <a href="{{ route('padecimientos.show', $padecimiento) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('padecimientos.edit', $padecimiento) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('padecimientos.destroy', $padecimiento) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este padecimiento?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>
