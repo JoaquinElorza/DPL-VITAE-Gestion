@@ -1,4 +1,3 @@
-<!-- Menu -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="overflow-y: auto; height: 100vh;">
   <div class="app-brand demo">
     <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center text-decoration-none">
@@ -43,6 +42,14 @@
       <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div class="text-truncate">{{ __('Dashboard') }}</div>
+      </a>
+    </li>
+
+    {{-- NUEVO BOTÓN DE ANALÍTICA --}}
+    <li class="menu-item {{ request()->routeIs('analitica.dashboard') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('analitica.dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Analítica (Gerente)">
+        <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
+        <div class="text-truncate">Analítica (Gerente)</div>
       </a>
     </li>
 
@@ -171,8 +178,6 @@
 
   </ul>
 </aside>
-<!-- / Menu -->
-
 <script>
   document.querySelectorAll('.menu-toggle').forEach(function(menuToggle) {
     menuToggle.addEventListener('click', function() {

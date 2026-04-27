@@ -20,6 +20,8 @@ use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AnaliticaController;
+
 
 Route::get('/', function () {
     $empresa = \App\Models\Empresa::first();
@@ -29,6 +31,7 @@ Route::get('/', function () {
 Route::get('cotizaciones/gracias', [CotizacionController::class, 'gracias'])->name('cotizaciones.gracias');
 Route::get('cotizaciones/rastrear', [CotizacionController::class, 'rastrear'])->name('cotizaciones.rastrear');
 
+// RUTAS PARA EMPLEADOS (Pedro y Pablo)
 Route::middleware(['auth', 'es.empleado'])->group(function () {
     Route::get('mi-panel', [EmpleadoController::class, 'miPanel'])->name('empleado.mi-panel');
     Route::put('mi-panel/perfil', [EmpleadoController::class, 'actualizarPerfil'])->name('empleado.perfil.update');
@@ -36,16 +39,19 @@ Route::middleware(['auth', 'es.empleado'])->group(function () {
     Route::post('mi-panel/despachar/{cotizacion}', [EmpleadoController::class, 'despacharReserva'])->name('empleado.servicio.despachar');
 });
 
+// RUTA DE ANALÍTICA (Compartida para Operador y Admin)
+Route::middleware(['auth'])->group(function () {
+    Route::get('analitica-gerencial', [AnaliticaController::class, 'extraerDatosLimpios'])->name('analitica.dashboard');
+});
+
 Route::middleware(['auth', 'es.cliente'])->group(function () {
     Route::get('cotizaciones/solicitar',  [CotizacionController::class, 'create'])->name('cotizaciones.create');
     Route::post('cotizaciones/solicitar', [CotizacionController::class, 'store'])->name('cotizaciones.store');
-
     Route::get('mis-solicitudes', [CotizacionController::class, 'misSolicitudes'])->name('cotizaciones.mis-solicitudes');
     Route::get('mis-solicitudes/{cotizacion}', [CotizacionController::class, 'miEstado'])->name('cotizaciones.mi-estado');
     Route::post('mis-solicitudes/{cotizacion}/confirmar', [CotizacionController::class, 'confirmar'])->name('cotizaciones.confirmar');
     Route::post('mis-solicitudes/{cotizacion}/declinar', [CotizacionController::class, 'declinar'])->name('cotizaciones.declinar');
     Route::get('mis-solicitudes/{cotizacion}/descargar', [CotizacionController::class, 'descargar'])->name('cotizaciones.descargar');
-
     Route::get('mis-solicitudes/{cotizacion}/pagar', [PagoController::class, 'iniciar'])->name('cotizaciones.pago.iniciar');
     Route::get('mis-solicitudes/{cotizacion}/pago/success', [PagoController::class, 'success'])->name('cotizaciones.pago.success');
     Route::get('mis-solicitudes/{cotizacion}/pago/failure', [PagoController::class, 'failure'])->name('cotizaciones.pago.failure');
@@ -56,14 +62,12 @@ Route::post('webhooks/mercadopago', [PagoController::class, 'webhook'])
     ->name('webhooks.mercadopago')
     ->withoutMiddleware(['auth']);
 
+// RUTAS PARA ADMINISTRADORES (Luis)
 Route::middleware(['auth', 'verified', 'es.admin'])->group(function () {
-
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::redirect('settings', 'settings/profile');
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
-
     Route::resource('servicios', ServicioController::class);
     Route::resource('eventos', EventoController::class);
     Route::resource('pacientes', PacienteController::class);
@@ -72,14 +76,12 @@ Route::middleware(['auth', 'verified', 'es.admin'])->group(function () {
     Route::resource('paramedicos', ParamedicoController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('ambulancias', AmbulanciaController::class);
-    Route::resource('tipos-ambulancia', TipoAmbulanciaController::class)
-        ->parameters(['tipos-ambulancia' => 'tipoAmbulancia']);
+    Route::resource('tipos-ambulancia', TipoAmbulanciaController::class)->parameters(['tipos-ambulancia' => 'tipoAmbulancia']);
     Route::resource('insumos', InsumoController::class);
     Route::resource('empresas', EmpresaController::class);
     Route::resource('municipios', MunicipioController::class);
     Route::resource('colonias', ColoniaController::class);
     Route::resource('direcciones', DireccionController::class);
-
     Route::get('cotizaciones', [CotizacionController::class, 'index'])->name('cotizaciones.index');
     Route::get('cotizaciones/{cotizacion}', [CotizacionController::class, 'show'])->name('cotizaciones.show');
     Route::put('cotizaciones/{cotizacion}', [CotizacionController::class, 'update'])->name('cotizaciones.update');
