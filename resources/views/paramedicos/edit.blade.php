@@ -24,7 +24,6 @@
         <form action="{{ route('paramedicos.update', $paramedico) }}" method="POST">
             @csrf @method('PUT')
 
-            {{-- datos personales --}}
             <div class="card mb-4">
                 <div class="card-header">
                     <h6 class="mb-0"><i class="bx bx-user me-1 text-primary"></i>Datos personales</h6>
@@ -36,27 +35,32 @@
                             <input type="text" name="nombre"
                                 class="form-control @error('nombre') is-invalid @enderror"
                                 value="{{ old('nombre', $paramedico->usuario->nombre) }}" required>
-                            @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Apellido paterno <span class="text-danger">*</span></label>
+                            <label class="form-label">Primer Apellido <span class="text-danger">*</span></label>
                             <input type="text" name="ap_paterno"
                                 class="form-control @error('ap_paterno') is-invalid @enderror"
                                 value="{{ old('ap_paterno', $paramedico->usuario->ap_paterno) }}" required>
-                            @error('ap_paterno')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Apellido materno</label>
+                            <label class="form-label">Segundo Apellido</label>
                             <input type="text" name="ap_materno"
                                 class="form-control @error('ap_materno') is-invalid @enderror"
                                 value="{{ old('ap_materno', $paramedico->usuario->ap_materno) }}">
-                            @error('ap_materno')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                                <input type="text" name="telefono"
+                                    class="form-control @error('telefono') is-invalid @enderror"
+                                    value="{{ old('telefono', $paramedico->usuario->telefono) }}" required>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- acceso --}}
             <div class="card mb-4">
                 <div class="card-header">
                     <h6 class="mb-0"><i class="bx bx-lock me-1 text-warning"></i>Acceso al sistema</h6>
@@ -68,7 +72,6 @@
                             <input type="email" name="email"
                                 class="form-control @error('email') is-invalid @enderror"
                                 value="{{ old('email', $paramedico->usuario->email) }}" required>
-                            @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Nueva contraseña</label>
@@ -79,7 +82,6 @@
                                 <span class="input-group-text cursor-pointer" onclick="togglePass(this)">
                                     <i class="bx bx-hide"></i>
                                 </span>
-                                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -96,27 +98,48 @@
                 </div>
             </div>
 
-            {{-- datos laborales --}}
             <div class="card mb-4">
                 <div class="card-header">
-                    <h6 class="mb-0"><i class="bx bx-plus-medical me-1 text-success"></i>Datos laborales</h6>
+                    <h6 class="mb-0"><i class="bx bx-certification me-1 text-info"></i>Especialidad y Categoría</h6>
                 </div>
                 <div class="card-body">
-                    <div class="col-md-5">
-                        <label class="form-label">Salario por hora <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <span class="input-group-text">$</span>
-                            <input type="number" step="0.01" min="0" name="salario_hora"
-                                class="form-control @error('salario_hora') is-invalid @enderror"
-                                value="{{ old('salario_hora', $paramedico->salario_hora) }}" required>
-                            <span class="input-group-text">MXN/hr</span>
-                            @error('salario_hora')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Categoría del Paramédico <span class="text-danger">*</span></label>
+                            <select name="categoria" class="form-select @error('categoria') is-invalid @enderror" required>
+                                <option value="" disabled>Selecciona una categoría...</option>
+                                @php
+                                    $categorias = ['Primer respondiente', 'TAMP-B', 'TAMP-I', 'TAMP-A', 'TUM-B', 'TUM-I', 'TUM-A', 'Enfermero'];
+                                @endphp
+                                @foreach($categorias as $cat)
+                                    <option value="{{ $cat }}" {{ old('categoria', $paramedico->categoria) == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="d-flex gap-2">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="bx bx-plus-medical me-1 text-success"></i>Datos laborales</h6>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <label class="form-label">Salario Mensual <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" min="7468" name="salario"
+                                class="form-control @error('salario') is-invalid @enderror"
+                                value="{{ old('salario', ($paramedico->salario_hora * 160)) }}" required>
+                            <span class="input-group-text">MXN</span>
+                        </div>
+                        <small class="text-muted mt-1 d-block">Mínimo legal LFT: $7,468.00</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mb-4">
                 <button type="submit" class="btn btn-primary">
                     <i class="bx bx-save me-1"></i> Guardar cambios
                 </button>

@@ -20,11 +20,11 @@ class Operador extends Model
         'salario_hora'
     ];
 
-    public function usuario()
-    {
-        return $this->belongsTo(User::class,'id_usuario');
-    }
-
+public function usuario()
+{
+   
+    return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
+}
     public function servicios()
     {
         return $this->hasMany(Servicio::class,'id_operador');

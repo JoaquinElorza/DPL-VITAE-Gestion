@@ -68,27 +68,28 @@ class OperadorController extends Controller
         return redirect()->route('operadores.index')->with('success', 'Operador creado correctamente.');
     }
 
-    public function show(Operador $operador)
+    public function show(Operador $operadore)
     {
-        $operador->load(['usuario', 'servicios.ambulancia']);
-        $enServicio = $operador->servicios->where('estado', 'Activo')->isNotEmpty();
-        return view('operadores.show', compact('operador', 'enServicio'));
+        $operadore->load(['usuario', 'servicios.ambulancia']);
+        $enServicio = $operadore->servicios->where('estado', 'Activo')->isNotEmpty();
+        return view('operadores.show', ['operador' => $operadore, 'enServicio' => $enServicio]);
     }
 
-    public function edit(Operador $operador)
+    public function edit(Operador $operadore)
     {
-        $operador->load('usuario');
-        return view('operadores.edit', compact('operador'));
+        // Se carga la relación y se pasa a la vista como 'operador' para que coincida con tu Blade
+        $operadore->load('usuario');
+        return view('operadores.edit', ['operador' => $operadore]);
     }
 
-    public function update(Request $request, Operador $operador)
+    public function update(Request $request, Operador $operadore)
     {
         $rules = [
             'nombre'          => 'required|string|max:100',
             'ap_paterno'      => 'required|string|max:100',
             'ap_materno'      => 'nullable|string|max:100',
             'telefono'        => 'required|string|max:15',
-            'email'           => 'required|email|max:150|unique:users,email,' . $operador->id_usuario . ',id_usuario',
+            'email'           => 'required|email|max:150|unique:users,email,' . $operadore->id_usuario . ',id_usuario',
             'password'        => 'nullable|string|min:8|confirmed',
             'numero_licencia' => 'required|string|max:50',
             'fecha_licencia'  => 'required|date',
@@ -103,7 +104,7 @@ class OperadorController extends Controller
 
         $request->validate($rules, $messages);
 
-        DB::transaction(function () use ($request, $operador) {
+        DB::transaction(function () use ($request, $operadore) {
             $userData = [
                 'nombre'     => $request->nombre,
                 'ap_paterno' => $request->ap_paterno,
@@ -116,9 +117,9 @@ class OperadorController extends Controller
                 $userData['password'] = Hash::make($request->password);
             }
 
-            $operador->usuario->update($userData);
+            $operadore->usuario->update($userData);
 
-            $operador->update([
+            $operadore->update([
                 'numero_licencia' => $request->numero_licencia,
                 'fecha_licencia'  => $request->fecha_licencia,
                 'salario_hora'    => $request->salario / 160,
@@ -128,11 +129,11 @@ class OperadorController extends Controller
         return redirect()->route('operadores.index')->with('success', 'Operador actualizado correctamente.');
     }
 
-    public function destroy(Operador $operador)
+    public function destroy(Operador $operadore)
     {
-        DB::transaction(function () use ($operador) {
-            $operador->delete();
-            $operador->usuario->delete();
+        DB::transaction(function () use ($operadore) {
+            $operadore->usuario->delete(); // Eliminar usuario borra en cascada o manualmente
+            $operadore->delete();
         });
         return redirect()->route('operadores.index')->with('success', 'Operador eliminado.');
     }
