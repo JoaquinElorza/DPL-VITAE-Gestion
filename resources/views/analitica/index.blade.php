@@ -13,7 +13,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card text-white mb-4" style="background-color: #10B981;">
                     <div class="card-body">
@@ -22,7 +21,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card text-white mb-4" style="background-color: #0EA5E9;">
                     <div class="card-body">
@@ -31,7 +29,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card text-white mb-4" style="background-color: #F43F5E;">
                     <div class="card-body">
@@ -67,6 +64,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
@@ -74,21 +72,35 @@
             const canvaElement = document.getElementById('graficaServicios');
             if (canvaElement) {
                 const ctx = canvaElement.getContext('2d');
+                
                 new Chart(ctx, {
                     type: 'doughnut',
+                    plugins: [ChartDataLabels],
                     data: {
                         labels: {!! json_encode($labelsGrafica) !!},
                         datasets: [{
                             data: {!! json_encode($valoresGrafica) !!},
                             backgroundColor: ['#696CFF', '#10B981', '#0EA5E9', '#F43F5E'],
-                            borderWidth: 0
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { position: 'bottom' }
+                            legend: { position: 'bottom' },
+                            datalabels: {
+                                color: '#fff',
+                                font: { weight: 'bold', size: 14 },
+                                formatter: (value, ctx) => {
+                                    let sum = 0;
+                                    let dataArr = ctx.chart.data.datasets[0].data;
+                                    dataArr.map(data => { sum += data; });
+                                    let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                    return percentage;
+                                },
+                            }
                         }
                     }
                 });

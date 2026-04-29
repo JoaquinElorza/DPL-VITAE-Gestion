@@ -25,27 +25,43 @@ class OperadorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre'       => 'required|string|max:100',
-            'ap_paterno'   => 'required|string|max:100',
-            'ap_materno'   => 'nullable|string|max:100',
-            'email'        => 'required|email|max:150|unique:users,email',
-            'password'     => 'required|string|min:8|confirmed',
-            'salario_hora' => 'required|numeric|min:0',
-        ]);
+        $rules = [
+            'nombre'          => 'required|string|max:100',
+            'ap_paterno'      => 'required|string|max:100',
+            'ap_materno'      => 'nullable|string|max:100',
+            'telefono'        => 'required|string|max:15',
+            'email'           => 'required|email|max:150|unique:users,email',
+            'password'        => 'required|string|min:8|confirmed',
+            'numero_licencia' => 'required|string|max:50',
+            'fecha_licencia'  => 'required|date',
+            'salario'         => 'required|numeric|min:7468',
+        ];
+
+        $messages = [
+            'nombre.required'      => 'El nombre es obligatorio.',
+            'ap_paterno.required'  => 'El primer apellido es obligatorio.',
+            'telefono.required'    => 'El número de teléfono es obligatorio.',
+            'salario.min'          => 'El salario no puede ser menor al mínimo de la LFT ($7,468.00).',
+            'password.confirmed'   => 'Las contraseñas no coinciden.',
+        ];
+
+        $request->validate($rules, $messages);
 
         DB::transaction(function () use ($request) {
             $user = User::create([
                 'nombre'     => $request->nombre,
                 'ap_paterno' => $request->ap_paterno,
                 'ap_materno' => $request->ap_materno,
+                'telefono'   => $request->telefono,
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
             ]);
 
             Operador::create([
-                'id_usuario'   => $user->id_usuario,
-                'salario_hora' => $request->salario_hora,
+                'id_usuario'      => $user->id_usuario,
+                'numero_licencia' => $request->numero_licencia,
+                'fecha_licencia'  => $request->fecha_licencia,
+                'salario_hora'    => $request->salario / 160, 
             ]);
         });
 
@@ -67,28 +83,46 @@ class OperadorController extends Controller
 
     public function update(Request $request, Operador $operador)
     {
-        $request->validate([
-            'nombre'       => 'required|string|max:100',
-            'ap_paterno'   => 'required|string|max:100',
-            'ap_materno'   => 'nullable|string|max:100',
-            'email'        => 'required|email|max:150|unique:users,email,' . $operador->id_usuario . ',id_usuario',
-            'password'     => 'nullable|string|min:8|confirmed',
-            'salario_hora' => 'required|numeric|min:0',
-        ]);
+        $rules = [
+            'nombre'          => 'required|string|max:100',
+            'ap_paterno'      => 'required|string|max:100',
+            'ap_materno'      => 'nullable|string|max:100',
+            'telefono'        => 'required|string|max:15',
+            'email'           => 'required|email|max:150|unique:users,email,' . $operador->id_usuario . ',id_usuario',
+            'password'        => 'nullable|string|min:8|confirmed',
+            'numero_licencia' => 'required|string|max:50',
+            'fecha_licencia'  => 'required|date',
+            'salario'         => 'required|numeric|min:7468',
+        ];
+
+        $messages = [
+            'nombre.required'     => 'El nombre es obligatorio.',
+            'ap_paterno.required' => 'El primer apellido es obligatorio.',
+            'salario.min'         => 'El salario no puede ser menor al mínimo de la LFT ($7,468.00).',
+        ];
+
+        $request->validate($rules, $messages);
 
         DB::transaction(function () use ($request, $operador) {
             $userData = [
                 'nombre'     => $request->nombre,
                 'ap_paterno' => $request->ap_paterno,
                 'ap_materno' => $request->ap_materno,
+                'telefono'   => $request->telefono,
                 'email'      => $request->email,
             ];
+
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
             }
 
             $operador->usuario->update($userData);
-            $operador->update(['salario_hora' => $request->salario_hora]);
+
+            $operador->update([
+                'numero_licencia' => $request->numero_licencia,
+                'fecha_licencia'  => $request->fecha_licencia,
+                'salario_hora'    => $request->salario / 160,
+            ]);
         });
 
         return redirect()->route('operadores.index')->with('success', 'Operador actualizado correctamente.');
