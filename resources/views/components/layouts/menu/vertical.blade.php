@@ -11,7 +11,6 @@
 
   <ul class="menu-inner py-1">
 
-    {{-- Botón hamburguesa como primer ítem del menú --}}
     <li class="menu-item">
       <a href="javascript:void(0)" id="sidebar-close-btn" class="menu-link sidebar-hamburger-btn" aria-label="Abrir/cerrar menú">
         <span class="menu-icon tf-icons">
@@ -26,7 +25,6 @@
     </li>
 
     @if($esEmpleado)
-    {{-- menú empleados --}}
 
     <li class="menu-item {{ request()->is('mi-panel') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('empleado.mi-panel') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mi Panel">
@@ -35,8 +33,14 @@
       </a>
     </li>
 
+    <li class="menu-item {{ request()->routeIs('mis-servicios.index') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('mis-servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mis Servicios">
+        <i class="menu-icon tf-icons bx bx-list-check"></i>
+        <div class="text-truncate">Mis Servicios</div>
+      </a>
+    </li>
+
     @else
-    {{-- menú administradores --}}
 
     <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
@@ -45,7 +49,13 @@
       </a>
     </li>
 
-    {{-- NUEVO BOTÓN DE ANALÍTICA --}}
+    <li class="menu-item {{ request()->routeIs('mis-servicios.index') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('mis-servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mis Servicios">
+        <i class="menu-icon tf-icons bx bx-list-check"></i>
+        <div class="text-truncate">Mis Servicios</div>
+      </a>
+    </li>
+
     <li class="menu-item {{ request()->routeIs('analitica.dashboard') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('analitica.dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Analítica (Gerente)">
         <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>

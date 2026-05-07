@@ -33,22 +33,27 @@ class Servicio extends Model
 
     public function ambulancia()
     {
-        return $this->belongsTo(Ambulancia::class,'id_ambulancia');
+        return $this->belongsTo(Ambulancia::class, 'id_ambulancia', 'id_ambulancia');
     }
 
     public function operador()
     {
-        return $this->belongsTo(Operador::class,'id_operador');
+        return $this->belongsTo(Operador::class, 'id_operador', 'id_usuario');
     }
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class,'id_cliente');
+        return $this->belongsTo(Cliente::class, 'id_cliente', 'id_usuario');
+    }
+
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class, 'id_servicio', 'id_servicio');
     }
 
     public function pacientes()
     {
-        return $this->hasMany(Paciente::class,'id_servicio');
+        return $this->hasMany(Paciente::class, 'id_servicio', 'id_servicio');
     }
 
     public function paramedicos()

@@ -18,10 +18,8 @@
   </head>
 
   <body>
-
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
-
         <x-layouts.menu.vertical :title="$title ?? null"></x-layouts.menu.vertical>
         <div class="layout-page">
           <x-layouts.navbar.default :title="$title ?? null"></x-layouts.navbar.default>
@@ -46,20 +44,16 @@
     <script>
       (function () {
         var html = document.documentElement;
-
         function isMobile() { return window.innerWidth < 1200; }
-
         function isExpanded() {
           return isMobile()
             ? html.classList.contains('layout-menu-expanded')
             : !html.classList.contains('layout-menu-collapsed');
         }
-
         function syncIcon() {
           var btn = document.getElementById('sidebar-close-btn');
           if (btn) btn.classList.toggle('is-open', isExpanded());
         }
-
         function toggleMenu() {
           html.classList.add('layout-transitioning');
           if (isMobile()) {
@@ -72,24 +66,19 @@
           setTimeout(function () { html.classList.remove('layout-transitioning'); }, 300);
           syncIcon();
         }
-
         function bind() {
           var btn = document.getElementById('sidebar-close-btn');
           if (btn) btn.onclick = toggleMenu;
-
           var navBtn = document.getElementById('navbar-hamburger-btn');
           if (navBtn) navBtn.onclick = toggleMenu;
-
           var bd = document.getElementById('menu-backdrop');
           if (bd) bd.onclick = function () {
             html.classList.remove('layout-menu-expanded');
             bd.classList.remove('show');
             syncIcon();
           };
-
           syncIcon();
         }
-
         document.addEventListener('DOMContentLoaded', bind);
         document.addEventListener('livewire:navigated', bind);
       })();

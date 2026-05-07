@@ -21,7 +21,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnaliticaController;
-
+use App\Http\Controllers\MisServiciosController;
 
 Route::get('/', function () {
     $empresa = \App\Models\Empresa::first();
@@ -31,17 +31,17 @@ Route::get('/', function () {
 Route::get('cotizaciones/gracias', [CotizacionController::class, 'gracias'])->name('cotizaciones.gracias');
 Route::get('cotizaciones/rastrear', [CotizacionController::class, 'rastrear'])->name('cotizaciones.rastrear');
 
-// RUTAS PARA EMPLEADOS (Pedro y Pablo)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mis-servicios', [MisServiciosController::class, 'index'])->name('mis-servicios.index');
+    Route::get('/mis-servicios/{servicio}', [MisServiciosController::class, 'show'])->name('mis-servicios.show');
+    Route::get('analitica-gerencial', [AnaliticaController::class, 'extraerDatosLimpios'])->name('analitica.dashboard');
+});
+
 Route::middleware(['auth', 'es.empleado'])->group(function () {
     Route::get('mi-panel', [EmpleadoController::class, 'miPanel'])->name('empleado.mi-panel');
     Route::put('mi-panel/perfil', [EmpleadoController::class, 'actualizarPerfil'])->name('empleado.perfil.update');
     Route::post('mi-panel/servicio/{servicio}/finalizar', [EmpleadoController::class, 'finalizarServicio'])->name('empleado.servicio.finalizar');
     Route::post('mi-panel/despachar/{cotizacion}', [EmpleadoController::class, 'despacharReserva'])->name('empleado.servicio.despachar');
-});
-
-// RUTA DE ANALÍTICA (Compartida para Operador y Admin)
-Route::middleware(['auth'])->group(function () {
-    Route::get('analitica-gerencial', [AnaliticaController::class, 'extraerDatosLimpios'])->name('analitica.dashboard');
 });
 
 Route::middleware(['auth', 'es.cliente'])->group(function () {
@@ -62,7 +62,6 @@ Route::post('webhooks/mercadopago', [PagoController::class, 'webhook'])
     ->name('webhooks.mercadopago')
     ->withoutMiddleware(['auth']);
 
-// RUTAS PARA ADMINISTRADORES (Luis)
 Route::middleware(['auth', 'verified', 'es.admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::redirect('settings', 'settings/profile');

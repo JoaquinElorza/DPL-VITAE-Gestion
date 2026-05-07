@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Servicio;
+use App\Models\User;
 
 class Operador extends Model
 {
@@ -17,17 +18,18 @@ class Operador extends Model
 
     protected $fillable = [
         'id_usuario',
-        'salario_hora'
+        'salario_hora',
+        'numero_licencia',
+        'fecha_licencia'
     ];
 
-public function usuario()
-{
-   
-    return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
-}
-    public function servicios()
+    public function usuario()
     {
-        return $this->hasMany(Servicio::class,'id_operador');
+        return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }
 
+    public function servicios()
+    {
+        return $this->hasMany(Servicio::class, 'id_operador', 'id_usuario');
+    }
 }
