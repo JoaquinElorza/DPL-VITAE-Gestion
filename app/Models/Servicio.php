@@ -26,6 +26,12 @@ class Servicio extends Model
         'hora_salida',
         'observaciones',
         'tipo',
+        'km_distancia', //agregados para mineria
+        'horas_servicio',
+        'oxigeno_lpm',
+        'costo_padecimiento_num',
+        'tipo_ambulancia_num',
+        'num_paramedicos',
         'id_ambulancia',
         'id_cliente',
         'id_operador',
