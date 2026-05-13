@@ -19,7 +19,7 @@
                         <th>#</th>
                         <th>Nombre del Insumo</th>
                         <th>Costo Unitario</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,12 +28,24 @@
                         <td>{{ $insumo->id_insumo }}</td>
                         <td>{{ $insumo->nombre_insumo }}</td>
                         <td>${{ number_format($insumo->costo_unidad, 2) }}</td>
-                        <td>
-                            <a href="{{ route('insumos.show', $insumo) }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" title="Ver"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('insumos.edit', $insumo) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Editar"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('insumos.destroy', $insumo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <td class="text-center">
+                            <a href="{{ route('insumos.show', $insumo) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('insumos.edit', $insumo) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('insumos.destroy', $insumo) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este insumo?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Eliminar"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

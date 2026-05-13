@@ -19,7 +19,7 @@
                         <th>#</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,12 +28,24 @@
                         <td>{{ $tipo->id_tipo_ambulancia }}</td>
                         <td>{{ $tipo->nombre_tipo }}</td>
                         <td>{{ $tipo->descripcion ?? '—' }}</td>
-                        <td>
-                            <a href="{{ route('tipos-ambulancia.show', $tipo) }}" class="btn btn-sm btn-info"><i class="bx bx-show"></i></a>
-                            <a href="{{ route('tipos-ambulancia.edit', $tipo) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                            <form action="{{ route('tipos-ambulancia.destroy', $tipo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar?')">
+                        <td class="text-center">
+                            <a href="{{ route('tipos-ambulancia.show', $tipo) }}"
+                               class="btn btn-sm btn-outline-info me-1"
+                               title="Ver detalle">
+                                <i class="bx bx-show"></i> Ver
+                            </a>
+                            <a href="{{ route('tipos-ambulancia.edit', $tipo) }}"
+                               class="btn btn-sm btn-outline-warning me-1"
+                               title="Editar">
+                                <i class="bx bx-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('tipos-ambulancia.destroy', $tipo) }}" method="POST"
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este tipo de ambulancia?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></button>
+                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                    <i class="bx bx-trash"></i> Eliminar
+                                </button>
                             </form>
                         </td>
                     </tr>

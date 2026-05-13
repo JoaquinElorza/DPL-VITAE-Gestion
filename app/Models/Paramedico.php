@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Servicio;
+use App\Models\User;
 
 class Paramedico extends Model
 {
@@ -16,12 +18,13 @@ class Paramedico extends Model
 
     protected $fillable = [
         'id_usuario',
-        'salario_hora'
+        'salario_hora',
+        'categoria'
     ];
 
     public function usuario()
     {
-        return $this->belongsTo(User::class,'id_usuario');
+        return $this->belongsTo(User::class, 'id_usuario', 'id_usuario');
     }
 
     public function servicios()

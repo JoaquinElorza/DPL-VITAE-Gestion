@@ -25,80 +25,115 @@ class OperadorController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre'       => 'required|string|max:100',
-            'ap_paterno'   => 'required|string|max:100',
-            'ap_materno'   => 'nullable|string|max:100',
-            'email'        => 'required|email|max:150|unique:users,email',
-            'password'     => 'required|string|min:8|confirmed',
-            'salario_hora' => 'required|numeric|min:0',
-        ]);
+        $rules = [
+            'nombre'          => 'required|string|max:100',
+            'ap_paterno'      => 'required|string|max:100',
+            'ap_materno'      => 'nullable|string|max:100',
+            'telefono'        => 'required|string|max:15',
+            'email'           => 'required|email|max:150|unique:users,email',
+            'password'        => 'required|string|min:8|confirmed',
+            'numero_licencia' => 'required|string|max:50',
+            'fecha_licencia'  => 'required|date',
+            'salario'         => 'required|numeric|min:7468',
+        ];
+
+        $messages = [
+            'nombre.required'      => 'El nombre es obligatorio.',
+            'ap_paterno.required'  => 'El primer apellido es obligatorio.',
+            'telefono.required'    => 'El número de teléfono es obligatorio.',
+            'salario.min'          => 'El salario no puede ser menor al mínimo de la LFT ($7,468.00).',
+            'password.confirmed'   => 'Las contraseñas no coinciden.',
+        ];
+
+        $request->validate($rules, $messages);
 
         DB::transaction(function () use ($request) {
             $user = User::create([
                 'nombre'     => $request->nombre,
                 'ap_paterno' => $request->ap_paterno,
                 'ap_materno' => $request->ap_materno,
+                'telefono'   => $request->telefono,
                 'email'      => $request->email,
                 'password'   => Hash::make($request->password),
             ]);
 
             Operador::create([
-                'id_usuario'   => $user->id_usuario,
-                'salario_hora' => $request->salario_hora,
+                'id_usuario'      => $user->id_usuario,
+                'numero_licencia' => $request->numero_licencia,
+                'fecha_licencia'  => $request->fecha_licencia,
+                'salario_hora'    => $request->salario / 160, 
             ]);
         });
 
         return redirect()->route('operadores.index')->with('success', 'Operador creado correctamente.');
     }
 
-    public function show(Operador $operador)
+    public function show(Operador $operadore)
     {
-        $operador->load(['usuario', 'servicios.ambulancia']);
-        $enServicio = $operador->servicios->where('estado', 'Activo')->isNotEmpty();
-        return view('operadores.show', compact('operador', 'enServicio'));
+        $operadore->load(['usuario', 'servicios.ambulancia']);
+        $enServicio = $operadore->servicios->where('estado', 'Activo')->isNotEmpty();
+        return view('operadores.show', ['operador' => $operadore, 'enServicio' => $enServicio]);
     }
 
-    public function edit(Operador $operador)
+    public function edit(Operador $operadore)
     {
-        $operador->load('usuario');
-        return view('operadores.edit', compact('operador'));
+        // Se carga la relación y se pasa a la vista como 'operador' para que coincida con tu Blade
+        $operadore->load('usuario');
+        return view('operadores.edit', ['operador' => $operadore]);
     }
 
-    public function update(Request $request, Operador $operador)
+    public function update(Request $request, Operador $operadore)
     {
-        $request->validate([
-            'nombre'       => 'required|string|max:100',
-            'ap_paterno'   => 'required|string|max:100',
-            'ap_materno'   => 'nullable|string|max:100',
-            'email'        => 'required|email|max:150|unique:users,email,' . $operador->id_usuario . ',id_usuario',
-            'password'     => 'nullable|string|min:8|confirmed',
-            'salario_hora' => 'required|numeric|min:0',
-        ]);
+        $rules = [
+            'nombre'          => 'required|string|max:100',
+            'ap_paterno'      => 'required|string|max:100',
+            'ap_materno'      => 'nullable|string|max:100',
+            'telefono'        => 'required|string|max:15',
+            'email'           => 'required|email|max:150|unique:users,email,' . $operadore->id_usuario . ',id_usuario',
+            'password'        => 'nullable|string|min:8|confirmed',
+            'numero_licencia' => 'required|string|max:50',
+            'fecha_licencia'  => 'required|date',
+            'salario'         => 'required|numeric|min:7468',
+        ];
 
-        DB::transaction(function () use ($request, $operador) {
+        $messages = [
+            'nombre.required'     => 'El nombre es obligatorio.',
+            'ap_paterno.required' => 'El primer apellido es obligatorio.',
+            'salario.min'         => 'El salario no puede ser menor al mínimo de la LFT ($7,468.00).',
+        ];
+
+        $request->validate($rules, $messages);
+
+        DB::transaction(function () use ($request, $operadore) {
             $userData = [
                 'nombre'     => $request->nombre,
                 'ap_paterno' => $request->ap_paterno,
                 'ap_materno' => $request->ap_materno,
+                'telefono'   => $request->telefono,
                 'email'      => $request->email,
             ];
+
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
             }
 
-            $operador->usuario->update($userData);
-            $operador->update(['salario_hora' => $request->salario_hora]);
+            $operadore->usuario->update($userData);
+
+            $operadore->update([
+                'numero_licencia' => $request->numero_licencia,
+                'fecha_licencia'  => $request->fecha_licencia,
+                'salario_hora'    => $request->salario / 160,
+            ]);
         });
 
         return redirect()->route('operadores.index')->with('success', 'Operador actualizado correctamente.');
     }
 
-    public function destroy(Operador $operador)
+    public function destroy(Operador $operadore)
     {
-        DB::transaction(function () use ($operador) {
-            $operador->delete();
-            $operador->usuario->delete();
+        DB::transaction(function () use ($operadore) {
+            $operadore->usuario->delete(); // Eliminar usuario borra en cascada o manualmente
+            $operadore->delete();
         });
         return redirect()->route('operadores.index')->with('success', 'Operador eliminado.');
     }

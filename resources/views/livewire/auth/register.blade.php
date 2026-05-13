@@ -124,38 +124,42 @@ new #[Layout('components.layouts.auth')] class extends Component {
             @enderror
         </div>
 
-        <div class="mb-6 form-password-toggle">
+        <div class="mb-6 form-password-toggle" x-data="{ show: false }">
             <label class="form-label" for="password">{{ __('Password') }}</label>
             <div class="input-group input-group-merge">
                 <input
                     wire:model="password"
-                    type="password"
+                    x-bind:type="show ? 'text' : 'password'"
                     class="form-control @error('password') is-invalid @enderror"
                     id="password"
                     required
                     autocomplete="new-password"
                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                 >
-                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                <span class="input-group-text cursor-pointer" @click="show = !show">
+                    <i class="bx" :class="show ? 'bx-show' : 'bx-hide'"></i>
+                </span>
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
         </div>
 
-        <div class="mb-6 form-password-toggle">
+        <div class="mb-6 form-password-toggle" x-data="{ show: false }">
             <label class="form-label" for="password_confirmation">{{ __('Confirm Password') }}</label>
             <div class="input-group input-group-merge">
                 <input
                     wire:model="password_confirmation"
-                    type="password"
+                    x-bind:type="show ? 'text' : 'password'"
                     class="form-control @error('password_confirmation') is-invalid @enderror"
                     id="password_confirmation"
                     required
                     autocomplete="new-password"
                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                 >
-                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                <span class="input-group-text cursor-pointer" @click="show = !show">
+                    <i class="bx" :class="show ? 'bx-show' : 'bx-hide'"></i>
+                </span>
                 @error('password_confirmation')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

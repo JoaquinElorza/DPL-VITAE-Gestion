@@ -1,4 +1,3 @@
-<!-- Menu -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="overflow-y: auto; height: 100vh;">
   <div class="app-brand demo">
     <a href="{{ url('/') }}" class="app-brand-link d-flex align-items-center text-decoration-none">
@@ -12,7 +11,6 @@
 
   <ul class="menu-inner py-1">
 
-    {{-- Botón hamburguesa como primer ítem del menú --}}
     <li class="menu-item">
       <a href="javascript:void(0)" id="sidebar-close-btn" class="menu-link sidebar-hamburger-btn" aria-label="Abrir/cerrar menú">
         <span class="menu-icon tf-icons">
@@ -27,22 +25,41 @@
     </li>
 
     @if($esEmpleado)
-    {{-- menú empleados --}}
 
     <li class="menu-item {{ request()->is('mi-panel') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('empleado.mi-panel') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('empleado.mi-panel') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mi Panel">
         <i class="menu-icon tf-icons bx bx-calendar-check"></i>
         <div class="text-truncate">Mi Panel</div>
       </a>
     </li>
 
+    <li class="menu-item {{ request()->routeIs('mis-servicios.index') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('mis-servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mis Servicios">
+        <i class="menu-icon tf-icons bx bx-list-check"></i>
+        <div class="text-truncate">Mis Servicios</div>
+      </a>
+    </li>
+
     @else
-    {{-- menú administradores --}}
 
     <li class="menu-item {{ request()->is('dashboard') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div class="text-truncate">{{ __('Dashboard') }}</div>
+      </a>
+    </li>
+
+    <li class="menu-item {{ request()->routeIs('mis-servicios.index') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('mis-servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mis Servicios">
+        <i class="menu-icon tf-icons bx bx-list-check"></i>
+        <div class="text-truncate">Mis Servicios</div>
+      </a>
+    </li>
+
+    <li class="menu-item {{ request()->routeIs('analitica.dashboard') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('analitica.dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Analítica (Gerente)">
+        <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
+        <div class="text-truncate">Analítica (Gerente)</div>
       </a>
     </li>
 
@@ -51,21 +68,21 @@
     </li>
 
     <li class="menu-item {{ request()->is('servicios*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('servicios.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Historial de Servicios">
         <i class="menu-icon tf-icons bx bx-ambulance"></i>
         <div class="text-truncate">Historial de Servicios</div>
       </a>
     </li>
 
     <li class="menu-item {{ request()->is('eventos*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('eventos.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('eventos.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Eventos">
         <i class="menu-icon tf-icons bx bx-calendar-event"></i>
         <div class="text-truncate">Eventos</div>
       </a>
     </li>
 
-    <li class="menu-item {{ request()->is('pacientes*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
+    <li class="menu-item {{ request()->is('pacientes*') || request()->is('padecimientos*') ? 'active open' : '' }}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Pacientes">
         <i class="menu-icon tf-icons bx bx-user-circle"></i>
         <div class="text-truncate">Pacientes</div>
       </a>
@@ -84,21 +101,21 @@
     </li>
 
     <li class="menu-item {{ request()->is('operadores*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('operadores.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('operadores.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Operadores">
         <i class="menu-icon tf-icons bx bx-id-card"></i>
         <div class="text-truncate">Operadores</div>
       </a>
     </li>
 
     <li class="menu-item {{ request()->is('paramedicos*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('paramedicos.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('paramedicos.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Paramédicos">
         <i class="menu-icon tf-icons bx bx-plus-medical"></i>
         <div class="text-truncate">Paramédicos</div>
       </a>
     </li>
 
     <li class="menu-item {{ request()->is('clientes*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('clientes.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('clientes.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Clientes">
         <i class="menu-icon tf-icons bx bx-group"></i>
         <div class="text-truncate">Clientes</div>
       </a>
@@ -108,8 +125,8 @@
       <span class="menu-header-text">Flota</span>
     </li>
 
-    <li class="menu-item {{ request()->is('ambulancias*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
+    <li class="menu-item {{ request()->is('ambulancias*') || request()->is('tipos-ambulancia*') ? 'active open' : '' }}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Ambulancias">
         <i class="menu-icon tf-icons bx bx-car"></i>
         <div class="text-truncate">Ambulancias</div>
       </a>
@@ -128,21 +145,21 @@
     </li>
 
     <li class="menu-item {{ request()->is('insumos*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('insumos.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('insumos.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Insumos">
         <i class="menu-icon tf-icons bx bx-package"></i>
         <div class="text-truncate">Insumos</div>
       </a>
     </li>
 
     <li class="menu-item {{ request()->is('empresas*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('empresas.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('empresas.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Empresas">
         <i class="menu-icon tf-icons bx bx-buildings"></i>
         <div class="text-truncate">Empresas</div>
       </a>
     </li>
 
     <li class="menu-item {{ request()->is('cotizaciones*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('cotizaciones.index') }}" wire:navigate>
+      <a class="menu-link" href="{{ route('cotizaciones.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Cotizaciones">
         <i class="menu-icon tf-icons bx bx-calculator"></i>
         <div class="text-truncate">Cotizaciones</div>
       </a>
@@ -153,7 +170,7 @@
     </li>
 
     <li class="menu-item {{ request()->is('settings/*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __('Settings') }}">
         <i class="menu-icon tf-icons bx bx-cog"></i>
         <div class="text-truncate">{{ __('Settings') }}</div>
       </a>
@@ -171,13 +188,18 @@
 
   </ul>
 </aside>
-<!-- / Menu -->
-
 <script>
   document.querySelectorAll('.menu-toggle').forEach(function(menuToggle) {
     menuToggle.addEventListener('click', function() {
       const menuItem = menuToggle.closest('.menu-item');
       menuItem.classList.toggle('open');
+      
+      const html = document.documentElement;
+      if (html.classList.contains('layout-menu-collapsed')) {
+        html.classList.remove('layout-menu-collapsed');
+        const btn = document.getElementById('sidebar-close-btn');
+        if (btn) btn.classList.add('is-open');
+      }
     });
   });
 </script>
