@@ -1,3 +1,4 @@
+<?php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +12,11 @@ return new class extends Migration
             $table->id();
 
             // relación principal
-            $table->foreignId('id_servicio')
-                ->constrained('servicios')
+            $table->unsignedBigInteger('id_servicio');
+
+            $table->foreign('id_servicio')
+                ->references('id_servicio')
+                ->on('servicio')
                 ->onDelete('cascade');
 
             // =========================

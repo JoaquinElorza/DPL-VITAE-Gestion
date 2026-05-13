@@ -1,3 +1,4 @@
+<?php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,7 @@ class Traslado extends Model
     {
         return $this->belongsTo(
             Servicio::class,
+            'id_servicio',
             'id_servicio'
         );
     }

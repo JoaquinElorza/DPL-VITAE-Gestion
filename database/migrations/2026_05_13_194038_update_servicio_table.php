@@ -13,17 +13,8 @@ return new class extends Migration
     {
         Schema::table('servicio', function (Blueprint $table) {
 
-            // operador
-            $table->foreignId('id_operador')
-                ->nullable()
-                ->after('id_cliente')
-                ->constrained('operador', 'id_usuario');
-
             // timestamps
             $table->timestamps();
-
-            // soft deletes
-            $table->softDeletes();
         });
     }
 
