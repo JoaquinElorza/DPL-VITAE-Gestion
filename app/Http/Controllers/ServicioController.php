@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use App\Models\Operador;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Services\CalculadoraTrasladosService;
 
 class ServicioController extends Controller
 {
@@ -25,7 +26,7 @@ class ServicioController extends Controller
         return view('servicios.create', compact('ambulancias', 'clientes', 'operadores'));
     }
 
-    public function store(Request $request)
+/*    public function store(Request $request)
     {
         $data = $request->validate([
             'costo_total'   => 'required|numeric',
@@ -44,6 +45,107 @@ class ServicioController extends Controller
         Servicio::create($data);
         return redirect()->route('servicios.index')->with('success', 'Servicio creado.');
     }
+
+    */
+
+    public function store(Request $request)
+{
+    DB::beginTransaction();
+
+    try {
+
+        // =====================
+        // SERVICIO
+        // =====================
+
+        $servicio = Servicio::create([
+
+            'costo_total' => 0,
+
+            'estado' => 'pendiente',
+
+            'fecha_hora' => $request->fecha_hora,
+
+            'hora_salida' => null,
+
+            'observaciones' => $request->observaciones,
+
+            'tipo' => 'traslado',
+
+            'id_ambulancia' => $request->id_ambulancia,
+
+            'id_cliente' => $request->id_cliente,
+
+            'id_operador' => $request->id_operador,
+        ]);
+
+        // =====================
+        // VARIABLES NUMÉRICAS
+        // =====================
+
+        $tipoAmbulancia = 
+            $request->tipo_ambulancia == 'premium'
+            ? 1
+            : 0;
+
+        $numParamedicos = count(
+            $request->paramedicos_ids ?? []
+        );
+
+        // =====================
+        // TRASLADO
+        // =====================
+
+        $traslado = Traslado::create([
+
+            'id_servicio' => $servicio->id_servicio,
+
+            'km_distancia' => $request->km_distancia,
+
+            'horas_servicio' => $request->horas_servicio,
+
+            'oxigeno_lpm' => $request->oxigeno_lpm ?? 0,
+
+            'costo_padecimiento_num' =>
+                $request->costo_padecimiento_num ?? 0,
+
+            'tipo_ambulancia_num' =>
+                $tipoAmbulancia,
+
+            'num_paramedicos' =>
+                $numParamedicos,
+
+            'precio_final' => 0,
+        ]);
+
+        $calculadora = new CalculadoraTrasladosService();
+
+        $precio = $calculadora->calcular($traslado);
+
+        $traslado->precio_final = $precio;
+        $traslado->save();
+
+        $servicio->costo_total = $precio;
+        $servicio->save();
+
+        DB::commit();
+
+        return response()->json([
+            'ok' => true,
+            'servicio' => $servicio,
+            'traslado' => $traslado,
+        ]);
+
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return response()->json([
+            'ok' => false,
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 
     public function show(Servicio $servicio)
     {
