@@ -81,4 +81,12 @@ class Servicio extends Model
             'id_insumo'
         );
     }
+
+        public function traslado()
+    {
+        return $this->hasOne(
+            Traslado::class,
+            'id_servicio'
+        );
+    }
 }
