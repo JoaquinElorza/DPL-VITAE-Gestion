@@ -11,9 +11,11 @@ class Servicio extends Model
 
     protected $table = 'servicio';
     protected $primaryKey = 'id_servicio';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
         'fecha_hora' => 'datetime',
         'hora_salida' => 'datetime',
@@ -26,12 +28,6 @@ class Servicio extends Model
         'hora_salida',
         'observaciones',
         'tipo',
-        'km_distancia', //agregados para mineria
-        'horas_servicio',
-        'oxigeno_lpm',
-        'costo_padecimiento_num',
-        'tipo_ambulancia_num',
-        'num_paramedicos',
         'id_ambulancia',
         'id_cliente',
         'id_operador',
@@ -52,15 +48,6 @@ class Servicio extends Model
         return $this->belongsTo(Cliente::class, 'id_cliente', 'id_usuario');
     }
 
-    public function paciente()
-    {
-        return $this->hasOne(Paciente::class, 'id_servicio', 'id_servicio');
-    }
-
-    public function pacientes()
-    {
-        return $this->hasMany(Paciente::class, 'id_servicio', 'id_servicio');
-    }
 
     public function paramedicos()
     {

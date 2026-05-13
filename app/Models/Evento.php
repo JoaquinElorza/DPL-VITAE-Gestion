@@ -20,4 +20,9 @@ class Evento extends Model
     {
         return $this->belongsTo(Servicio::class,'id_servicio');
     }
+
+        public function pacientes()
+    {
+        return $this->hasMany(Paciente::class, 'id_servicio', 'id_servicio');
+    }
 }

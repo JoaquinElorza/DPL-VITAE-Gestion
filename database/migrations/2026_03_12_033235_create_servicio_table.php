@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('estado',50);
             $table->dateTime('fecha_hora');
             $table->dateTime('hora_salida')->nullable();
-            $table->string('observaciones')->nullable();
+            $table->text('observaciones')->nullable();
             $table->string('tipo',100)->nullable();
             $table->foreignId('id_ambulancia')
                 ->constrained('ambulancia','id_ambulancia');

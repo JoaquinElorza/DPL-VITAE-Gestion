@@ -58,6 +58,11 @@ class Traslado extends Model
         );
     }
 
+        public function paciente()
+    {
+        return $this->hasOne(Paciente::class, 'id_servicio', 'id_servicio');
+    }
+
     // =========================
     // HELPERS
     // =========================
