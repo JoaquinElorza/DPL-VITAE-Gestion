@@ -44,6 +44,25 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 "# DPL-Vitae" 
 
+## Primera vez
+npm install -g pnpm
+pnpm -v
+Remove-Item node_modules -Recurse -Force
+Remove-Item package-lock.json
+pnpm approve-builds
+pnpm install
+
+
+## Uso nuevo
+pnpm install
+php artisan key:generate
+php artisan migrate  (php artisan migrate:fresh --seed)
+php artisan db:seed
+php artisan db:seed --class=AdminSeeder
+pnpm dev
+php artisan serve
+
+
 ## Uso
 composer update
 npm install
