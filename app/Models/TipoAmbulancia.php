@@ -19,8 +19,17 @@ class TipoAmbulancia extends Model
         'costo_base',
     ];
 
+    // RELACIÓN CORRECTA (1 tipo -> muchas ambulancias)
     public function ambulancias()
     {
-        return $this->hasMany(Ambulancia::class,'id_tipo_ambulancia');
+        return $this->hasMany(Ambulancia::class, 'id_tipo_ambulancia', 'id_tipo_ambulancia');
+    }
+
+    // Scope útil (evita whereHas en controllers)
+    public function scopeConDisponibles($query)
+    {
+        return $query->whereHas('ambulancias', function ($q) {
+            $q->where('estado', 'Disponible');
+        });
     }
 }
