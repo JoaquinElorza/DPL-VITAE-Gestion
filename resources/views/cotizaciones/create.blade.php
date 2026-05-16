@@ -206,39 +206,18 @@
 let tipoActual = null;
 let costoKm = {{ $costoKm }};
 
-const radios = document.querySelectorAll('input[name="tipo_ambulancia"]');
-const cards = document.querySelectorAll('.tipo-card');
+function selectTipo(nombre, costo, el){
+    document.querySelectorAll('.tipo-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
 
-radios.forEach(radio => {
+    tipoActual = {nombre, costo};
 
-    radio.addEventListener('change', function () {
-
-        cards.forEach(card => {
-            card.classList.remove('selected');
-        });
-
-        const card = this.closest('.tipo-card');
-        card.classList.add('selected');
-
-        let nombre = this.dataset.nombre;
-        let costo = parseFloat(this.dataset.costo);
-
-        tipoActual = { nombre, costo };
-
-        document.getElementById('wrap-estimado')
-            .classList.remove('d-none');
-
-        document.getElementById('est-tipo')
-            .innerText = nombre;
-
-        document.getElementById('est-total')
-            .innerText = '$' + costo.toFixed(2);
-    });
-
-});
+    document.getElementById('wrap-estimado').classList.remove('d-none');
+    document.getElementById('est-tipo').innerText = nombre;
+    document.getElementById('est-total').innerText = '$' + costo.toFixed(2);
+}
 
 document.getElementById('tipo_servicio').addEventListener('change', e => {
-
     let tipo = e.target.value;
 
     document.getElementById('wrap-padecimientos')
@@ -254,17 +233,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'OSM'
 }).addTo(map);
 
-let marker = L.marker([17.06, -96.72], {
-    draggable: true
-}).addTo(map);
+let marker = L.marker([17.06, -96.72], {draggable:true}).addTo(map);
 
 marker.on('dragend', function(e){
-
     let p = e.target.getLatLng();
-
-    document.getElementById('origen').value =
-        p.lat + ', ' + p.lng;
+    document.getElementById('origen').value = p.lat + ', ' + p.lng;
 });
+
 </script>
 
 <script>
