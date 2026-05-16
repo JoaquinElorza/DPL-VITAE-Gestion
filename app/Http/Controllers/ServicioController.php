@@ -14,7 +14,15 @@ class ServicioController extends Controller
 {
    public function index()
     {
-        $servicios = Servicio::with(['ambulancia', 'cliente.usuario', 'operador.usuario'])->paginate(8);
+        $query = Servicio::with(['ambulancia', 'cliente.usuario', 'operador.usuario']);
+        if ($search = request('search')) {
+            $query->where('estado', 'LIKE', "%{$search}%")
+                  ->orWhere('tipo', 'LIKE', "%{$search}%")
+                  ->orWhereHas('cliente.usuario', function($q) use ($search) {
+                      $q->where('nombre', 'LIKE', "%{$search}%");
+                  });
+        }
+        $servicios = $query->orderBy('created_at', 'desc')->paginate(8)->appends(['search' => request('search')]);
         return view('servicios.index', compact('servicios'));
     } 
 

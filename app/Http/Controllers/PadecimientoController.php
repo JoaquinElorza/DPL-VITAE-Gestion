@@ -9,7 +9,11 @@ class PadecimientoController extends Controller
 {
     public function index()
     {
-        $padecimientos = Padecimiento::paginate(8);
+        $query = Padecimiento::query();
+        if ($search = request('search')) {
+            $query->where('nombre_padecimiento', 'LIKE', "%{$search}%");
+        }
+        $padecimientos = $query->paginate(8)->appends(['search' => request('search')]);
         return view('padecimientos.index', compact('padecimientos'));
     }
 

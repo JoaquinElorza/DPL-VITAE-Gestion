@@ -6,10 +6,19 @@
         </div>
     @endif
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h5 class="mb-0"><i class="bx bx-history me-2"></i>Historial de Servicios</h5>
                 <small class="text-muted">Registro completo de todos los servicios</small>
+            </div>
+            <div class="d-flex gap-2 align-items-center">
+                <form action="{{ route('servicios.index') }}" method="GET" class="d-flex">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary ms-1" title="Buscar"><i class="bx bx-search"></i></button>
+                    @if(request('search'))
+                        <a href="{{ route('servicios.index') }}" class="btn btn-sm btn-outline-danger ms-1" title="Limpiar"><i class="bx bx-x"></i></a>
+                    @endif
+                </form>
             </div>
         </div>
         <div class="table-responsive">
