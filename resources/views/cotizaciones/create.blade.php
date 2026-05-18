@@ -135,20 +135,18 @@
     <h5 class="mb-0">Servicio</h5>
 </div>
 
-<div style="display:flex; gap:15px;">
+<div style="display:flex; gap:15px; margin-bottom: 15px;">
 
-    <label class="tipo-card" id="card1">
-        <input type="radio" name="tipo" value="basica">
-        
+    <label class="tipo-card w-50" id="card1">
+        <input type="radio" name="tipo_servicio" value="Traslado" required>
         <h4>Traslado Programado</h4>
-        <p>Llevamos al paciente de punto A a punto B.</p>
+        <p class="tipo-text">Llevamos al paciente de punto A a punto B.</p>
     </label>
 
-    <label class="tipo-card" id="card2">
-        <input type="radio" name="tipo" value="avanzada">
-
+    <label class="tipo-card w-50" id="card2">
+        <input type="radio" name="tipo_servicio" value="Evento" required>
         <h4>Evento Privado</h4>
-        <p>Ambulancia y personal capacitado a la disposicion de su evento.</p>
+        <p class="tipo-text">Ambulancia y personal capacitado a la disposicion de su evento.</p>
     </label>
 
 </div>
@@ -162,22 +160,19 @@
 
 <hr>
 
-
-<hr>
-
 {{-- MAPA --}}
 <div class="d-flex gap-2 align-items-center mb-3">
-    <div class="step-badge">4</div>
+    <div class="step-badge">3</div>
     <h5 class="mb-0">Ubicación</h5>
 </div>
 
 <div id="map-origen" class="map-box mb-2"></div>
 
-<input class="form-control mb-3" name="origen" id="origen">
+<input class="form-control mb-3" name="origen" id="origen" placeholder="Dirección de origen">
 
 <div id="wrap-destino" class="d-none">
     <div id="map-destino" class="map-box mb-2"></div>
-    <input class="form-control" name="destino" id="destino">
+    <input class="form-control" name="destino" id="destino" placeholder="Dirección de destino">
 </div>
 
 <hr>
@@ -188,7 +183,7 @@
     <div>Total: <b id="est-total"></b></div>
 </div>
 
-<button class="btn btn-primary w-100 mt-3">
+<button class="btn btn-primary w-100 mt-3" type="submit">
     Enviar solicitud
 </button>
 
@@ -217,45 +212,38 @@ function selectTipo(nombre, costo, el){
     document.getElementById('est-total').innerText = '$' + costo.toFixed(2);
 }
 
-document.getElementById('tipo_servicio').addEventListener('change', e => {
-    let tipo = e.target.value;
-
-    document.getElementById('wrap-padecimientos')
-        .classList.toggle('d-none', tipo !== 'Traslado');
-
-    document.getElementById('wrap-destino')
-        .classList.toggle('d-none', tipo !== 'Traslado');
-});
-
+// Inicialización del Mapa
 let map = L.map('map-origen').setView([17.06, -96.72], 13);
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'OSM'
 }).addTo(map);
 
 let marker = L.marker([17.06, -96.72], {draggable:true}).addTo(map);
-
 marker.on('dragend', function(e){
     let p = e.target.getLatLng();
     document.getElementById('origen').value = p.lat + ', ' + p.lng;
 });
 
-</script>
+// CORRECCIÓN: Lógica correcta para manejar los botones de radio
+const cards = document.querySelectorAll('.tipo-card');
+const radios = document.querySelectorAll('input[name="tipo_servicio"]');
 
-<script>
-    const cards = document.querySelectorAll('.tipo-card');
-    const radios = document.querySelectorAll('input[type="radio"]');
-
-    radios.forEach(radio => {
-        radio.addEventListener('change', () => {
-
-            cards.forEach(card => {
-                card.classList.remove('selected');
-            });
-
-            radio.closest('.tipo-card').classList.add('selected');
+radios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        // Quitar la clase selected a todos
+        cards.forEach(card => {
+            card.classList.remove('selected');
         });
+
+        // Añadir la clase selected al contenedor del radio actual
+        radio.closest('.tipo-card').classList.add('selected');
+
+        // Mostrar u ocultar padecimientos y destino según la opción
+        let tipo = e.target.value;
+        document.getElementById('wrap-padecimientos').classList.toggle('d-none', tipo !== 'Traslado');
+        document.getElementById('wrap-destino').classList.toggle('d-none', tipo !== 'Traslado');
     });
+});
 </script>
 
 </body>

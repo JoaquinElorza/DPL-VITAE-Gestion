@@ -6,9 +6,11 @@ use App\Models\Servicio;
 use App\Models\Cotizacion;
 use App\Models\Ambulancia;
 use App\Models\Paramedico;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class EmpleadoController extends Controller
@@ -36,17 +38,19 @@ class EmpleadoController extends Controller
                 ->get();
 
             $reservas = Cotizacion::where('decision_cliente', 'confirmada')
+                ->where('estado', 'Aceptada')
                 ->whereNotNull('fecha_requerida')
                 ->get();
 
         } elseif ($user->paramedico) {
             $servicios = $user->paramedico->servicios()
-                ->with(['ambulancia.tipo', 'cliente.usuario', 'pacientes.direccion'])
+                ->with(['ambulancia.tipo', 'cliente.usuario', 'paciente.direccion'])
                 ->orderBy('fecha_hora')
                 ->get();
 
             $idStr = (string) $user->paramedico->id_usuario;
             $reservas = Cotizacion::where('decision_cliente', 'confirmada')
+                ->where('estado', 'Aceptada')
                 ->whereNotNull('fecha_requerida')
                 ->where(function ($q) use ($idStr) {
                     $q->whereJsonContains('paramedicos_ids', $idStr)
@@ -184,24 +188,61 @@ class EmpleadoController extends Controller
             'paramedicos.*' => 'exists:paramedico,id_usuario'
         ]);
 
-        $servicio = Servicio::create([
-            'costo_total'   => $cotizacion->costo,
-            'estado'        => 'Activo',
-            'fecha_hora'    => $cotizacion->fecha_requerida,
-            'tipo'          => $cotizacion->tipo_servicio,
-            'id_ambulancia' => $request->id_ambulancia,
-            'id_cliente'    => $cotizacion->user_id,
-            'id_operador'   => Auth::id(),
-            'observaciones' => $cotizacion->descripcion
-        ]);
+        DB::beginTransaction();
 
-        $servicio->paramedicos()->attach($request->paramedicos);
+        try {
+            $servicio = Servicio::create([
+                'costo_total'   => $cotizacion->costo,
+                'estado'        => 'Activo',
+                'fecha_hora'    => $cotizacion->fecha_requerida,
+                'tipo'          => $cotizacion->tipo_servicio,
+                'id_ambulancia' => $request->id_ambulancia,
+                'id_cliente'    => $cotizacion->user_id,
+                'id_operador'   => Auth::id(),
+                'observaciones' => $cotizacion->descripcion
+            ]);
 
-        Ambulancia::where('id_ambulancia', $request->id_ambulancia)
-            ->update(['estado' => 'En Servicio']);
+            $servicio->paramedicos()->attach($request->paramedicos);
 
-        $cotizacion->update(['estado' => 'Finalizada']);
+            if ($cotizacion->tipo_servicio === 'Traslado') {
+                
+                $servicio->traslado()->create([
+                    'km_distancia'           => $cotizacion->km_distancia ?? 0,
+                    'horas_servicio'         => $cotizacion->horas_servicio ?? 1,
+                    'oxigeno_lpm'            => 0, 
+                    'costo_padecimiento_num' => 0,
+                    'tipo_ambulancia_num'    => ($cotizacion->tipo_ambulancia_preferida === 'Premium'),
+                    'num_paramedicos'        => count($request->paramedicos),
+                    'precio_modelo'          => $cotizacion->costo,
+                    'precio_final'           => $cotizacion->costo,
+                    'padecimientos'          => $cotizacion->padecimientos_paciente,
+                    'usable_para_modelo'     => true,
+                ]);
 
-        return back()->with('success', 'Unidad despachada y servicio iniciado exitosamente.');
+                $jsonPaciente = $cotizacion->datos_paciente;
+
+                Paciente::create([
+                    'nombre'           => $jsonPaciente['nombre'] ?? ($cotizacion->nombre_paciente ?? 'Paciente por confirmar'),
+                    'ap_paterno'       => $jsonPaciente['ap_paterno'] ?? 'S/P',
+                    'ap_materno'       => $jsonPaciente['ap_materno'] ?? null,
+                    'oxigeno'          => 0,
+                    'fecha_nacimiento' => $jsonPaciente['nacimiento'] ?? now()->subYears(30)->toDateString(),
+                    'sexo'             => $jsonPaciente['sexo'] ?? 'M',
+                    'peso'             => $jsonPaciente['peso'] ?? 70.00,
+                    'id_servicio'      => $servicio->id_servicio,
+                    'id_direccion'     => null,
+                ]);
+            }
+
+            Ambulancia::where('id_ambulancia', $request->id_ambulancia)->update(['estado' => 'En servicio']);
+            $cotizacion->update(['estado' => 'Despachada']);
+
+            DB::commit();
+            return back()->with('success', 'Unidad despachada y traslado operativo iniciado con éxito.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error operativo al despachar la unidad: ' . $e->getMessage());
+        }
     }
-}
+}  

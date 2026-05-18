@@ -191,17 +191,13 @@ class CotizacionController extends Controller
         // Validar disponibilidad del operador
         $fecha = $cotizacion->fecha_requerida ?? now()->toDateString();
 
-        $operadorActivo = Servicio::where('id_operador', $request->id_operador)
-            ->where('estado', 'Activo')
-            ->exists();
+        // Validar que el operador no tenga choques de horario
+        $operadorActivo = Servicio::where('id_operador', $request->id_operador)->where('estado', 'Activo')->exists();
         if ($operadorActivo) {
             return back()->withErrors(['id_operador' => 'El operador seleccionado ya tiene un servicio activo en curso.'])->withInput();
         }
 
-        $operadorOcupado = Servicio::where('id_operador', $request->id_operador)
-            ->whereDate('fecha_hora', $fecha)
-            ->whereNotIn('estado', ['Cancelado'])
-            ->exists();
+        $operadorOcupado = Servicio::where('id_operador', $request->id_operador)->whereDate('fecha_hora', $fecha)->whereNotIn('estado', ['Cancelado'])->exists();
         if ($operadorOcupado) {
             return back()->withErrors(['id_operador' => 'El operador ya está asignado a otro servicio en esa fecha.'])->withInput();
         }
@@ -216,8 +212,7 @@ class CotizacionController extends Controller
         if ($request->id_ambulancia) {
             $amb = Ambulancia::with('tipo')->find($request->id_ambulancia);
             if ($amb) {
-                $costoTipo = (float) ($amb->tipo->costo_base ?? 0);
-                $costoAmbulancia = round($costoTipo, 2);
+                $costoAmbulancia = round((float) ($amb->tipo->costo_base ?? 0), 2);
             }
         }
 
@@ -235,17 +230,13 @@ class CotizacionController extends Controller
         if ($request->insumos) {
             foreach ($request->insumos as $idInsumo => $datos) {
                 if (empty($datos['seleccionado'])) continue;
-                $insumo   = Insumo::find($idInsumo);
+                $insumo = Insumo::find($idInsumo);
                 if (!$insumo) continue;
                 $cantidad = max(1, (int) ($datos['cantidad'] ?? 1));
                 $subtotal = round($insumo->costo_unidad * $cantidad, 2);
                 $costoInsumos += $subtotal;
                 $insumosGuardados[] = [
-                    'id'        => $idInsumo,
-                    'nombre'    => $insumo->nombre_insumo,
-                    'cantidad'  => $cantidad,
-                    'costo_u'   => $insumo->costo_unidad,
-                    'subtotal'  => $subtotal,
+                    'id' => $idInsumo, 'nombre' => $insumo->nombre_insumo, 'cantidad' => $cantidad, 'costo_u' => $insumo->costo_unidad, 'subtotal' => $subtotal,
                 ];
             }
             $costoInsumos = round($costoInsumos, 2);
@@ -254,26 +245,26 @@ class CotizacionController extends Controller
         $costoTotal = $costoKm + $costoAmbulancia + $costoParamedicos + $costoInsumos;
 
         $cotizacion->update([
-            'estado'               => 'Aceptada',
-            'km_distancia'         => $km,
-            'costo_km_unitario'    => $tarifaKm,
-            'id_ambulancia'        => $request->id_ambulancia,
-            'id_operador'          => $request->id_operador,
-            'horas_servicio'       => $request->horas_servicio,
-            'paramedicos_ids'      => $request->paramedicos_ids ?? [],
-            'insumos_seleccionados'=> $insumosGuardados,
-            'costo_ambulancia'     => $costoAmbulancia,
-            'costo_paramedicos'    => $costoParamedicos,
-            'costo_insumos'        => $costoInsumos,
-            'costo'                => $costoTotal,
-            'anticipo'             => $request->anticipo ?: null,
-            'incluye'              => $request->incluye,
-            'respuesta'            => $request->respuesta,
-            'nombre_paciente'      => $request->nombre_paciente,
+            'estado'                => 'Aceptada',
+            'km_distancia'          => $km,
+            'costo_km_unitario'     => $tarifaKm,
+            'id_ambulancia'         => $request->id_ambulancia,
+            'id_operador'           => $request->id_operador,
+            'horas_servicio'        => $request->horas_servicio,
+            'paramedicos_ids'       => $request->paramedicos_ids ?? [],
+            'insumos_seleccionados' => $insumosGuardados,
+            'costo_ambulancia'      => $costoAmbulancia,
+            'costo_paramedicos'     => $costoParamedicos,
+            'costo_insumos'         => $costoInsumos,
+            'costo'                 => $costoTotal,
+            'anticipo'              => $request->anticipo ?: null,
+            'incluye'               => $request->incluye,
+            'respuesta'             => $request->respuesta,
+            'nombre_paciente'       => $request->nombre_paciente,
         ]);
 
         return redirect()->route('cotizaciones.show', $cotizacion)
-            ->with('success', 'Cotización aceptada. Costo calculado: $' . number_format($costoTotal, 2) . ' MXN');
+            ->with('success', 'Cotización aceptada. Costo total de operación calculado: $' . number_format($costoTotal, 2) . ' MXN');
     }
 
     public function rechazar(Request $request, Cotizacion $cotizacion)
