@@ -57,6 +57,11 @@ class Cotizacion extends Model
         'datos_paciente'       => 'array',
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'id_cotizacion';
+    }
+
     public function usuario()
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id', 'id_usuario');

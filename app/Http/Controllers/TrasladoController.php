@@ -7,24 +7,25 @@ use App\Models\Traslado;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\CalculadoraTrasladosService;
 
 class TrasladoController extends Controller
 {
-    // Si usas un servicio de calculadora, asegúrate de inyectarlo en el constructor
     protected $calculadora;
 
-    public function __construct()
+    public function __construct(CalculadoraTrasladosService $calculadora)
     {
-        // Si tu calculadora es una clase externa, instánciala aquí. 
+        $this->calculadora = $calculadora;
     }
 
     public function store(Request $request)
     {
 
         $request->validate([
-            'km_distancia'   => 'required|numeric|min:0',
+            'km_distancia'   => 'required|numeric|gt:0',
             'horas_servicio' => 'required|numeric|min:1', 
             'oxigeno_lpm'    => 'nullable|numeric|min:0', 
+            'fecha_hora'     => 'required|date',
             'id_ambulancia'  => 'required',
             'id_cliente'     => 'required',
             'id_operador'    => 'required',
@@ -72,7 +73,7 @@ class TrasladoController extends Controller
                 'usable_para_modelo'     => true
             ]);
 
-            $precioCalculado = 1500; // Valor de prueba (reemplaza por tu calculadora real)
+            $precioCalculado = $this->calculadora->calcular($traslado->toArray());
 
             $traslado->precio_modelo = $precioCalculado;
             $traslado->precio_final  = $request->precio_final ?? $precioCalculado;

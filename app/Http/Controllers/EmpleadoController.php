@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class EmpleadoController extends Controller
@@ -188,13 +189,19 @@ class EmpleadoController extends Controller
             'paramedicos.*' => 'exists:paramedico,id_usuario'
         ]);
 
+        Log::info('Iniciando despacho de reserva', [
+            'cotizacion_id' => $cotizacion->id_cotizacion,
+            'ambulancia_id' => $request->id_ambulancia,
+            'paramedicos' => $request->paramedicos,
+        ]);
+
         DB::beginTransaction();
 
         try {
             $servicio = Servicio::create([
                 'costo_total'   => $cotizacion->costo,
                 'estado'        => 'Activo',
-                'fecha_hora'    => $cotizacion->fecha_requerida,
+                'fecha_hora'    => $cotizacion->fecha_requerida ?? now(),
                 'tipo'          => $cotizacion->tipo_servicio,
                 'id_ambulancia' => $request->id_ambulancia,
                 'id_cliente'    => $cotizacion->user_id,
@@ -242,6 +249,11 @@ class EmpleadoController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error al despachar reserva', [
+                'cotizacion_id' => $cotizacion->id_cotizacion,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return back()->with('error', 'Error operativo al despachar la unidad: ' . $e->getMessage());
         }
     }
