@@ -84,4 +84,12 @@ class Traslado extends Model
             $this->costo_insumos +
             $this->costo_padecimiento_num;
     }
+public function scopeLimpio($query)
+    {
+        return $query->where('es_outlier', false)
+                     ->where('usable_para_modelo', true)
+                     ->whereNotNull('precio_final')
+                     ->whereNotNull('km_distancia')
+                     ->whereNotNull('horas_servicio');
+    }
 }
