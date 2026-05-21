@@ -23,6 +23,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnaliticaController;
 use App\Http\Controllers\MisServiciosController;
 use App\Http\Controllers\TrasladoController;
+use App\Http\Controllers\PrediccionController;
+
+Route::get('/predecir', [PrediccionController::class, 'predecir']);
 
 Route::get('/', function () {
     $empresa = \App\Models\Empresa::first();
