@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 
 class AmbulanciaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ambulancias = Ambulancia::with(['tipo'])->paginate(8);
-        return view('ambulancias.index', compact('ambulancias'));
+        $porPagina = $request->get('por_pagina', 10);
+
+        $ambulancias = Ambulancia::paginate($porPagina);
+       // $ambulancias = Ambulancia::with(['tipo'])->paginate(10);
+        return view('ambulancias.index', compact('ambulancias', 'porPagina'));
     }
 
     public function create()

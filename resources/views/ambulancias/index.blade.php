@@ -5,6 +5,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+
+
+    <form method="GET" action="{{ url()->current() }}">
+    
+        <label>Mostrar:</label>
+
+        <select name="por_pagina" onchange="this.form.submit()">
+            <option value="5"  {{ $porPagina == 5 ? 'selected' : '' }}>5</option>
+            <option value="10" {{ $porPagina == 10 ? 'selected' : '' }}>10</option>
+            <option value="25" {{ $porPagina == 25 ? 'selected' : '' }}>25</option>
+            <option value="50" {{ $porPagina == 50 ? 'selected' : '' }}>50</option>
+        </select>
+
+    </form>
+
+
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Ambulancias</h5>
@@ -56,6 +72,7 @@
                     @endforelse
                 </tbody>
             </table>
+            {{ $ambulancias->appends(request()->query())->links() }}
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
             <small class="text-muted">Total: {{ $ambulancias->total() }} registros</small>
