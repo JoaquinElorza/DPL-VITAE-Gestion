@@ -7,9 +7,18 @@
         </div>
     @endif
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0">Solicitudes de Cotización</h5>
-            <span class="badge bg-primary">{{ $cotizaciones->total() }} total</span>
+            <div class="d-flex gap-2 align-items-center">
+                <form action="{{ route('cotizaciones.index') }}" method="GET" class="d-flex">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary ms-1" title="Buscar"><i class="bx bx-search"></i></button>
+                    @if(request('search'))
+                        <a href="{{ route('cotizaciones.index') }}" class="btn btn-sm btn-outline-danger ms-1" title="Limpiar"><i class="bx bx-x"></i></a>
+                    @endif
+                </form>
+                <span class="badge bg-primary">{{ $cotizaciones->total() }} total</span>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover">

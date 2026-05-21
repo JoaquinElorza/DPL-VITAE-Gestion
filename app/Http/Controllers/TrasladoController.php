@@ -3,17 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Servicio;
-use App\Models\Ambulancia;
-use App\Models\Cliente;
-use App\Models\Operador;
 use App\Models\Traslado;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use App\Services\CalculadoraTrasladosService;
 
-class ServicioController extends Controller
+class TrasladoController extends Controller
 {
     protected $calculadora;
 
@@ -22,31 +18,21 @@ class ServicioController extends Controller
         $this->calculadora = $calculadora;
     }
 
-    public function index()
-    {
-        $query = Servicio::with(['ambulancia', 'cliente.usuario', 'operador.usuario']);
-        if ($search = request('search')) {
-            $query->where('estado', 'LIKE', "%{$search}%")
-                  ->orWhere('tipo', 'LIKE', "%{$search}%")
-                  ->orWhereHas('cliente.usuario', function($q) use ($search) {
-                      $q->where('nombre', 'LIKE', "%{$search}%");
-                  });
-        }
-        $servicios = $query->orderBy('created_at', 'desc')->paginate(8)->appends(['search' => request('search')]);
-        return view('servicios.index', compact('servicios'));
-    } 
-
-    public function create()
-    {
-        $ambulancias = Ambulancia::all();
-        $clientes = Cliente::with('usuario')->get();
-        $operadores = Operador::with('usuario')->get();
-        return view('servicios.create', compact('ambulancias', 'clientes', 'operadores'));
-    }
-
     public function store(Request $request)
     {
-        $this->validarDisponibilidadOperador($request->id_operador, $request->fecha_hora);
+
+        $request->validate([
+            'km_distancia'   => 'required|numeric|gt:0',
+            'horas_servicio' => 'required|numeric|min:1', 
+            'oxigeno_lpm'    => 'nullable|numeric|min:0', 
+            'fecha_hora'     => 'required|date',
+            'id_ambulancia'  => 'required',
+            'id_cliente'     => 'required',
+            'id_operador'    => 'required',
+        ]);
+
+        // Asegúrate de traer esta función a este controlador si la necesitas
+        // $this->validarDisponibilidadOperador($request->id_operador, $request->fecha_hora);
 
         DB::beginTransaction();
 
@@ -87,7 +73,7 @@ class ServicioController extends Controller
                 'usable_para_modelo'     => true
             ]);
 
-            $precioCalculado = $this->calculadora->calcular($traslado);
+            $precioCalculado = $this->calculadora->calcular($traslado->toArray());
 
             $traslado->precio_modelo = $precioCalculado;
             $traslado->precio_final  = $request->precio_final ?? $precioCalculado;
@@ -127,71 +113,6 @@ class ServicioController extends Controller
                 'ok'    => false,
                 'error' => 'Error crítico al procesar el traslado en cascada: ' . $e->getMessage()
             ], 500);
-        }
-    }
-
-    public function show(Servicio $servicio)
-    {
-        $servicio->load(['ambulancia', 'cliente.usuario', 'operador.usuario', 'pacientes', 'paramedicos.usuario', 'insumos']);
-        return view('servicios.show', compact('servicio'));
-    }
-
-    public function edit(Servicio $servicio)
-    {
-        $ambulancias = Ambulancia::all();
-        $clientes = Cliente::with('usuario')->get();
-        $operadores = Operador::with('usuario')->get();
-        return view('servicios.edit', compact('servicio', 'ambulancias', 'clientes', 'operadores'));
-    }
-
-    public function update(Request $request, Servicio $servicio)
-    {
-        $data = $request->validate([
-            'costo_total'   => 'required|numeric',
-            'estado'        => 'required|string',
-            'fecha_hora'    => 'required|date',
-            'hora_salida'   => 'nullable|date',
-            'observaciones' => 'nullable|string',
-            'tipo'          => 'nullable|string',
-            'id_ambulancia' => 'required|exists:ambulancia,id_ambulancia',
-            'id_cliente'    => 'required|exists:cliente,id_usuario',
-            'id_operador'   => 'required|exists:operador,id_usuario',
-        ]);
-
-        $this->validarDisponibilidadOperador($request->id_operador, $request->fecha_hora, $servicio->id_servicio);
-
-        $servicio->update($data);
-        return redirect()->route('servicios.index')->with('success', 'Servicio actualizado.');
-    }
-
-    public function destroy(Servicio $servicio)
-    {
-        $servicio->delete();
-        return redirect()->route('servicios.index')->with('success', 'Servicio eliminado.');
-    }
-
-    private function validarDisponibilidadOperador(int $idOperador, string $fechaHora, ?int $excluirServicioId = null): void
-    {
-        $activo = Servicio::where('id_operador', $idOperador)
-            ->where('estado', 'Activo')
-            ->when($excluirServicioId, fn($q) => $q->where('id_servicio', '!=', $excluirServicioId))
-            ->exists();
-
-        if ($activo) {
-            throw ValidationException::withMessages([
-                'id_operador' => 'El operador seleccionado ya tiene un servicio activo en curso y no puede ser asignado.',
-            ]);
-        }
-
-        $conflicto = Servicio::where('id_operador', $idOperador)
-            ->where('fecha_hora', $fechaHora)
-            ->when($excluirServicioId, fn($q) => $q->where('id_servicio', '!=', $excluirServicioId))
-            ->exists();
-
-        if ($conflicto) {
-            throw ValidationException::withMessages([
-                'id_operador' => 'El operador seleccionado ya está asignado a otro servicio en esa fecha y hora.',
-            ]);
         }
     }
 }

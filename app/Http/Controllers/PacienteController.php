@@ -11,7 +11,13 @@ class PacienteController extends Controller
 {
     public function index()
     {
-        $pacientes = Paciente::with(['servicio', 'direccion'])->paginate(8);
+        $query = Paciente::with(['servicio', 'direccion']);
+        if ($search = request('search')) {
+            $query->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('ap_paterno', 'LIKE', "%{$search}%")
+                  ->orWhere('ap_materno', 'LIKE', "%{$search}%");
+        }
+        $pacientes = $query->paginate(8)->appends(['search' => request('search')]);
         return view('pacientes.index', compact('pacientes'));
     }
 

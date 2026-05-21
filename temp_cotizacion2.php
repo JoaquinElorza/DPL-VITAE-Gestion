@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -15,17 +15,13 @@ class CotizacionController extends Controller
 {
     public function create()
     {
+        $user = auth()->user();
         $empresa = Empresa::first();
-
-        // FIX REAL: relación correcta + scope limpio
-        $tiposAmbulancia = \App\Models\TipoAmbulancia::conDisponibles()
-            ->orderBy('costo_base', 'desc')
-            ->get();
-
-        return view('cotizaciones.create', compact(
-            'empresa',
-            'tiposAmbulancia'
-        ));
+        $tiposAmbulancia = \App\Models\TipoAmbulancia::orderByDesc('costo_base')->get();
+        $tiposDisponibles = \App\Models\TipoAmbulancia::whereHas('ambulancias', function ($q) {
+                $q->where('estado', 'Disponible');
+            })->orderByDesc('costo_base')->get();
+        return view('cotizaciones.create', compact('empresa', 'tiposAmbulancia', 'tiposDisponibles', 'user'));
     }
 
     public function store(Request $request)
@@ -91,20 +87,14 @@ class CotizacionController extends Controller
 
     public function index()
     {
-        $query = Cotizacion::latest();
-        if ($search = request('search')) {
-            $query->where('nombre', 'LIKE', "%{$search}%")
-                  ->orWhere('numero_guia', 'LIKE', "%{$search}%")
-                  ->orWhere('estado', 'LIKE', "%{$search}%");
-        }
-        $cotizaciones = $query->paginate(8)->appends(['search' => request('search')]);
+        $cotizaciones = Cotizacion::latest()->paginate(8);
         return view('cotizaciones.index', compact('cotizaciones'));
     }
 
     public function show(Cotizacion $cotizacion)
     {
         if ($cotizacion->estado === 'Pendiente') {
-            $cotizacion->update(['estado' => 'En revisión']);
+            $cotizacion->update(['estado' => 'En revisi├│n']);
         }
 
         $empresa     = Empresa::first();
@@ -120,7 +110,7 @@ class CotizacionController extends Controller
 
         $fecha = $cotizacion->fecha_requerida ?? now()->toDateString();
 
-        // Ambulancias disponibles (activas, sin servicio ese día)
+        // Ambulancias disponibles (activas, sin servicio ese d├¡a)
         $ambulancias = Ambulancia::with('tipo')
             ->where('estado', 'Disponible')
             ->whereDoesntHave('servicios', function ($q) use ($fecha) {
@@ -128,7 +118,7 @@ class CotizacionController extends Controller
             })
             ->get();
 
-        // Operadores disponibles: sin servicio activo y sin servicio ese día
+        // Operadores disponibles: sin servicio activo y sin servicio ese d├¡a
         $operadores = Operador::with('usuario')
             ->whereDoesntHave('servicios', function ($q) {
                 $q->where('estado', 'Activo');
@@ -139,11 +129,11 @@ class CotizacionController extends Controller
             })
             ->get();
 
-        // Sugerencia aleatoria (respeta selección previa si ya fue aceptada)
+        // Sugerencia aleatoria (respeta selecci├│n previa si ya fue aceptada)
         $operadorSugerido = $cotizacion->id_operador
             ?? ($operadores->isNotEmpty() ? $operadores->random()->id_usuario : null);
 
-        // Paramédicos disponibles ese día
+        // Param├®dicos disponibles ese d├¡a
         $paramedicos = Paramedico::with('usuario')
             ->whereDoesntHave('servicios', function ($q) use ($fecha) {
                 $q->whereDate('fecha_hora', $fecha);
@@ -162,13 +152,13 @@ class CotizacionController extends Controller
     public function update(Request $request, Cotizacion $cotizacion)
     {
         $request->validate([
-            'estado'    => 'required|in:Pendiente,En revisión,Aceptada,Cancelada',
+            'estado'    => 'required|in:Pendiente,En revisi├│n,Aceptada,Cancelada',
             'respuesta' => 'nullable|string',
         ]);
 
         $cotizacion->update($request->only('estado', 'respuesta'));
         return redirect()->route('cotizaciones.show', $cotizacion)
-            ->with('success', 'Cotización actualizada.');
+            ->with('success', 'Cotizaci├│n actualizada.');
     }
 
     public function aceptar(Request $request, Cotizacion $cotizacion)
@@ -191,15 +181,19 @@ class CotizacionController extends Controller
         // Validar disponibilidad del operador
         $fecha = $cotizacion->fecha_requerida ?? now()->toDateString();
 
-        // Validar que el operador no tenga choques de horario
-        $operadorActivo = Servicio::where('id_operador', $request->id_operador)->where('estado', 'Activo')->exists();
+        $operadorActivo = Servicio::where('id_operador', $request->id_operador)
+            ->where('estado', 'Activo')
+            ->exists();
         if ($operadorActivo) {
             return back()->withErrors(['id_operador' => 'El operador seleccionado ya tiene un servicio activo en curso.'])->withInput();
         }
 
-        $operadorOcupado = Servicio::where('id_operador', $request->id_operador)->whereDate('fecha_hora', $fecha)->whereNotIn('estado', ['Cancelado'])->exists();
+        $operadorOcupado = Servicio::where('id_operador', $request->id_operador)
+            ->whereDate('fecha_hora', $fecha)
+            ->whereNotIn('estado', ['Cancelado'])
+            ->exists();
         if ($operadorOcupado) {
-            return back()->withErrors(['id_operador' => 'El operador ya está asignado a otro servicio en esa fecha.'])->withInput();
+            return back()->withErrors(['id_operador' => 'El operador ya est├í asignado a otro servicio en esa fecha.'])->withInput();
         }
 
         $km       = (float) $request->km_distancia;
@@ -212,7 +206,8 @@ class CotizacionController extends Controller
         if ($request->id_ambulancia) {
             $amb = Ambulancia::with('tipo')->find($request->id_ambulancia);
             if ($amb) {
-                $costoAmbulancia = round((float) ($amb->tipo->costo_base ?? 0), 2);
+                $costoTipo = (float) ($amb->tipo->costo_base ?? 0);
+                $costoAmbulancia = round($costoTipo, 2);
             }
         }
 
@@ -230,13 +225,17 @@ class CotizacionController extends Controller
         if ($request->insumos) {
             foreach ($request->insumos as $idInsumo => $datos) {
                 if (empty($datos['seleccionado'])) continue;
-                $insumo = Insumo::find($idInsumo);
+                $insumo   = Insumo::find($idInsumo);
                 if (!$insumo) continue;
                 $cantidad = max(1, (int) ($datos['cantidad'] ?? 1));
                 $subtotal = round($insumo->costo_unidad * $cantidad, 2);
                 $costoInsumos += $subtotal;
                 $insumosGuardados[] = [
-                    'id' => $idInsumo, 'nombre' => $insumo->nombre_insumo, 'cantidad' => $cantidad, 'costo_u' => $insumo->costo_unidad, 'subtotal' => $subtotal,
+                    'id'        => $idInsumo,
+                    'nombre'    => $insumo->nombre_insumo,
+                    'cantidad'  => $cantidad,
+                    'costo_u'   => $insumo->costo_unidad,
+                    'subtotal'  => $subtotal,
                 ];
             }
             $costoInsumos = round($costoInsumos, 2);
@@ -245,26 +244,26 @@ class CotizacionController extends Controller
         $costoTotal = $costoKm + $costoAmbulancia + $costoParamedicos + $costoInsumos;
 
         $cotizacion->update([
-            'estado'                => 'Aceptada',
-            'km_distancia'          => $km,
-            'costo_km_unitario'     => $tarifaKm,
-            'id_ambulancia'         => $request->id_ambulancia,
-            'id_operador'           => $request->id_operador,
-            'horas_servicio'        => $request->horas_servicio,
-            'paramedicos_ids'       => $request->paramedicos_ids ?? [],
-            'insumos_seleccionados' => $insumosGuardados,
-            'costo_ambulancia'      => $costoAmbulancia,
-            'costo_paramedicos'     => $costoParamedicos,
-            'costo_insumos'         => $costoInsumos,
-            'costo'                 => $costoTotal,
-            'anticipo'              => $request->anticipo ?: null,
-            'incluye'               => $request->incluye,
-            'respuesta'             => $request->respuesta,
-            'nombre_paciente'       => $request->nombre_paciente,
+            'estado'               => 'Aceptada',
+            'km_distancia'         => $km,
+            'costo_km_unitario'    => $tarifaKm,
+            'id_ambulancia'        => $request->id_ambulancia,
+            'id_operador'          => $request->id_operador,
+            'horas_servicio'       => $request->horas_servicio,
+            'paramedicos_ids'      => $request->paramedicos_ids ?? [],
+            'insumos_seleccionados'=> $insumosGuardados,
+            'costo_ambulancia'     => $costoAmbulancia,
+            'costo_paramedicos'    => $costoParamedicos,
+            'costo_insumos'        => $costoInsumos,
+            'costo'                => $costoTotal,
+            'anticipo'             => $request->anticipo ?: null,
+            'incluye'              => $request->incluye,
+            'respuesta'            => $request->respuesta,
+            'nombre_paciente'      => $request->nombre_paciente,
         ]);
 
         return redirect()->route('cotizaciones.show', $cotizacion)
-            ->with('success', 'Cotización aceptada. Costo total de operación calculado: $' . number_format($costoTotal, 2) . ' MXN');
+            ->with('success', 'Cotizaci├│n aceptada. Costo calculado: $' . number_format($costoTotal, 2) . ' MXN');
     }
 
     public function rechazar(Request $request, Cotizacion $cotizacion)
@@ -279,13 +278,13 @@ class CotizacionController extends Controller
         ]);
 
         return redirect()->route('cotizaciones.show', $cotizacion)
-            ->with('success', 'Cotización rechazada.');
+            ->with('success', 'Cotizaci├│n rechazada.');
     }
 
     public function destroy(Cotizacion $cotizacion)
     {
         $cotizacion->delete();
-        return redirect()->route('cotizaciones.index')->with('success', 'Cotización eliminada.');
+        return redirect()->route('cotizaciones.index')->with('success', 'Cotizaci├│n eliminada.');
     }
 
     public function misSolicitudes()
@@ -350,7 +349,7 @@ class CotizacionController extends Controller
         ]);
 
         return redirect()->route('cotizaciones.mi-estado', $cotizacion)
-            ->with('success', '¡Servicio confirmado! Nuestro equipo se pondrá en contacto contigo.');
+            ->with('success', '┬íServicio confirmado! Nuestro equipo se pondr├í en contacto contigo.');
     }
 
     public function declinar(Request $request, Cotizacion $cotizacion)
@@ -366,6 +365,6 @@ class CotizacionController extends Controller
         ]);
 
         return redirect()->route('cotizaciones.mi-estado', $cotizacion)
-            ->with('info', 'Has declinado la propuesta. Puedes contactarnos si deseas más información.');
+            ->with('info', 'Has declinado la propuesta. Puedes contactarnos si deseas m├ís informaci├│n.');
     }
 }

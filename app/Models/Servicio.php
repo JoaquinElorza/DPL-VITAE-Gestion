@@ -73,7 +73,13 @@ class Servicio extends Model
     {
         return $this->hasOne(
             Traslado::class,
+            'id_servicio',
             'id_servicio'
         );
+    }
+    
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class, 'id_servicio', 'id_servicio');
     }
 }

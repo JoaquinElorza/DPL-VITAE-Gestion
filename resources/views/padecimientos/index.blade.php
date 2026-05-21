@@ -6,11 +6,20 @@
         </div>
     @endif
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h5 class="mb-0">Padecimientos</h5>
-            <a href="{{ route('padecimientos.create') }}" class="btn btn-primary btn-sm">
-                <i class="bx bx-plus me-1"></i> Nuevo
-            </a>
+            <div class="d-flex gap-2 align-items-center">
+                <form action="{{ route('padecimientos.index') }}" method="GET" class="d-flex">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary ms-1" title="Buscar"><i class="bx bx-search"></i></button>
+                    @if(request('search'))
+                        <a href="{{ route('padecimientos.index') }}" class="btn btn-sm btn-outline-danger ms-1" title="Limpiar"><i class="bx bx-x"></i></a>
+                    @endif
+                </form>
+                <a href="{{ route('padecimientos.create') }}" class="btn btn-primary btn-sm">
+                    <i class="bx bx-plus me-1"></i> Nuevo
+                </a>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover">

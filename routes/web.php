@@ -22,6 +22,10 @@ use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnaliticaController;
 use App\Http\Controllers\MisServiciosController;
+use App\Http\Controllers\TrasladoController;
+use App\Http\Controllers\PrediccionController;
+
+Route::get('/predecir', [PrediccionController::class, 'predecir']);
 
 Route::get('/', function () {
     $empresa = \App\Models\Empresa::first();
@@ -68,6 +72,7 @@ Route::middleware(['auth', 'verified', 'es.admin'])->group(function () {
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Route::resource('servicios', ServicioController::class);
+    Route::post('/traslados', [TrasladoController::class, 'store']);
     Route::resource('eventos', EventoController::class);
     Route::resource('pacientes', PacienteController::class);
     Route::resource('padecimientos', PadecimientoController::class);
