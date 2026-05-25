@@ -1,87 +1,68 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import mysql.connector
+import psycopg2
 
-# conexión mysql
-conexion = mysql.connector.connect(
+
+conexion = psycopg2.connect(
     host="localhost",
-    user="root",
-    password="",
+    user="postgres",
+    password="", 
     database="dpl_vitae"
 )
 
-# consulta
+
 query = """
-SELECT
-km_distancia,
-horas_servicio,
-oxigeno_lpm,
-costo_padecimiento_num,
-tipo_ambulancia_num,
-num_paramedicos,
-precio_final
+SELECT 
+    km_distancia, 
+    horas_servicio, 
+    oxigeno_lpm, 
+    costo_padecimiento_num, 
+    CASE WHEN tipo_ambulancia_num = TRUE THEN 1 ELSE 0 END as tipo_ambulancia_num, 
+    precio_final
 FROM traslados
+WHERE es_outlier = false AND usable_para_modelo = true
 """
 
-# dataframe
+
 df = pd.read_sql(query, conexion)
 
-# variables independientes
-X = df[
-    [
-        'km_distancia',
-        'horas_servicio',
-        'oxigeno_lpm',
-        'costo_padecimiento_num',
-        'tipo_ambulancia_num',
-        'num_paramedicos'
-    ]
-]
+if df.empty:
+    print("No hay suficientes datos limpios para entrenar el modelo. Genera datos primero. ")
+    conexion.close()
+    exit()
 
-# variable objetivo
+
+X = df[['km_distancia', 'horas_servicio', 'oxigeno_lpm', 'costo_padecimiento_num', 'tipo_ambulancia_num']]
 y = df['precio_final']
 
-# entrenar modelo
+
 modelo = LinearRegression()
 modelo.fit(X, y)
 
-# obtener coeficientes
-coeficientes = modelo.coef_
-intercepto = modelo.intercept_
+
+intercepto = float(modelo.intercept_)
+coef_km = float(modelo.coef_[0])
+coef_horas = float(modelo.coef_[1])
+coef_oxigeno = float(modelo.coef_[2])
+coef_padecimiento = float(modelo.coef_[3])
+coef_ambulancia = float(modelo.coef_[4])
+
 
 cursor = conexion.cursor()
 
-# limpiar modelo anterior
+
 cursor.execute("DELETE FROM modelo_traslados")
 
-# insertar modelo
 sql = """
 INSERT INTO modelo_traslados (
-intercepto,
-coef_km_distancia,
-coef_horas_servicio,
-coef_oxigeno_lpm,
-coef_costo_padecimiento,
-coef_tipo_ambulancia,
-coef_num_paramedicos,
-created_at,
-updated_at
-)
-VALUES (%s,%s,%s,%s,%s,%s,%s,NOW(),NOW())
+    b0, b_distancia, b_horas, b_oxigeno, b_padecimiento, b_ambulancia, created_at, updated_at
+) VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW())
 """
 
-valores = (
-float(intercepto),
-float(coeficientes[0]),
-float(coeficientes[1]),
-float(coeficientes[2]),
-float(coeficientes[3]),
-float(coeficientes[4]),
-float(coeficientes[5]),
-)
-
-cursor.execute(sql, valores)
-
+cursor.execute(sql, (intercepto, coef_km, coef_horas, coef_oxigeno, coef_padecimiento, coef_ambulancia))
 conexion.commit()
 
-print("Modelo entrenado correctamente")
+cursor.close()
+conexion.close()
+
+print("¡Modelo de IA entrenado y coeficientes guardados con éxito!")
