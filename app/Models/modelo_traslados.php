@@ -10,7 +10,7 @@ class modelo_traslados extends Model
     protected $table = 'modelo_traslados';
     protected $primaryKey = 'id_modelo_servicio';
 
-    protected $filliable = [
+    protected $fillable = [
       'b0',
       'b_distancia',
       'b_horas',

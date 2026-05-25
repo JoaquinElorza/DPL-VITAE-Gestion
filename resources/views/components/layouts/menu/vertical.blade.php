@@ -69,7 +69,7 @@
 
     <li class="menu-item {{ request()->is('servicios*') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Historial de Servicios">
-        <i class="menu-icon tf-icons bx bx-ambulance"></i>
+        <i class="menu-icon tf-icons bx bx-history"></i>
         <div class="text-truncate">Historial de Servicios</div>
       </a>
     </li>

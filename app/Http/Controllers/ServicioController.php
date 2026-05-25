@@ -132,7 +132,7 @@ class ServicioController extends Controller
 
     public function show(Servicio $servicio)
     {
-        $servicio->load(['ambulancia', 'cliente.usuario', 'operador.usuario', 'pacientes', 'paramedicos.usuario', 'insumos']);
+        $servicio->load(['ambulancia', 'cliente.usuario', 'operador.usuario', 'paciente', 'paramedicos.usuario', 'insumos']);
         return view('servicios.show', compact('servicio'));
     }
 

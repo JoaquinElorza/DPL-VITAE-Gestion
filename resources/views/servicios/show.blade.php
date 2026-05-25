@@ -38,11 +38,11 @@
                 <div class="card-header"><h6 class="mb-0">Pacientes</h6></div>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush">
-                        @forelse($servicio->pacientes as $paciente)
-                            <li class="list-group-item">{{ $paciente->nombre }} {{ $paciente->ap_paterno }}</li>
-                        @empty
-                            <li class="list-group-item text-muted">Sin pacientes</li>
-                        @endforelse
+                        @if($servicio->paciente)
+                            <li class="list-group-item">{{ $servicio->paciente->nombre }} {{ $servicio->paciente->ap_paterno }}</li>
+                        @else
+                            <li class="list-group-item text-muted">Sin paciente</li>
+                        @endif
                     </ul>
                 </div>
             </div>
