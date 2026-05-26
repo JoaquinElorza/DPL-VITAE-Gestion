@@ -3,7 +3,7 @@
 
     <style>
         :root {
-            --dpl-primary: #696CFF;
+            --dpl-primary: #BA55D3;
             --dpl-primary-hover: #5f61e6;
         }
 
@@ -13,11 +13,11 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-shadow: 
-                -1px -1px 0 #696CFF,  
-                 1px -1px 0 #696CFF,
-                -1px  1px 0 #696CFF,
-                 1px  1px 0 #696CFF,
-                 0px  0px 6px #696CFF,
+                -1px -1px 0 #BA55D3,  
+                 1px -1px 0 #BA55D3,
+                -1px  1px 0 #BA55D3,
+                 1px  1px 0 #BA55D3,
+                 0px  0px 6px #BA55D3,
                  0px  0px 12px rgba(105, 108, 255, 0.8),
                  2px  2px 4px rgba(0, 0, 0, 0.25);
         }
@@ -28,7 +28,7 @@
 
         <div class="row g-3">
             <div class="col-md-3">
-                <div class="card text-white h-100 shadow-sm" style="background-color: #696CFF;">
+                <div class="card text-white h-100 shadow-sm" style="background-color: #BA55D3;">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <h6 class="text-white mb-2 fw-bold text-uppercase">Total Servicios Útiles</h6>
                         <h2 class="text-white mb-0 fw-bold">{{ $totalServicios }}</h2>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-white h-100 shadow-sm" style="background-color: #10B981;">
+                <div class="card text-white h-100 shadow-sm" style="background-color: #191970;">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <h6 class="text-white mb-2 fw-bold text-uppercase">Ingresos Totales</h6>
                         <h2 class="text-white mb-0 fw-bold">${{ number_format($ingresosTotales, 2) }}</h2>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-white h-100 shadow-sm" style="background-color: #0EA5E9;">
+                <div class="card text-white h-100 shadow-sm" style="background-color: #F08080;">
                     <div class="card-body d-flex flex-column justify-content-center">
                         <h6 class="text-white mb-2 fw-bold text-uppercase">Ticket Promedio</h6>
                         <h2 class="text-white mb-0 fw-bold">${{ number_format($promedioCosto, 2) }}</h2>
@@ -52,10 +52,10 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-white h-100 shadow-sm" style="background-color: #F43F5E;">
+                <div class="card h-100 shadow-sm" style="background-color: #FFFFFF; border: 2px solid #191970;">
                     <div class="card-body d-flex flex-column justify-content-center">
-                        <h6 class="text-white mb-2 fw-bold text-uppercase">Punto Caliente</h6>
-                        <h2 class="text-white mb-0 fw-bold">ID: {{ $coloniaFrecuente ?? 'N/A' }}</h2>
+                        <h6 class="mb-2 fw-bold text-uppercase" style="color: #191970;">Punto Caliente</h6>
+                        <h2 class="mb-0 fw-bold" style="color: #191970;">ID: {{ $coloniaFrecuente ?? 'N/A' }}</h2>
                     </div>
                 </div>
             </div>

@@ -19,12 +19,18 @@
     </button>
 
     @if($esEmpleado)
-    <span class="fw-semibold text-muted small">
-      <i class="bx bx-calendar-check me-1"></i>
-      {{ $user->nombre }} {{ $user->ap_paterno }}
-      &nbsp;·&nbsp;
-      @if($user->operador) Operador @else Paramédico @endif
-    </span>
+    <div class="d-flex align-items-center gap-2 ms-2">
+      <span class="fw-bold fs-6 d-none d-sm-inline-block" style="color: #393395;">
+        {{ $user->nombre }} {{ $user->ap_paterno }}
+      </span>
+      <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border: 1px solid rgba(138, 43, 226, 0.2);">
+        @if($user->operador) 
+            <i class="bx bx-headphone me-1"></i>Operador 
+        @else 
+            <i class="bx bx-plus-medical me-1"></i>Paramédico 
+        @endif
+      </span>
+    </div>
     @else
     <div class="navbar-nav align-items-center me-auto">
       <div class="nav-item d-flex align-items-center">
@@ -53,7 +59,9 @@
                     <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
                       @if($esEmpleado)
                         @if($user->operador)
-                          <span class="role-chip bg-label-primary"><i class="bx bx-id-card"></i>Operador</span>
+                          <span class="badge rounded-pill px-2 py-1" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border: 1px solid rgba(138, 43, 226, 0.2); font-size: 0.75rem;">
+                              <i class="bx bx-headphone me-1"></i>Operador
+                          </span>
                           {{-- VALIDACIÓN ANTI-ERROR --}}
                           @if(isset($ambulancias) && count($ambulancias) > 0)
                             @foreach($ambulancias as $amb)
@@ -63,7 +71,9 @@
                             @endforeach
                           @endif
                         @else
-                          <span class="role-chip bg-label-success"><i class="bx bx-plus-medical"></i>Paramédico</span>
+                          <span class="badge rounded-pill px-2 py-1" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border: 1px solid rgba(138, 43, 226, 0.2); font-size: 0.75rem;">
+                              <i class="bx bx-plus-medical me-1"></i>Paramédico
+                          </span>
                         @endif
                       @elseif($user->esCliente())
                         <span class="role-chip bg-label-warning"><i class="bx bx-user"></i>Cliente</span>

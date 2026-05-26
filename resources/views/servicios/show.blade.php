@@ -4,9 +4,13 @@
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Servicio #{{ $servicio->id_servicio }}</h5>
-                    <div>
-                        <a href="{{ route('servicios.edit', $servicio) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit me-1"></i>Editar</a>
-                        <a href="{{ route('servicios.index') }}" class="btn btn-sm btn-secondary ms-1">Volver</a>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('servicios.edit', $servicio) }}" class="btn btn-warning rounded-pill shadow-sm px-3">
+                            <i class="bx bx-edit me-1"></i>Editar
+                        </a>
+                        <a href="{{ route('servicios.index') }}" class="btn btn-outline-secondary rounded-pill px-3">
+                            <i class="bx bx-arrow-back me-1"></i>Volver
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">

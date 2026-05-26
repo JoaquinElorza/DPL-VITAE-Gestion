@@ -52,8 +52,8 @@
 
                 <!-- Botones de Acción -->
                 <div class="mt-5 d-flex align-items-center">
-                    <button type="submit" class="btn btn-primary px-4 shadow-sm" style="transform: none;"><i class="bx bx-save me-2"></i>Guardar Evento</button>
-                    <a href="{{ route('eventos.index') }}" class="btn btn-secondary ms-3"><i class="bx bx-x me-1"></i>Cancelar</a>
+                    <button type="submit" class="btn btn-info px-4 shadow-sm" style="transform: none;"><i class="bx bx-save me-2"></i>Guardar Evento</button>
+                    <a href="{{ route('eventos.index') }}" class="btn btn-danger ms-3"><i class="bx bx-x me-1"></i>Cancelar</a>
                 </div>
             </form>
         </div>

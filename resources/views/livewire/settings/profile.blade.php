@@ -77,13 +77,13 @@ new class extends Component {
             </div>
 
             <div class="mb-4">
-                <label for="ap_paterno" class="form-label">{{ __('Apellido Paterno') }}</label>
-                <input type="text" id="ap_paterno" wire:model="ap_paterno" class="form-control" placeholder="Apellido Paterno" required autocomplete="family-name">
+                <label for="ap_paterno" class="form-label">{{ __('Primer Apellido') }}</label>
+                <input type="text" id="ap_paterno" wire:model="ap_paterno" class="form-control" placeholder="Primer Apellido" required autocomplete="family-name">
             </div>
 
             <div class="mb-4">
-                <label for="ap_materno" class="form-label">{{ __('Apellido Materno') }}</label>
-                <input type="text" id="ap_materno" wire:model="ap_materno" class="form-control" placeholder="Apellido Materno (opcional)" autocomplete="additional-name">
+                <label for="ap_materno" class="form-label">{{ __('Segundo Apellido') }}</label>
+                <input type="text" id="ap_materno" wire:model="ap_materno" class="form-control" placeholder="Segundo Apellido (opcional)" autocomplete="additional-name">
             </div>
 
             <div class="mb-4">

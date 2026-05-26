@@ -3,7 +3,7 @@
 
     <style>
         :root {
-            --dpl-primary: #696CFF;
+            --dpl-primary: #7E57C2;
             --dpl-primary-hover: #5f61e6;
         }
         
@@ -13,11 +13,11 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-shadow: 
-                -1px -1px 0 #696CFF,  
-                 1px -1px 0 #696CFF,
-                -1px  1px 0 #696CFF,
-                 1px  1px 0 #696CFF,
-                 0px  0px 6px #696CFF,
+                -1px -1px 0 #7E57C2,  
+                 1px -1px 0 #7E57C2,
+                -1px  1px 0 #7E57C2,
+                 1px  1px 0 #7E57C2,
+                 0px  0px 6px #7E57C2,
                  0px  0px 12px rgba(105, 108, 255, 0.8),
                  2px  2px 4px rgba(0, 0, 0, 0.25);
         }

@@ -38,66 +38,94 @@
 
 <div class="row g-4 mb-4">
     <div class="col-md-8">
-        <div class="card h-100">
-            <div class="card-header d-flex align-items-center justify-content-between">
-                <h5 class="card-title m-0"><i class="bx bx-time-five me-2 text-warning"></i>Reservas por Despachar</h5>
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(186, 85, 211, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(186, 85, 211, 0.05)';">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <h5 class="card-title fw-bold m-0" style="background: linear-gradient(135deg, #191970, #BA55D3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="bx bx-time-five me-2" style="-webkit-text-fill-color: #BA55D3;"></i>Reservas por Despachar
+                </h5>
             </div>
-            <div class="table-responsive text-nowrap">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Guía</th>
-                            <th>Fecha Req.</th>
-                            <th>Servicio</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $reservasPorDespachar = \App\Models\Cotizacion::where('decision_cliente', 'confirmada')
-                                ->where('estado', 'Aceptada')
-                                ->get();
-                        @endphp
-                        @forelse($reservasPorDespachar as $res)
-                        <tr>
-                            <td><span class="fw-bold">{{ $res->numero_guia }}</span></td>
-                            <td>{{ \Carbon\Carbon::parse($res->fecha_requerida)->format('d/m H:i') }}</td>
-                            <td>{{ $res->tipo_servicio }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" 
-                                        onclick="abrirDespacho({{ $res->id_cotizacion }}, '{{ $res->numero_guia }}')">
-                                    Despachar
-                                </button>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">No hay reservas pendientes</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <div class="card-body pt-3">
+                <div class="table-responsive text-nowrap rounded-3">
+                    <table class="table table-hover">
+                        <thead style="background: rgba(186, 85, 211, 0.05) !important;">
+                            <tr>
+                                <th class="text-dark fw-semibold" style="background-color: transparent !important; border-bottom: 2px solid rgba(186, 85, 211, 0.2) !important; color: #8A2BE2 !important;">Guía</th>
+                                <th class="text-dark fw-semibold" style="background-color: transparent !important; border-bottom: 2px solid rgba(186, 85, 211, 0.2) !important; color: #8A2BE2 !important;">Fecha Req.</th>
+                                <th class="text-dark fw-semibold" style="background-color: transparent !important; border-bottom: 2px solid rgba(186, 85, 211, 0.2) !important; color: #8A2BE2 !important;">Servicio</th>
+                                <th class="text-dark fw-semibold text-center" style="background-color: transparent !important; border-bottom: 2px solid rgba(186, 85, 211, 0.2) !important; color: #8A2BE2 !important;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                            @php
+                                $reservasPorDespachar = \App\Models\Cotizacion::where('decision_cliente', 'confirmada')
+                                    ->where('estado', 'Aceptada')
+                                    ->get();
+                            @endphp
+                            @forelse($reservasPorDespachar as $res)
+                            <tr style="transition: all 0.2s;">
+                                <td>
+                                    <span class="badge" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border-radius: 8px;">
+                                        <i class="bx bx-hash me-1"></i>{{ $res->numero_guia }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="p-1 rounded-circle me-2" style="background-color: rgba(57, 51, 149, 0.1); color: #393395;">
+                                            <i class="bx bx-calendar-event fs-6"></i>
+                                        </div>
+                                        <span class="fw-medium text-dark">{{ \Carbon\Carbon::parse($res->fecha_requerida)->format('d/m H:i') }}</span>
+                                    </div>
+                                </td>
+                                <td><span class="fw-medium">{{ $res->tipo_servicio }}</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-info rounded-pill px-3 shadow-sm" style="transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='none';"
+                                            onclick="abrirDespacho({{ $res->id_cotizacion }}, '{{ $res->numero_guia }}')">
+                                        <i class="bx bx-send me-1"></i>Despachar
+                                    </button>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-5 text-muted">
+                                    <i class="bx bx-check-circle fs-1 text-success mb-2 opacity-50"></i><br>
+                                    No hay reservas pendientes por despachar
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card h-100">
-            <div class="card-header">
-                <h5 class="card-title m-0"><i class="bx bx-car me-2 text-success"></i>Unidades Disponibles</h5>
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(57, 51, 149, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(57, 51, 149, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(57, 51, 149, 0.05)';">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <h5 class="card-title fw-bold m-0" style="color: #393395;">
+                    <i class="bx bx-car fs-4 me-2 align-middle" style="color: #8A2BE2;"></i>Unidades Disponibles
+                </h5>
             </div>
-            <div class="card-body">
+            <div class="card-body pt-4">
                 <ul class="list-group list-group-flush">
                     @forelse($ambulanciasDisponibles as $amb)
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <div>
-                            <span class="fw-semibold">{{ $amb->placa }}</span><br>
-                            <small class="text-muted">{{ $amb->tipo->nombre_tipo }}</small>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3" style="border-bottom: 1px dashed rgba(0,0,0,0.1);">
+                        <div class="d-flex align-items-center">
+                            <div class="p-2 rounded-3 me-3" style="background-color: rgba(57, 51, 149, 0.1);">
+                                <i class="bx bx-bus fs-5" style="color: #393395;"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold text-dark d-block mb-1">{{ $amb->placa }}</span>
+                                <small class="text-muted" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">{{ $amb->tipo->nombre_tipo }}</small>
+                            </div>
                         </div>
-                        <span class="badge bg-label-success">Libre</span>
+                        <span class="badge rounded-pill" style="background-color: rgba(40, 167, 69, 0.1); color: #28a745; padding: 0.5rem 0.8rem;">Libre</span>
                     </li>
                     @empty
-                    <li class="list-group-item px-0 text-muted">Sin unidades disponibles</li>
+                    <li class="list-group-item px-0 py-4 text-center text-muted border-0">
+                        <i class="bx bx-block fs-3 mb-2 opacity-50"></i><br>
+                        Sin unidades disponibles
+                    </li>
                     @endforelse
                 </ul>
             </div>
@@ -105,8 +133,9 @@
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-4">
+        <h5 class="fw-bold mb-4" style="color: #393395;"><i class="bx bx-calendar fs-4 me-2 align-middle" style="color: #BA55D3;"></i>Calendario de Actividades</h5>
         <div id="calendar-operador"></div>
     </div>
 </div>
@@ -144,9 +173,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Iniciar Servicio</button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info px-4">Iniciar Servicio</button>
                 </div>
             </form>
         </div>

@@ -8,7 +8,7 @@
             color: #566a7f;
         }
         .form-control:focus, .form-select:focus {
-            border-color: #696CFF !important;
+            border-color: #7E57C2 !important;
             box-shadow: 0 0 0.25rem 0.05rem rgba(105, 108, 255, 0.25) !important;
         }
         .is-invalid {

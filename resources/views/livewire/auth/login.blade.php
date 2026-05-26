@@ -91,7 +91,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
 @endsection
 
 <div>
-    <x-auth-header :title="__('Bienvenido a :app!', ['app' => config('app.name')])" :description="__('Ingresa tu correo y contraseña para iniciar sesión')" />
+    @php
+        $empresa = \App\Models\Empresa::first();
+        $nombreEmpresa = $empresa ? $empresa->nombre : config('app.name');
+    @endphp
+    <x-auth-header :title="'Bienvenido a ' . $nombreEmpresa" :description="__('Ingresa tu correo y contraseña para iniciar sesión')" />
 
     <!-- Session Status -->
     @if (session('status'))
