@@ -13,23 +13,28 @@ class DashboardController extends Controller
     {
         $ambulancias = Ambulancia::select('id_ambulancia', 'placa')->get();
 
-        $servicios = Servicio::query()
-        ->when($request->tipo, function ($q, $tipo) { //tipo servicio
+        $servicios = Servicio::with(['ambulancia', 'cliente.usuario'])
+        ->when($request->buscar, function ($q, $buscar) {
+            $q->where('id_servicio', 'LIKE', "%$buscar%")
+              ->orWhere('tipo', 'LIKE', "%$buscar%");
+        })
+        ->when($request->tipo, function ($q, $tipo) {
             $q->where('tipo', $tipo);
         })
-        ->when($request->estado, function ($q, $estado) { //estado del servicio
+        ->when($request->estado, function ($q, $estado) {
             $q->where('estado', $estado);
         })
-        ->when($request->ambulancia, function ($q, $ambulancia) { //por ambulancia (placa)
+        ->when($request->ambulancia, function ($q, $ambulancia) {
             $q->where('id_ambulancia', $ambulancia);
         })
-        ->when($request->fecha_inicio, function ($q, $fecha) { //filtro por rango de fechas
+        ->when($request->fecha_inicio, function ($q, $fecha) {
             $q->whereDate('fecha_hora', '>=', $fecha);
         })
         ->when($request->fecha_fin, function ($q, $fecha) {
             $q->whereDate('fecha_hora', '<=', $fecha . ' 23:59:59');
         })
-        ->get();
+        ->orderByDesc('fecha_hora')
+        ->paginate(10);
 
         $tipos = [
             'Traslado' => 'Traslados',
@@ -40,25 +45,10 @@ class DashboardController extends Controller
         $estados = [
             'Pendiente' => 'Pendiente',
             'En curso' => 'En curso',
-            'Completado' => 'Completado',
+            'Finalizado' => 'Finalizado',
             'Cancelado' => 'Cancelado'
         ];
 
-
-
         return view('dashboard', compact('servicios', 'tipos', 'estados', 'ambulancias'));
-
-  /*      $query = Servicio::query(); // o el modelo que uses
-        if ($request->filled('tipo')) {
-            $query->where('tipo', $request->tipo);
-        }
-        $servicios = $query->get();
-        $tipos = [
-            'Traslado' => 'Traslados',
-            'Evento' => 'Eventos',
-            'Otro' => 'Otros'
-        ];
-        return view('dashboard', compact('servicios', 'tipos')); /*
-    }*/
-}
+    }
 }
