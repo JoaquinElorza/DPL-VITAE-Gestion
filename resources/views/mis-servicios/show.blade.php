@@ -120,7 +120,12 @@
                                     <div class="avatar avatar-sm me-2">
                                         <span class="avatar-initial rounded-circle" style="background: linear-gradient(135deg, #191970, #6A5ACD); color: #fff;">O</span>
                                     </div>
-                                    <span class="fw-semibold text-dark">{{ $servicio->operador?->usuario?->nombre ?? 'Pendiente' }}</span>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-semibold text-dark lh-1">{{ $servicio->operador?->usuario?->nombre ?? 'Pendiente' }}</span>
+                                        @if($servicio->operador?->usuario?->telefono)
+                                            <small class="text-muted mt-1" style="font-size: 0.75rem;"><i class="bx bx-phone me-1"></i>{{ $servicio->operador->usuario->telefono }}</small>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                             
@@ -131,7 +136,12 @@
                                         <div class="avatar avatar-sm me-2">
                                             <span class="avatar-initial rounded-circle" style="background: linear-gradient(135deg, #BA55D3, #F08080); color: #fff;">P</span>
                                         </div>
-                                        <span class="fw-semibold text-dark">{{ $paramedico->usuario?->nombre ?? 'N/A' }}</span>
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-semibold text-dark lh-1">{{ $paramedico->usuario?->nombre ?? 'N/A' }}</span>
+                                            @if($paramedico->usuario?->telefono)
+                                                <small class="text-muted mt-1" style="font-size: 0.75rem;"><i class="bx bx-phone me-1"></i>{{ $paramedico->usuario->telefono }}</small>
+                                            @endif
+                                        </div>
                                     </div>
                                 @empty
                                     <span class="text-muted fst-italic">Ninguno asignado</span>

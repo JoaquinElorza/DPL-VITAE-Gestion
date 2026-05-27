@@ -107,7 +107,7 @@
             </div>
         </div>
 
-        <div class="row mt-4 g-4 mb-5">
+        <div class="row mt-4 g-4">
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-header bg-white border-bottom-0 pb-0">
@@ -125,6 +125,107 @@
                     </div>
                     <div class="card-body" style="position: relative; height:300px; width:100%;">
                         <canvas id="graficaEstados"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NUEVA SECCIÓN DE IA -->
+        <hr class="my-5" style="border-color: rgba(186, 85, 211, 0.3);">
+        <h3 class="mb-4 titulo-morado"><i class='bx bx-brain bx-tada me-2' style="color: #FF7F50;"></i>Inteligencia de Precios y Cotizaciones (IA)</h3>
+        <!-- KPIs IA -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #FF9A76 0%, #FF7F50 100%); border: none;">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px; background: rgba(255,255,255,0.2);">
+                            <i class='bx bx-filter-alt fs-3 text-white'></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.5px; color: rgba(255,255,255,0.9);">Outliers Detectados</h6>
+                            <h4 class="mb-0 fw-bold text-white">{{ number_format($aiOutliers) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #B96BFF 0%, #8A2BE2 100%); border: none;">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px; background: rgba(255,255,255,0.2);">
+                            <i class='bx bx-target-lock fs-3 text-white'></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.5px; color: rgba(255,255,255,0.9);">Precisión (R²)</h6>
+                            <h4 class="mb-0 fw-bold text-white">{{ $aiPrecision }}%</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #3A3A98 0%, #191970 100%); border: none;">
+                    <div class="card-body p-3 d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px; background: rgba(255,255,255,0.2);">
+                            <i class='bx bx-data fs-3 text-white'></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 0.5px; color: rgba(255,255,255,0.9);">Traslados Analizados</h6>
+                            <h4 class="mb-0 fw-bold text-white">{{ number_format($aiTrasladosAnalizados) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm" style="border-top: 4px solid #FF7F50;">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <h5 class="titulo-morado fs-6">Evolución Precio Promedio (Por Día)</h5>
+                    </div>
+                    <div class="card-body" style="position: relative; height:300px; width:100%;">
+                        <canvas id="graficaPrecioPromedio"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm" style="border-top: 4px solid #0EA5E9;">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <h5 class="titulo-morado fs-6">Costo Promedio por Tipo de Ambulancia</h5>
+                    </div>
+                    <div class="card-body" style="position: relative; height:300px; width:100%;">
+                        <canvas id="graficaCostoAmbulancia"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm" style="border-top: 4px solid #10B981;">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <h5 class="titulo-morado fs-6">Distancia vs Precio Cotizado (IA)</h5>
+                    </div>
+                    <div class="card-body" style="position: relative; height:300px; width:100%;">
+                        <canvas id="graficaDistanciaPrecio"></canvas>
+                    </div>
+                </div>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm" style="border-top: 4px solid #8B5CF6;">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <h5 class="titulo-morado fs-6">Tasa de Conversión (Predicción de Éxito)</h5>
+                    </div>
+                    <div class="card-body" style="position: relative; height:300px; width:100%;">
+                        <canvas id="graficaConversion"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm" style="border-top: 4px solid #EC4899;">
+                    <div class="card-header bg-white border-bottom-0 pb-0">
+                        <h5 class="titulo-morado fs-6">Impacto de Factores en el Precio</h5>
+                    </div>
+                    <div class="card-body" style="position: relative; height:300px; width:100%;">
+                        <canvas id="graficaFactores"></canvas>
                     </div>
                 </div>
             </div>
@@ -247,6 +348,124 @@
                 L.circle([{{ $lat }}, {{ $lng }}], {
                     color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 500
                 }).addTo(map).bindPopup('<b>Punto Caliente Principal</b><br>Colonia ID: {{ $coloniaFrecuente }}');
+            }
+
+            // --- GRÁFICAS DE INTELIGENCIA DE PRECIOS (IA) ---
+
+            const ctxPrecioProm = document.getElementById('graficaPrecioPromedio')?.getContext('2d');
+            if (ctxPrecioProm) {
+                new Chart(ctxPrecioProm, {
+                    type: 'line',
+                    data: {
+                        labels: {!! json_encode($labelsPrecioProm) !!},
+                        datasets: [{
+                            label: 'Precio Promedio Cotizado ($)',
+                            data: {!! json_encode($valoresPrecioProm) !!},
+                            borderColor: '#FF7F50', backgroundColor: 'rgba(255, 127, 80, 0.2)',
+                            fill: true, tension: 0.4, pointBackgroundColor: '#FF7F50'
+                        }]
+                    },
+                    options: { ...chartOptions, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctxCostoAmb = document.getElementById('graficaCostoAmbulancia')?.getContext('2d');
+            if (ctxCostoAmb) {
+                new Chart(ctxCostoAmb, {
+                    type: 'bar',
+                    data: {
+                        labels: {!! json_encode($labelsCostoAmb) !!},
+                        datasets: [{
+                            label: 'Costo Promedio ($)',
+                            data: {!! json_encode($valoresCostoAmb) !!},
+                            backgroundColor: ['#0EA5E9', '#3B82F6', '#8B5CF6', '#EC4899'],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: { ...chartOptions, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctxDistanciaPrecio = document.getElementById('graficaDistanciaPrecio')?.getContext('2d');
+            if (ctxDistanciaPrecio) {
+                new Chart(ctxDistanciaPrecio, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Cotizaciones (Distancia, Precio)',
+                            data: {!! json_encode($distanciaVsPrecio) !!},
+                            backgroundColor: '#10B981',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
+                    },
+                    options: { 
+                        ...chartOptions, 
+                        scales: { 
+                            x: { title: { display: true, text: 'Distancia (km)' }, beginAtZero: true },
+                            y: { title: { display: true, text: 'Precio Sugerido ($)' }, beginAtZero: true }
+                        } 
+                    }
+                });
+            }
+
+            const ctxConversion = document.getElementById('graficaConversion')?.getContext('2d');
+            if (ctxConversion) {
+                new Chart(ctxConversion, {
+                    type: 'doughnut',
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: {!! json_encode($labelsConversion) !!},
+                        datasets: [{
+                            data: {!! json_encode($valoresConversion) !!},
+                            backgroundColor: ['#10B981', '#F43F5E'],
+                            borderWidth: 2, borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                        plugins: {
+                            ...chartOptions.plugins,
+                            datalabels: {
+                                color: '#fff', font: { weight: 'bold', size: 12 },
+                                formatter: (value, ctx) => {
+                                    let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    if (sum === 0) return '0%';
+                                    return (value * 100 / sum).toFixed(1) + "%";
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctxFactores = document.getElementById('graficaFactores')?.getContext('2d');
+            if (ctxFactores) {
+                new Chart(ctxFactores, {
+                    type: 'radar',
+                    data: {
+                        labels: {!! json_encode($labelsFactores) !!},
+                        datasets: [{
+                            label: 'Costo Total Acumulado ($)',
+                            data: {!! json_encode($valoresFactores) !!},
+                            backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                            borderColor: '#EC4899',
+                            pointBackgroundColor: '#EC4899',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#EC4899'
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                        scales: {
+                            r: {
+                                angleLines: { display: true },
+                                suggestedMin: 0
+                            }
+                        }
+                    }
+                });
             }
         }
 

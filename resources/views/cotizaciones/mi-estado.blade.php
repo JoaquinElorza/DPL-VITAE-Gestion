@@ -161,13 +161,9 @@
             <span class="badge bg-{{ $colorEstado }} rounded-pill fs-6 px-4 py-2 shadow-sm">{{ $cotizacion->estado }}</span>
         </div>
 
-        @php
-            $mostrarColumnaDerecha = $cotizacion->estado === 'Aceptada' || ($cotizacion->estado === 'Cancelada' && $cotizacion->respuesta);
-        @endphp
-
         <div class="row g-4">
-            {{-- Si hay propuesta, la izquierda es pequeña y apilada. Si no, izquierda es la mitad para el timeline --}}
-            <div class="{{ $mostrarColumnaDerecha ? 'col-lg-5' : 'col-lg-6' }}">
+            <!-- Columna Izquierda: Timeline y Datos Originales -->
+            <div class="col-lg-5 d-flex flex-column">
                 {{-- timeline --}}
                 <div class="card border-0 rounded-4 p-4 mb-4">
                     <h6 class="fw-bold mb-4" style="color: #393395;">Progreso de tu solicitud</h6>
@@ -239,14 +235,8 @@
                     @endif
                 </div>
 
-                {{-- Si NO hay columna derecha, mostramos los datos de la solicitud aquí, en la segunda mitad --}}
-                @if(!$mostrarColumnaDerecha)
-            </div>
-            <div class="col-lg-6 d-flex flex-column">
-                @endif
-
                 {{-- datos de la solicitud --}}
-                <div class="card border-0 rounded-4 p-4 mb-4">
+                <div class="card border-0 rounded-4 p-4 mb-4 shadow-sm">
                     <h6 class="fw-bold mb-3" style="color: #393395;">Datos originales de tu solicitud</h6>
                     <dl class="row small mb-0 g-3">
                         <dt class="col-5 text-muted">Tipo de servicio</dt>
@@ -271,21 +261,32 @@
                         <dt class="col-5 text-muted">Descripción</dt>
                         <dd class="col-7 fw-medium">{{ $cotizacion->descripcion }}</dd>
                         @endif
+
+                        @if(isset($precio_ia) && $precio_ia > 0)
+                        <dt class="col-5 text-muted mt-3"><i class='bx bx-brain text-primary me-1'></i>Precio Estimado (IA)</dt>
+                        <dd class="col-7 fw-bold mt-3" style="color: #393395;">${{ number_format($precio_ia, 2) }} MXN</dd>
+                        @endif
                     </dl>
                 </div>
-                
-                @if(!$mostrarColumnaDerecha)
-                    <div class="mt-auto">
-                        <a href="{{ route('cotizaciones.mis-solicitudes') }}" class="btn btn-outline-secondary px-4 py-2">
-                            <i class="bx bx-arrow-back me-1"></i> Volver
-                        </a>
-                    </div>
-                @endif
+
+                <div class="mt-auto">
+                    <a href="{{ route('cotizaciones.mis-solicitudes') }}" class="btn btn-outline-secondary px-4 py-2 w-100" style="border-radius: 50rem;">
+                        <i class="bx bx-arrow-back me-1"></i> Volver a mis solicitudes
+                    </a>
+                </div>
             </div>
 
-            {{-- COLUMNA DERECHA: Propuesta, Anticipo y Acciones --}}
-            @if($mostrarColumnaDerecha)
+            <!-- Columna Derecha: Propuesta, Anticipo y Acciones -->
             <div class="col-lg-7 d-flex flex-column gap-4">
+                @if(in_array($cotizacion->estado, ['Pendiente', 'En revisión']))
+                    <div class="card border-0 rounded-4 p-5 text-center h-100 d-flex justify-content-center align-items-center shadow-sm" style="background: rgba(138, 43, 226, 0.02);">
+                        <div>
+                            <i class='bx bx-time-five text-primary mb-3' style="font-size: 5rem; opacity: 0.6;"></i>
+                            <h5 class="fw-bold" style="color: #393395;">Estamos evaluando tu solicitud</h5>
+                            <p class="text-muted small mb-0 px-md-4">En breve, nuestro equipo de coordinación médica estructurará una propuesta a la medida de tus necesidades y publicaremos aquí tu cotización formal con todos los detalles.</p>
+                        </div>
+                    </div>
+                @else
                 
                 {{-- propuesta del equipo --}}
                 @if($cotizacion->estado === 'Aceptada')
@@ -323,12 +324,45 @@
                                     <td class="text-end fw-bold py-2 pe-3">${{ number_format($cotizacion->costo_insumos, 2) }}</td>
                                 </tr>
                                 @endif
+                                @if(isset($precio_ia) && $precio_ia > 0)
+                                <tr style="background-color: rgba(138, 43, 226, 0.05);">
+                                    <td colspan="2" class="fw-semibold py-2 ps-3" style="color: #8A2BE2;"><i class='bx bx-brain me-1'></i>Precio original calculado por IA</td>
+                                    <td class="text-end fw-bold py-2 pe-3" style="color: #8A2BE2;"><del class="text-muted me-1 small" style="font-size:0.75rem"></del>${{ number_format($precio_ia, 2) }}</td>
+                                </tr>
+                                @endif
                                 <tr style="background-color: rgba(113, 221, 55, 0.1);">
-                                    <td colspan="2" class="fw-bold fs-5 py-3 ps-3 text-success">Costo Total Estimado</td>
+                                    <td colspan="2" class="fw-bold fs-5 py-3 ps-3 text-success">Costo Final a Pagar</td>
                                     <td class="text-end fw-bold fs-5 py-3 pe-3 text-success">${{ number_format($cotizacion->costo, 2) }} MXN</td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Explicabilidad del Precio Final -->
+                    <div class="mb-3 p-3 rounded-3" style="background-color: rgba(138, 43, 226, 0.05); border: 1px solid rgba(138, 43, 226, 0.1);">
+                        <a data-bs-toggle="collapse" href="#collapseExplicacionFinal" role="button" aria-expanded="false" aria-controls="collapseExplicacionFinal" style="color: #393395; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; font-weight: 600;">
+                            <i class='bx bx-info-circle me-2 fs-5'></i> ¿Cómo se calculó tu tarifa final? <i class='bx bx-chevron-down ms-auto'></i>
+                        </a>
+                        <div class="collapse mt-3" id="collapseExplicacionFinal">
+                            <div class="small" style="color: #566a7f;">
+                                El equipo administrativo y médico revisó tu solicitud y estructuró esta tarifa considerando los siguientes factores:
+                                <ul class="mt-2 mb-0 ps-0" style="list-style: none;">
+                                    @if($cotizacion->km_distancia)
+                                    <li class="mb-2"><i class='bx bx-map-alt me-2 text-primary'></i> <strong>Distancia de ruta:</strong> Traslado seguro calculando una ruta de {{ $cotizacion->km_distancia }} km.</li>
+                                    @endif
+                                    
+                                    <li class="mb-2"><i class='bx bx-time-five me-2 text-primary'></i> <strong>Tiempo de servicio:</strong> Cobertura base estipulada por {{ $cotizacion->horas_servicio ?? 1 }} hora(s).</li>
+                                    
+                                    @if($cotizacion->paramedicos_ids)
+                                    <li class="mb-2"><i class='bx bx-user-plus me-2 text-primary'></i> <strong>Personal médico:</strong> Asignación de {{ is_array($cotizacion->paramedicos_ids) ? count($cotizacion->paramedicos_ids) : 0 }} paramédico(s) altamente capacitado(s) para el viaje.</li>
+                                    @endif
+                                    
+                                    @if($cotizacion->insumos_seleccionados)
+                                    <li><i class='bx bx-injection me-2 text-primary'></i> <strong>Insumos especiales:</strong> Contempla {{ is_array($cotizacion->insumos_seleccionados) ? count($cotizacion->insumos_seleccionados) : 0 }} recurso(s) médico(s) adicional(es) para las necesidades específicas del paciente.</li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     @if($cotizacion->incluye)
@@ -527,19 +561,8 @@
                 </div>
                 @endif
 
-                <div class="d-flex gap-3 mt-auto">
-                    <a href="{{ route('cotizaciones.mis-solicitudes') }}" class="btn btn-outline-secondary px-4 py-2">
-                        <i class="bx bx-arrow-back me-1"></i> Volver
-                    </a>
-                    @if($cotizacion->estado === 'Aceptada')
-                    <a href="{{ route('cotizaciones.descargar', $cotizacion) }}" target="_blank" class="btn btn-outline-info px-4 py-2 ms-auto">
-                        <i class="bx bx-download me-1"></i> Descargar comprobante PDF
-                    </a>
-                    @endif
-                </div>
-                
+                @endif
             </div>
-            @endif
         </div>
 
     </div>

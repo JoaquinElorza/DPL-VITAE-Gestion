@@ -111,6 +111,22 @@
                 <dt class="col-5 text-muted">Tipo servicio</dt>
                 <dd class="col-7"><span class="badge bg-label-primary">{{ $cotizacion->tipo_servicio }}</span></dd>
 
+                <dt class="col-5 text-muted"><i class="bx bx-brain text-primary me-1"></i>Cluster (IA)</dt>
+                <dd class="col-7">
+                    @if($clusterCalculado === 'Bajo')
+                        <span class="badge bg-label-success">Bajo</span>
+                    @elseif($clusterCalculado === 'Medio')
+                        <span class="badge bg-label-warning">Medio</span>
+                    @else
+                        <span class="badge bg-label-danger">Alto</span>
+                    @endif
+                </dd>
+
+                @if(isset($precio_ia) && $precio_ia > 0)
+                <dt class="col-5 text-muted"><i class="bx bx-dollar-circle text-primary me-1"></i>Precio Sugerido (IA)</dt>
+                <dd class="col-7 fw-bold" style="color: #393395;">${{ number_format($precio_ia, 2) }}</dd>
+                @endif
+
                 @if($cotizacion->tipo_ambulancia_preferida)
                 <dt class="col-5 text-muted">Ambulancia preferida</dt>
                 <dd class="col-7"><span class="badge bg-label-warning"><i class="bx bx-star me-1"></i>{{ $cotizacion->tipo_ambulancia_preferida }}</span></dd>
@@ -121,6 +137,9 @@
 
                 <dt class="col-5 text-muted">Personas</dt>
                 <dd class="col-7">{{ $cotizacion->personas ?? '—' }}</dd>
+
+                <dt class="col-5 text-muted">Horas de servicio</dt>
+                <dd class="col-7">{{ $cotizacion->horas_servicio ?? '1' }} hora(s)</dd>
 
                 @if($cotizacion->origen)
                 <dt class="col-5 text-muted">Origen</dt>
@@ -142,132 +161,14 @@
                 <dd class="col-7">{{ $cotizacion->padecimientos_paciente }}</dd>
                 @endif
 
-                @if($cotizacion->nombre_paciente)
-                <dt class="col-5 text-muted">Paciente</dt>
-                <dd class="col-7">{{ $cotizacion->nombre_paciente }}</dd>
-                @endif
+
 
                 <dt class="col-5 text-muted">Descripción</dt>
                 <dd class="col-7">{{ $cotizacion->descripcion ?? '—' }}</dd>
             </dl>
         </div>
 
-        {{-- resumen del paquete --}}
-        @if($cotizacion->estado === 'Aceptada')
-        <div class="card-body border-top pt-3">
-            <h6 class="fw-bold text-success mb-3"><i class="bx bx-package me-1"></i>Paquete cotizado</h6>
-            <table class="table table-sm mb-2">
-                <tbody>
-                    <tr>
-                        <td class="text-muted">Kilómetros</td>
-                        <td class="text-end">{{ $cotizacion->km_distancia }} km × ${{ number_format($cotizacion->costo_km_unitario,2) }}</td>
-                        <td class="text-end fw-bold">${{ number_format($cotizacion->km_distancia * $cotizacion->costo_km_unitario, 2) }}</td>
-                    </tr>
-                    @if($cotizacion->costo_ambulancia)
-                    <tr>
-                        <td class="text-muted">Ambulancia</td>
-                        <td class="text-end">{{ $cotizacion->ambulancia?->tipo?->nombre_tipo ?? '—' }}</td>
-                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_ambulancia, 2) }}</td>
-                    </tr>
-                    @endif
-                    @if($cotizacion->costo_paramedicos)
-                    <tr>
-                        <td class="text-muted">Paramédicos</td>
-                        <td class="text-end">{{ count($cotizacion->paramedicos_ids ?? []) }} × {{ $cotizacion->horas_servicio }}h</td>
-                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_paramedicos, 2) }}</td>
-                    </tr>
-                    @endif
-                    @if($cotizacion->costo_insumos)
-                    <tr>
-                        <td class="text-muted">Insumos especiales</td>
-                        <td class="text-end">{{ count($cotizacion->insumos_seleccionados ?? []) }} artículo(s)</td>
-                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_insumos, 2) }}</td>
-                    </tr>
-                    @endif
-                    <tr class="table-success">
-                        <td colspan="2" class="fw-bold">TOTAL</td>
-                        <td class="text-end fw-bold fs-5">${{ number_format($cotizacion->costo, 2) }} MXN</td>
-                    </tr>
-                </tbody>
-            </table>
 
-            @if($cotizacion->incluye)
-            <strong class="small">El servicio incluye:</strong>
-            <div class="small text-muted mt-1" style="white-space:pre-line">{{ $cotizacion->incluye }}</div>
-            @endif
-
-            @if($cotizacion->respuesta)
-            <div class="alert alert-success mt-2 mb-0 py-2 small">{{ $cotizacion->respuesta }}</div>
-            @endif
-        </div>
-        @endif
-
-        @if($cotizacion->estado === 'Cancelada' && $cotizacion->respuesta)
-        <div class="card-body border-top pt-3">
-            <div class="alert alert-danger mb-0 small">
-                <strong>Motivo:</strong> {{ $cotizacion->respuesta }}
-            </div>
-        </div>
-        @endif
-
-        @if($cotizacion->datos_paciente)
-        <div class="card-body border-top pt-3">
-            <h6 class="fw-bold text-danger mb-3 small"><i class="bx bx-lock-alt me-1"></i>Datos confidenciales del paciente</h6>
-            <dl class="row small mb-0">
-                <dt class="col-5 text-muted">Nombre</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['nombre'] ?? '—' }}</dd>
-
-                <dt class="col-5 text-muted">Fecha de nacimiento</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['nacimiento'] ? \Carbon\Carbon::parse($cotizacion->datos_paciente['nacimiento'])->format('d/m/Y') : '—' }}</dd>
-
-                @if($cotizacion->datos_paciente['curp'] ?? null)
-                <dt class="col-5 text-muted">CURP</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['curp'] }}</dd>
-                @endif
-
-                @if($cotizacion->datos_paciente['tipo_sangre'] ?? null)
-                <dt class="col-5 text-muted">Tipo de sangre</dt>
-                <dd class="col-7"><span class="badge bg-label-danger">{{ $cotizacion->datos_paciente['tipo_sangre'] }}</span></dd>
-                @endif
-
-                <dt class="col-5 text-muted">Diagnóstico</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['diagnostico'] ?? '—' }}</dd>
-
-                @if($cotizacion->datos_paciente['alergias'] ?? null)
-                <dt class="col-5 text-muted">Alergias</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['alergias'] }}</dd>
-                @endif
-
-                @if($cotizacion->datos_paciente['medico'] ?? null)
-                <dt class="col-5 text-muted">Médico tratante</dt>
-                <dd class="col-7">{{ $cotizacion->datos_paciente['medico'] }}</dd>
-                @endif
-            </dl>
-        </div>
-        @endif
-
-        @if($cotizacion->decision_cliente)
-        <div class="card-body border-top pt-3">
-            <h6 class="fw-semibold mb-2 small text-uppercase text-muted">Respuesta del cliente</h6>
-            @if($cotizacion->decision_cliente === 'confirmada')
-                <div class="alert alert-success py-2 mb-0 small">
-                    <i class="bx bx-check-circle me-1"></i>
-                    <strong>El cliente confirmó el servicio.</strong>
-                    @if($cotizacion->comentario_cliente)
-                        <br>{{ $cotizacion->comentario_cliente }}
-                    @endif
-                </div>
-            @else
-                <div class="alert alert-danger py-2 mb-0 small">
-                    <i class="bx bx-x-circle me-1"></i>
-                    <strong>El cliente declinó la propuesta.</strong>
-                    @if($cotizacion->comentario_cliente)
-                        <br>{{ $cotizacion->comentario_cliente }}
-                    @endif
-                </div>
-            @endif
-        </div>
-        @endif
 
         @if($tieneMapa)
         <div class="px-3 py-2 d-flex justify-content-between align-items-center border-top">
@@ -284,16 +185,16 @@
 
     {{-- cambiar estado --}}
     @if(in_array($cotizacion->estado, ['Aceptada','Cancelada']))
-    <div class="card no-print">
-        <div class="card-body">
-            <form action="{{ route('cotizaciones.update', $cotizacion) }}" method="POST" class="d-flex gap-2">
+    <div class="card no-print border-0 shadow-sm mt-3">
+        <div class="card-body p-3">
+            <form action="{{ route('cotizaciones.update', $cotizacion) }}" method="POST" class="d-flex gap-2 align-items-center">
                 @csrf @method('PUT')
-                <select name="estado" class="form-select form-select-sm">
+                <select name="estado" class="form-select form-select-sm border-secondary shadow-none">
                     @foreach(['Pendiente','En revisión','Aceptada','Cancelada'] as $est)
                         <option value="{{ $est }}" {{ $cotizacion->estado === $est ? 'selected' : '' }}>{{ $est }}</option>
                     @endforeach
                 </select>
-                <button class="btn btn-sm btn-secondary text-nowrap">Cambiar</button>
+                <button class="btn btn-sm btn-primary rounded-pill text-nowrap shadow-sm px-3"><i class="bx bx-refresh me-1"></i>Actualizar</button>
             </form>
         </div>
     </div>
@@ -618,14 +519,7 @@
             <small class="text-muted">El cliente deberá pagar este monto antes de confirmar el servicio.</small>
         </div>
 
-        @if($cotizacion->tipo_servicio === 'Traslado')
-        <div class="mb-3">
-            <label class="form-label fw-semibold">Nombre del paciente</label>
-            <input type="text" name="nombre_paciente" class="form-control"
-                value="{{ old('nombre_paciente', $cotizacion->nombre_paciente) }}"
-                placeholder="Nombre completo del paciente a trasladar">
-        </div>
-        @endif
+
 
         <div class="mb-3">
             <label class="form-label fw-semibold">¿Qué incluye el servicio? <span class="text-danger">*</span></label>
@@ -670,25 +564,170 @@
         </form>
     </div>
 </div>
+</div>
+@else
+    {{-- BLOQUES MOVIDOS DE LA COLUMNA IZQUIERDA --}}
+    
+    {{-- resumen del paquete --}}
+    @if($cotizacion->estado === 'Aceptada')
+    <div class="card mb-4 border-success shadow-sm">
+        <div class="card-header bg-label-success">
+            <h6 class="mb-0 text-success"><i class="bx bx-package me-1"></i>Paquete cotizado</h6>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm mb-2">
+                <tbody>
+                    <tr>
+                        <td class="text-muted">Kilómetros</td>
+                        <td class="text-end">{{ $cotizacion->km_distancia }} km × ${{ number_format($cotizacion->costo_km_unitario,2) }}</td>
+                        <td class="text-end fw-bold">${{ number_format($cotizacion->km_distancia * $cotizacion->costo_km_unitario, 2) }}</td>
+                    </tr>
+                    @if($cotizacion->costo_ambulancia)
+                    <tr>
+                        <td class="text-muted">Ambulancia</td>
+                        <td class="text-end">{{ $cotizacion->ambulancia?->tipo?->nombre_tipo ?? '—' }}</td>
+                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_ambulancia, 2) }}</td>
+                    </tr>
+                    @endif
+                    @if($cotizacion->costo_paramedicos)
+                    <tr>
+                        <td class="text-muted">Paramédicos</td>
+                        <td class="text-end">{{ count($cotizacion->paramedicos_ids ?? []) }} × {{ $cotizacion->horas_servicio }}h</td>
+                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_paramedicos, 2) }}</td>
+                    </tr>
+                    @endif
+                    @if($cotizacion->costo_insumos)
+                    <tr>
+                        <td class="text-muted">Insumos especiales</td>
+                        <td class="text-end">{{ count($cotizacion->insumos_seleccionados ?? []) }} artículo(s)</td>
+                        <td class="text-end fw-bold">${{ number_format($cotizacion->costo_insumos, 2) }}</td>
+                    </tr>
+                    @endif
+                    @if(isset($precio_ia) && $precio_ia > 0)
+                    <tr style="background-color: rgba(138, 43, 226, 0.05);">
+                        <td colspan="2" class="fw-semibold" style="color: #8A2BE2;"><i class='bx bx-brain me-1'></i>Precio Sugerido por IA</td>
+                        <td class="text-end fw-bold" style="color: #8A2BE2;"><del class="text-muted me-1 small" style="font-size:0.75rem"></del>${{ number_format($precio_ia, 2) }}</td>
+                    </tr>
+                    @endif
+                    <tr class="table-success">
+                        <td colspan="2" class="fw-bold">TOTAL FINAL A PAGAR</td>
+                        <td class="text-end fw-bold fs-5 text-success">${{ number_format($cotizacion->costo, 2) }} MXN</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @if($cotizacion->incluye)
+            <strong class="small">El servicio incluye:</strong>
+            <div class="small text-muted mt-1" style="white-space:pre-line">{{ $cotizacion->incluye }}</div>
+            @endif
+
+            @if($cotizacion->respuesta)
+            <div class="alert alert-success mt-3 mb-0 py-2 small">{{ $cotizacion->respuesta }}</div>
+            @endif
+        </div>
+    </div>
+    @endif
+
+    @if($cotizacion->estado === 'Cancelada' && $cotizacion->respuesta)
+    <div class="card mb-4 border-danger shadow-sm">
+        <div class="card-header bg-label-danger">
+            <h6 class="mb-0 text-danger"><i class="bx bx-x-circle me-1"></i>Cotización Cancelada</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger mb-0 small">
+                <strong>Motivo:</strong> {{ $cotizacion->respuesta }}
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if($cotizacion->datos_paciente)
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header border-bottom">
+            <h6 class="fw-bold text-danger mb-0"><i class="bx bx-lock-alt me-1"></i>Datos confidenciales del paciente</h6>
+        </div>
+        <div class="card-body pt-3">
+            <dl class="row small mb-0">
+                <dt class="col-5 text-muted">Nombre</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['nombre'] ?? '—' }}</dd>
+
+                <dt class="col-5 text-muted">Fecha de nacimiento</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['nacimiento'] ? \Carbon\Carbon::parse($cotizacion->datos_paciente['nacimiento'])->format('d/m/Y') : '—' }}</dd>
+
+                @if($cotizacion->datos_paciente['curp'] ?? null)
+                <dt class="col-5 text-muted">CURP</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['curp'] }}</dd>
+                @endif
+
+                @if($cotizacion->datos_paciente['tipo_sangre'] ?? null)
+                <dt class="col-5 text-muted">Tipo de sangre</dt>
+                <dd class="col-7"><span class="badge bg-label-danger">{{ $cotizacion->datos_paciente['tipo_sangre'] }}</span></dd>
+                @endif
+
+                <dt class="col-5 text-muted">Diagnóstico</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['diagnostico'] ?? '—' }}</dd>
+
+                @if($cotizacion->datos_paciente['alergias'] ?? null)
+                <dt class="col-5 text-muted">Alergias</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['alergias'] }}</dd>
+                @endif
+
+                @if($cotizacion->datos_paciente['medico'] ?? null)
+                <dt class="col-5 text-muted">Médico tratante</dt>
+                <dd class="col-7">{{ $cotizacion->datos_paciente['medico'] }}</dd>
+                @endif
+            </dl>
+        </div>
+    </div>
+    @endif
+
+    @if($cotizacion->decision_cliente)
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header border-bottom">
+            <h6 class="fw-semibold mb-0 text-uppercase text-muted">Respuesta del cliente</h6>
+        </div>
+        <div class="card-body pt-3">
+            @if($cotizacion->decision_cliente === 'confirmada')
+                <div class="alert alert-success py-2 mb-0 small">
+                    <i class="bx bx-check-circle me-1"></i>
+                    <strong>El cliente confirmó el servicio.</strong>
+                    @if($cotizacion->comentario_cliente)
+                        <br>{{ $cotizacion->comentario_cliente }}
+                    @endif
+                </div>
+            @else
+                <div class="alert alert-danger py-2 mb-0 small">
+                    <i class="bx bx-x-circle me-1"></i>
+                    <strong>El cliente declinó la propuesta.</strong>
+                    @if($cotizacion->comentario_cliente)
+                        <br>{{ $cotizacion->comentario_cliente }}
+                    @endif
+                </div>
+            @endif
+        </div>
+    </div>
+    @endif
 @endif
 
 </div>
 </div>
 
-<div class="mt-3 d-flex gap-2 no-print">
-    <a href="{{ route('cotizaciones.index') }}" class="btn btn-secondary">
-        <i class="bx bx-arrow-back me-1"></i> Volver
+<div class="mt-4 d-flex gap-3 no-print p-3 rounded-4 shadow-sm bg-white border">
+    <a href="{{ route('cotizaciones.index') }}" class="btn btn-outline-secondary rounded-pill px-4">
+        <i class="bx bx-arrow-back me-1"></i> Volver al listado
     </a>
-    <button type="button" class="btn btn-outline-primary" onclick="window.print()">
-        <i class="bx bx-printer me-1"></i> Imprimir
-    </button>
-    <form action="{{ route('cotizaciones.destroy', $cotizacion) }}" method="POST"
-        onsubmit="return confirm('¿Eliminar esta cotización?')">
-        @csrf @method('DELETE')
-        <button type="submit" class="btn btn-outline-danger">
-            <i class="bx bx-trash me-1"></i> Eliminar
+    <div class="ms-auto d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary rounded-pill px-4" onclick="window.print()">
+            <i class="bx bx-printer me-1"></i> Imprimir
         </button>
-    </form>
+        <form action="{{ route('cotizaciones.destroy', $cotizacion) }}" method="POST"
+            onsubmit="return confirm('¿Estás seguro de eliminar esta cotización? Esta acción no se puede deshacer.')">
+            @csrf @method('DELETE')
+            <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
+                <i class="bx bx-trash me-1"></i> Eliminar
+            </button>
+        </form>
+    </div>
 </div>
 
 @php

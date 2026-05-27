@@ -45,6 +45,19 @@
         </div>
     @endif
 
+    @if(isset($insightTitulo))
+    <div class="alert border-0 shadow-sm mb-4 d-flex align-items-center" role="alert" style="background: {{ $insightColor === 'warning' ? 'linear-gradient(135deg, #FFB020 0%, #FF9A76 100%)' : 'linear-gradient(135deg, #38EF7D 0%, #11998E 100%)' }}; color: white; border-radius: 12px;">
+        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 48px; height: 48px; background: rgba(255,255,255,0.2);">
+            <i class='bx {{ $insightColor === 'warning' ? 'bx-error-circle' : 'bx-check-shield' }} fs-3 text-white'></i>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-1 text-white text-uppercase" style="letter-spacing: 0.5px; font-size: 0.8rem;">{{ $insightTitulo }}</h6>
+            <p class="mb-0 text-white fw-medium" style="opacity: 0.95; font-size: 0.95rem;">{{ $insightMensaje }}</p>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     <div class="card shadow-sm border-0">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2 bg-white border-bottom-0 pt-4 pb-3">
             <h5 class="mb-0 titulo-morado">Solicitudes de Cotización</h5>
@@ -72,6 +85,7 @@
                         <th class="fw-bold" style="color: var(--dpl-primary);">Teléfono</th>
                         <th class="fw-bold" style="color: var(--dpl-primary);">Tipo</th>
                         <th class="fw-bold" style="color: var(--dpl-primary);">Fecha requerida</th>
+                        <th class="fw-bold" style="color: var(--dpl-primary);"><i class='bx bx-brain me-1'></i>Valoración IA</th>
                         <th class="fw-bold" style="color: var(--dpl-primary);">Estado</th>
                         <th class="fw-bold" style="color: var(--dpl-primary);">Recibida</th>
                         <th class="text-center fw-bold" style="color: var(--dpl-primary);">Acciones</th>
@@ -85,6 +99,25 @@
                         <td><i class="bx bx-phone text-muted me-1"></i> {{ $cotizacion->telefono }}</td>
                         <td><i class="bx bx-category text-muted me-1"></i> {{ $cotizacion->tipo_servicio }}</td>
                         <td><i class="bx bx-calendar text-muted me-1"></i> {{ $cotizacion->fecha_requerida ? \Carbon\Carbon::parse($cotizacion->fecha_requerida)->format('d/m/Y') : '—' }}</td>
+                        <td>
+                            @if(isset($precios_ia[$cotizacion->id_cotizacion]))
+                                @php 
+                                    $c_cluster = $clusters_ia[$cotizacion->id_cotizacion] ?? 'Medio';
+                                    $c_color = match($c_cluster) {
+                                        'Bajo' => 'success',
+                                        'Medio' => 'warning',
+                                        'Alto' => 'danger',
+                                        default => 'secondary'
+                                    };
+                                @endphp
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold text-{{ $c_color }}">${{ number_format($precios_ia[$cotizacion->id_cotizacion], 2) }}</span>
+                                    <small class="text-muted" style="font-size: 0.7rem;"><span class="badge bg-label-{{ $c_color }} rounded-pill" style="font-size: 0.6rem; padding: 0.2em 0.5em;">{{ $c_cluster }}</span></small>
+                                </div>
+                            @else
+                                <span class="text-muted">—</span>
+                            @endif
+                        </td>
                         <td>
                             @php
                                 $color = match($cotizacion->estado) {
