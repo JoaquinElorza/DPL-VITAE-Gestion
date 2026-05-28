@@ -78,7 +78,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
 
         <div class="mb-6">
-            <label for="ap_paterno" class="form-label">{{ __('Apellido Paterno') }}</label>
+            <label for="ap_paterno" class="form-label">{{ __('Primer Apellido') }}</label>
             <input
                 wire:model="ap_paterno"
                 type="text"
@@ -86,7 +86,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 id="ap_paterno"
                 required
                 autocomplete="family-name"
-                placeholder="{{ __('Apellido Paterno') }}"
+                placeholder="{{ __('Primer Apellido') }}"
             >
             @error('ap_paterno')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -94,14 +94,14 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
 
         <div class="mb-6">
-            <label for="ap_materno" class="form-label">{{ __('Apellido Materno') }}</label>
+            <label for="ap_materno" class="form-label">{{ __('Segundo Apellido') }}</label>
             <input
                 wire:model="ap_materno"
                 type="text"
                 class="form-control @error('ap_materno') is-invalid @enderror"
                 id="ap_materno"
                 autocomplete="additional-name"
-                placeholder="{{ __('Apellido Materno (opcional)') }}"
+                placeholder="{{ __('Segundo Apellido (opcional)') }}"
             >
             @error('ap_materno')
                 <div class="invalid-feedback">{{ $message }}</div>

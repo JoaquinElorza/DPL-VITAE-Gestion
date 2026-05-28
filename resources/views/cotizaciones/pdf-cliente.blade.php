@@ -12,8 +12,8 @@
         .page { max-width: 780px; margin: 0 auto; padding: 32px 40px; }
 
         /* Encabezado */
-        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #696cff; padding-bottom: 16px; margin-bottom: 20px; }
-        .header-logo { font-size: 1.4rem; font-weight: 700; color: #696cff; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #7E57C2; padding-bottom: 16px; margin-bottom: 20px; }
+        .header-logo { font-size: 1.4rem; font-weight: 700; color: #7E57C2; }
         .header-info { text-align: right; color: #666; font-size: 12px; }
         .header-info strong { display: block; font-size: 14px; color: #2d2d2d; }
 
@@ -25,7 +25,7 @@
 
         /* Secciones */
         .section { margin-bottom: 20px; }
-        .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #696cff; border-bottom: 1px solid #e0e0ff; padding-bottom: 4px; margin-bottom: 10px; }
+        .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #7E57C2; border-bottom: 1px solid #d1c4e9; padding-bottom: 4px; margin-bottom: 10px; }
 
         /* Grid de datos */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
@@ -36,7 +36,7 @@
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         table th { background: #f5f5ff; padding: 6px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
         table td { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; }
-        table tr.total td { background: #f0f0ff; font-weight: 700; font-size: 15px; border-top: 2px solid #696cff; }
+        table tr.total td { background: #f3e5f5; font-weight: 700; font-size: 15px; border-top: 2px solid #7E57C2; }
         table td.right { text-align: right; }
 
         /* Anticipo */
@@ -57,7 +57,7 @@
         .footer { margin-top: 32px; border-top: 1px solid #e0e0e0; padding-top: 10px; text-align: center; font-size: 11px; color: #aaa; }
 
         /* Botón imprimir (se oculta al imprimir) */
-        .btn-print { position: fixed; top: 16px; right: 16px; background: #696cff; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit; box-shadow: 0 4px 12px rgba(105,108,255,.3); }
+        .btn-print { position: fixed; top: 16px; right: 16px; background: #7E57C2; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-family: inherit; box-shadow: 0 4px 12px rgba(105,108,255,.3); }
         .btn-print:hover { background: #5f63f2; }
 
         @media print {

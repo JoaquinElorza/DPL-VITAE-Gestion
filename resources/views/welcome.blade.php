@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $empresa->nombre ?? config('app.name') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -233,23 +235,117 @@ h1, h2, h3 {
 
     </style>
 </head>
+
 <body>
 
-{{-- ── Navbar ── --}}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-        @if($empresa && $empresa->logo_nombre)
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('storage/' . $empresa->logo_nombre) }}" alt="{{ $empresa->nombre }}">
-            </a>
-        @else
-            <a class="navbar-brand fw-bold text-primary" href="{{ route('home') }}">
-                {{ $empresa->nombre ?? config('app.name') }}
-            </a>
-        @endif
+    {{-- ── Navbar ── --}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            @if($empresa && $empresa->logo_nombre)
+                <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
+                    <img src="{{ asset('storage/' . $empresa->logo_nombre) }}" alt="{{ $empresa->nombre }}">
+                    <span class="fw-bold text-primary">{{ $empresa->nombre ?? config('app.name') }}</span>
+                </a>
+            @else
+                <a class="navbar-brand fw-bold text-primary" href="{{ route('home') }}">
+                    {{ $empresa->nombre ?? config('app.name') }}
+                </a>
+            @endif
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-            <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mision">Misión y Visión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#valores">Valores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+
+                    @auth
+                        <li class="nav-item">
+                            <a href="{{ route('cotizaciones.mis-solicitudes') }}" class="nav-link text-muted">
+                                <i class="bx bx-list-ul me-1"></i> Mis solicitudes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-primary btn-sm px-3">
+                                <i class="bx bx-calculator me-1"></i> Cotizar
+                            </a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-primary btn-sm px-3">
+                                <i class="bx bx-calculator me-1"></i> Cotizar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="btn btn-nav-login btn-sm px-4">Iniciar Sesión</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {{-- ── Hero Carousel ── --}}
+    <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
+            @if($empresa && $empresa->mision)
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
+            @endif
+            @if($empresa && $empresa->vision)
+                <button type="button" data-bs-target="#hero-carousel"
+                    data-bs-slide-to="{{ ($empresa && $empresa->mision) ? 2 : 1 }}"></button>
+            @endif
+        </div>
+
+        <div class="carousel-inner">
+            <div class="carousel-item active"
+                style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
+                @if($empresa && $empresa->imagen_nombre)
+                    <img src="{{ asset('storage/' . $empresa->imagen_nombre) }}" alt="">
+                @endif
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4 fw-bold">{{ $empresa->nombre ?? 'Bienvenido' }}</h1>
+                    @if($empresa && $empresa->slogan)
+                        <p class="lead">{{ $empresa->slogan }}</p>
+                    @endif
+                    <div class="d-flex gap-3 justify-content-center mt-3">
+                        <a href="#nosotros" class="btn btn-glass btn-lg px-5">Conoce más</a>
+                        <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bx bx-calculator me-2"></i>Solicitar Cotización
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            @if($empresa && $empresa->mision)
+                <div class="carousel-item" style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
+                    <div class="carousel-caption text-center">
+                        <h2 class="fw-bold mb-3"><i class="bx bx-target-lock me-2"></i>Nuestra Misión</h2>
+                        <p class="lead col-md-8 mx-auto">{{ $empresa->mision }}</p>
+                    </div>
+                </div>
+            @endif
+
+            @if($empresa && $empresa->vision)
+                <div class="carousel-item" style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
+                    <div class="carousel-caption text-center">
+                        <h2 class="fw-bold mb-3"><i class="bx bx-binoculars me-2"></i>Nuestra Visión</h2>
+                        <p class="lead col-md-8 mx-auto">{{ $empresa->vision }}</p>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navMain">
@@ -430,112 +526,9 @@ h1, h2, h3 {
                 </div>
             @endif
         </div>
-    </div>
-</section>
-@endif
+    </footer>
 
-{{-- ── Valores ── --}}
-@if($empresa && $empresa->valores)
-<section id="valores" class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Valores</h2>
-        </div>
-        @php
-            $valoresList = array_filter(
-                array_map('trim', preg_split('/[\n,]+/', $empresa->valores))
-            );
-        @endphp
-        <div class="row g-3 justify-content-center">
-            @foreach($valoresList as $valor)
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card card-info text-center p-3">
-                    <i class="bx bx-check-shield text-primary fs-2 mb-2"></i>
-                    <p class="fw-semibold mb-0">{{ $valor }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ── Contacto ── --}}
-@if($empresa && ($empresa->telefono || $empresa->correo || $empresa->sitio_web || $empresa->direccion))
-<section id="contacto" class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Contacto</h2>
-        </div>
-        <div class="row g-4 justify-content-center">
-            @if($empresa->telefono)
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-info text-center p-4">
-                    <i class="bx bx-phone text-primary fs-2 mb-2"></i>
-                    <h6 class="fw-semibold">Teléfono</h6>
-                    <p class="text-muted mb-0">{{ $empresa->telefono }}</p>
-                </div>
-            </div>
-            @endif
-            @if($empresa->correo)
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-info text-center p-4">
-                    <i class="bx bx-envelope text-primary fs-2 mb-2"></i>
-                    <h6 class="fw-semibold">Correo</h6>
-                    <p class="text-muted mb-0">{{ $empresa->correo }}</p>
-                </div>
-            </div>
-            @endif
-            @if($empresa->sitio_web)
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-info text-center p-4">
-                    <i class="bx bx-globe text-primary fs-2 mb-2"></i>
-                    <h6 class="fw-semibold">Sitio Web</h6>
-                    <a href="{{ $empresa->sitio_web }}" target="_blank" class="text-primary">
-                        {{ $empresa->sitio_web }}
-                    </a>
-                </div>
-            </div>
-            @endif
-            @if($empresa->direccion)
-            <div class="col-sm-6 col-md-3">
-                <div class="card card-info text-center p-4">
-                    <i class="bx bx-map text-primary fs-2 mb-2"></i>
-                    <h6 class="fw-semibold">Dirección</h6>
-                    <p class="text-muted mb-0">{{ $empresa->direccion }}</p>
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- Sin empresa registrada --}}
-@if(!$empresa)
-<section class="py-5 text-center">
-    <div class="container">
-        <i class="bx bx-info-circle text-muted" style="font-size:4rem;"></i>
-        <h3 class="mt-3 text-muted">Aún no hay información de la empresa.</h3>
-        <a href="{{ route('login') }}" class="btn btn-primary mt-3">Configurar desde el panel</a>
-    </div>
-</section>
-@endif
-
-{{-- ── Footer ── --}}
-<footer class="py-4">
-    <div class="container text-center">
-        <p class="mb-1">
-            &copy; {{ date('Y') }}
-            <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong>
-            — Todos los derechos reservados.
-        </p>
-        @if($empresa && $empresa->correo)
-            <small><a href="mailto:{{ $empresa->correo }}">{{ $empresa->correo }}</a></small>
-        @endif
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

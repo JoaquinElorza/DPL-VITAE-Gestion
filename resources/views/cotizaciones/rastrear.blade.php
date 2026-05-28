@@ -19,9 +19,53 @@
             background: #e0e0e0; border: 2px solid #fff;
         }
         .timeline-step.done::before   { background: #71dd37; }
-        .timeline-step.active::before { background: #696cff; }
+        .timeline-step.active::before { background: #8A2BE2; }
         .costo-badge { font-size: 2rem; font-weight: 700; color: #71dd37; }
-        footer { background: #1a1a2e; color: #b0b0c0; }
+        footer { background: linear-gradient(135deg, #393395, #8A2BE2); color: #ffffff; }
+
+        /* Overrides de colores unificados (Admin Estética) */
+        .text-primary { color: #8A2BE2 !important; }
+        .text-info { color: #393395 !important; }
+        
+        .btn { border-radius: 50rem !important; }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important; 
+            border: none !important; 
+            box-shadow: 0 4px 14px 0 rgba(186, 85, 211, 0.39) !important; 
+            transition: all 0.3s ease;
+            color: #fff !important;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #6A5ACD, #483D8B) !important; 
+            box-shadow: 0 6px 20px rgba(186, 85, 211, 0.4) !important; 
+            transform: translateY(-2px); 
+        }
+        
+        .btn-outline-primary { 
+            color: #BA55D3 !important; 
+            border: 1px solid #BA55D3 !important; 
+            background: transparent !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover { 
+            background: #BA55D3 !important;
+            color: #fff !important; 
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            color: #191970 !important;
+            border: 1px solid rgba(25, 25, 112, 0.3) !important;
+            background: #ffffff !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-secondary:hover {
+            background: linear-gradient(135deg, rgba(25, 25, 112, 0.08), rgba(25, 25, 112, 0.1)) !important;
+            color: #191970 !important;
+            border-color: rgba(25, 25, 112, 0.6) !important;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -230,7 +274,7 @@
     </div>
 </section>
 
-<footer class="py-4 mt-5">
+<footer class="py-4 mt-5" style="background: linear-gradient(135deg, #BA55D3, #6A5ACD); color: #ffffff;">
     <div class="container text-center">
         <p class="mb-0">&copy; {{ date('Y') }} <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong> — Todos los derechos reservados.</p>
     </div>

@@ -43,16 +43,16 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Apellido Paterno <span class="text-danger">*</span></label>
+                                    <label class="form-label">Primer Apellido <span class="text-danger">*</span></label>
                                     <input type="text" wire:model="ap_paterno" class="form-control @error('ap_paterno') is-invalid @enderror"
-                                        placeholder="Apellido Paterno">
+                                        placeholder="Primer Apellido">
                                     @error('ap_paterno') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Apellido Materno</label>
+                                    <label class="form-label">Segundo Apellido</label>
                                     <input type="text" wire:model="ap_materno" class="form-control @error('ap_materno') is-invalid @enderror"
-                                        placeholder="Apellido Materno (opcional)">
+                                        placeholder="Segundo Apellido (opcional)">
                                     @error('ap_materno') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 

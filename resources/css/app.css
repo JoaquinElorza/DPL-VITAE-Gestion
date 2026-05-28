@@ -1,26 +1,45 @@
 /* ── Componentes de perfil de usuario ── */
 .perfil-initials {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-    color: #fff; font-size: 1.1rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #BA55D3, #6A5ACD);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 }
+
 .perfil-initials.lg {
-    width: 64px; height: 64px;
+    width: 64px;
+    height: 64px;
     font-size: 1.5rem;
 }
+
 .role-chip {
-    display: inline-flex; align-items: center; gap: .3rem;
-    padding: .2rem .65rem; border-radius: 20px;
-    font-size: .75rem; font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .2rem .65rem;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 600;
 }
+
 .navbar-perfil-btn {
-    background: none; border: none; padding: 0; width: 100%;
-    text-align: left; cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
     border-radius: .375rem;
     transition: background .15s;
 }
+
 .navbar-perfil-btn:hover {
     background: rgba(105, 108, 255, .06);
 }
@@ -57,8 +76,8 @@
     background: #566a7f;
     border-radius: 2px;
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity   0.28s ease,
-                width     0.28s ease;
+        opacity 0.28s ease,
+        width 0.28s ease;
     transform-origin: center;
 }
 
@@ -67,11 +86,13 @@
 .sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
 }
+
 .hamburger-btn.is-open .hamburger-icon span:nth-child(2),
 .sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(2) {
     opacity: 0;
     width: 0;
 }
+
 .hamburger-btn.is-open .hamburger-icon span:nth-child(3),
 .sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(3) {
     transform: translateY(-6px) rotate(-45deg);
@@ -81,7 +102,10 @@
 /* ── Hamburguesa como ítem del sidebar ── */
 /* Elimina la flecha que el template agrega a menu-link */
 #sidebar-close-btn::after,
-#sidebar-close-btn::before { display: none !important; }
+#sidebar-close-btn::before {
+    display: none !important;
+}
+
 .sidebar-hamburger-btn .hamburger-icon {
     width: 18px;
     height: 13px;
@@ -96,13 +120,22 @@
     width: 100%;
     background: currentColor;
     border-radius: 2px;
-    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease, width 0.28s ease;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, width 0.28s ease;
     transform-origin: center;
 }
 
-.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(2) { opacity: 0; width: 0; }
-.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+}
+
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+    width: 0;
+}
+
+.sidebar-hamburger-btn.is-open .hamburger-icon span:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+}
 
 /* ── Paginación en tablas ── */
 .card-footer:has(.pagination) {
@@ -128,139 +161,148 @@
 
 /* ── Menú lateral (animaciones) ── */
 #layout-menu {
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.28s ease;
-  will-change: transform;
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.28s ease;
+    will-change: transform;
 }
 
 /* Anima el desplazamiento del contenido principal al plegar/desplegar */
 .layout-page {
-  transition: padding-inline-start 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: padding-inline-start 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Overlay semitransparente (solo en móvil cuando el menú está desplegado) */
 .menu-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(67, 89, 113, 0.55);
-  z-index: 1048;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.28s ease, visibility 0s 0.28s;
-  cursor: pointer;
+    position: fixed;
+    inset: 0;
+    background: rgba(67, 89, 113, 0.55);
+    z-index: 1048;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.28s ease, visibility 0s 0.28s;
+    cursor: pointer;
 }
 
 .menu-backdrop.show {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.28s ease, visibility 0s 0s;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.28s ease, visibility 0s 0s;
 }
 
 /* ── Botón hamburguesa en navbar (móvil) ── */
 .navbar-hamburger-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  transition: background 0.15s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.15s;
 }
+
 .navbar-hamburger-btn:hover {
-  background: rgba(105, 108, 255, 0.08);
+    background: rgba(105, 108, 255, 0.08);
 }
+
 .navbar-hamburger-btn .hamburger-icon {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 20px;
-  height: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20px;
+    height: 14px;
 }
+
 .navbar-hamburger-btn .hamburger-icon span {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: #566a7f;
-  border-radius: 2px;
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: #566a7f;
+    border-radius: 2px;
 }
 
 /* ── Dropdown de usuario: responsivo ── */
 .navbar-dropdown .dropdown-menu {
-  min-width: 280px;
+    min-width: 280px;
 }
 
 @media (max-width: 480px) {
-  .navbar-dropdown .dropdown-menu {
-    min-width: calc(100vw - 2rem);
-    max-width: calc(100vw - 2rem);
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-    top: calc(100% + 8px) !important;
-  }
+    .navbar-dropdown .dropdown-menu {
+        min-width: calc(100vw - 2rem);
+        max-width: calc(100vw - 2rem);
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        top: calc(100% + 8px) !important;
+    }
 }
 
 /* ── Navbar: ajustes móvil ── */
 @media (max-width: 575.98px) {
-  #layout-navbar {
-    padding-left: .75rem;
-    padding-right: .75rem;
-  }
+    #layout-navbar {
+        padding-left: .75rem;
+        padding-right: .75rem;
+    }
 
-  .navbar-dropdown .perfil-initials {
-    width: 34px !important;
-    height: 34px !important;
-    font-size: .8rem !important;
-  }
+    .navbar-dropdown .perfil-initials {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: .8rem !important;
+    }
 }
 
 /* ── Custom Theme Styles: Blanco, Morado y Azul ── */
 
 ::selection {
-    background-color: rgba(139, 92, 246, 0.2);
-    color: #8b5cf6;
+    background-color: rgba(186, 85, 211, 0.2);
+    color: #BA55D3;
+}
+
+/* ── Estilo Global de Botones (Píldora) ── */
+.btn {
+    border-radius: 50rem !important;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important;
     border: none !important;
-    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39) !important;
+    box-shadow: 0 4px 14px 0 rgba(186, 85, 211, 0.39) !important;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+    background: linear-gradient(135deg, #6A5ACD, #483D8B) !important;
+    box-shadow: 0 6px 20px rgba(186, 85, 211, 0.4) !important;
     transform: translateY(-2px);
 }
 
 .btn-info {
-    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    background: linear-gradient(135deg, #191970, #191970) !important;
     border: none !important;
-    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39) !important;
+    box-shadow: 0 4px 14px 0 rgba(25, 25, 112, 0.39) !important;
     transition: all 0.3s ease;
 }
 
 .btn-info:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+    background: linear-gradient(135deg, #191970, #172554) !important;
+    box-shadow: 0 6px 20px rgba(25, 25, 112, 0.4) !important;
     transform: translateY(-2px);
 }
 
 body {
-    background: #ffffff; /* Blanco de base */
+    background: #ffffff;
+    /* Blanco de base */
     background: linear-gradient(135deg, #ffffff 0%, #f4f7ff 100%) !important;
     background-attachment: fixed !important;
 }
 
 /* Efectos en tarjetas para mantener el contraste sobre blanco */
 .card {
-    border: 1px solid rgba(139, 92, 246, 0.08);
-    box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.03);
+    border: 1px solid rgba(25, 25, 112, 0.08);
+    box-shadow: 0 4px 24px 0 rgba(25, 25, 112, 0.03);
     transition: all 0.3s ease-in-out;
 }
 
 .card:hover {
-    box-shadow: 0 8px 32px 0 rgba(139, 92, 246, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(25, 25, 112, 0.1);
 }
 
 /* ── Estilos Premium para Tablas ── */
@@ -268,7 +310,7 @@ body {
 .table-responsive {
     border-radius: 0.5rem;
     overflow: hidden;
-    box-shadow: 0 4px 15px 0 rgba(139, 92, 246, 0.05);
+    box-shadow: 0 4px 15px 0 rgba(25, 25, 112, 0.05);
 }
 
 .table {
@@ -277,7 +319,7 @@ body {
 }
 
 .table thead {
-    background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+    background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important;
 }
 
 .table thead th {
@@ -297,13 +339,13 @@ body {
 }
 
 .table tbody tr:hover {
-    background-color: rgba(139, 92, 246, 0.04) !important;
+    background-color: rgba(186, 85, 211, 0.04) !important;
 }
 
 .table tbody td {
     padding: 1rem;
     vertical-align: middle;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.08);
+    border-bottom: 1px solid rgba(25, 25, 112, 0.08);
 }
 
 .table tbody tr:last-child td {
@@ -313,8 +355,8 @@ body {
 /* ── Estilos Premium para Sidebar (Menú Izquierdo) ── */
 
 #layout-menu {
-    background: linear-gradient(180deg, #8b5cf6 0%, #3b82f6 100%) !important;
-    box-shadow: 4px 0 20px rgba(139, 92, 246, 0.15) !important;
+    background: linear-gradient(180deg, #191970 0%, #6A5ACD 40%, #BA55D3 80%, #F08080 100%) !important;
+    box-shadow: 4px 0 20px rgba(25, 25, 112, 0.15) !important;
     border-right: none !important;
 }
 
@@ -331,23 +373,23 @@ body {
     color: rgba(255, 255, 255, 0.8) !important;
 }
 
-#layout-menu .menu-item.active > .menu-link {
+#layout-menu .menu-item.active>.menu-link {
     background: rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-#layout-menu .menu-item.active > .menu-link .menu-icon {
+#layout-menu .menu-item.active>.menu-link .menu-icon {
     color: #ffffff !important;
 }
 
-#layout-menu .menu-item > .menu-link:hover {
+#layout-menu .menu-item>.menu-link:hover {
     background: rgba(255, 255, 255, 0.1) !important;
     color: #ffffff !important;
 }
 
-#layout-menu .menu-item > .menu-link:hover .menu-icon {
+#layout-menu .menu-item>.menu-link:hover .menu-icon {
     color: #ffffff !important;
 }
 
@@ -367,8 +409,8 @@ body {
 /* ── Estilo personalizado para el botón Limpiar ── */
 .btn-limpiar {
     background-color: #ffffff;
-    color: #8b5cf6;
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #BA55D3;
+    border: 1px solid rgba(186, 85, 211, 0.3);
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
@@ -376,16 +418,15 @@ body {
 }
 
 .btn-limpiar:hover {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1)) !important;
-    color: #7c3aed !important;
-    border-color: rgba(139, 92, 246, 0.6) !important;
+    background: linear-gradient(135deg, rgba(186, 85, 211, 0.1), rgba(186, 85, 211, 0.15)) !important;
+    color: #6A5ACD !important;
+    border-color: rgba(186, 85, 211, 0.6) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.15) !important;
+    box-shadow: 0 4px 10px rgba(186, 85, 211, 0.15) !important;
 }
 
-/* ── Estilo personalizado para el botón Cerrar sesión ── */
 .dropdown-item-logout {
-    color: #8b5cf6 !important;
+    color: #F08080 !important;
     font-weight: 500;
     transition: all 0.3s ease;
     border-radius: 6px;
@@ -394,25 +435,162 @@ body {
 }
 
 .dropdown-item-logout:hover {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1)) !important;
-    color: #7c3aed !important;
+    background: linear-gradient(135deg, rgba(240, 128, 128, 0.1), rgba(240, 128, 128, 0.15)) !important;
+    color: #CD5C5C !important;
     transform: translateX(4px);
 }
 
 /* ── Estilos unificados para botones secundarios (Cancelar) ── */
 .btn-secondary {
     background-color: #ffffff !important;
-    color: #8b5cf6 !important;
-    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    color: #191970 !important;
+    background: linear-gradient(180deg, #191970 0%, #6A5ACD 40%, #BA55D3 80%, #F08080 100%) !important;
+    box-shadow: 4px 0 20px rgba(25, 25, 112, 0.15) !important;
+    border-right: none !important;
+}
+
+#layout-menu .app-brand-text {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-link,
+#layout-menu .menu-horizontal-wrapper .menu-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#layout-menu .menu-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#layout-menu .menu-item.active>.menu-link {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+#layout-menu .menu-item.active>.menu-link .menu-icon {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-item>.menu-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-item>.menu-link:hover .menu-icon {
+    color: #ffffff !important;
+}
+
+#layout-menu .menu-header-text {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#layout-menu .menu-sub {
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Color del botón hamburguesa del sidebar */
+#layout-menu .sidebar-hamburger-btn .hamburger-icon span {
+    background: #ffffff !important;
+}
+
+/* ── Estilo personalizado para el botón Limpiar ── */
+.btn-limpiar {
+    background-color: #ffffff;
+    color: #BA55D3;
+    border: 1px solid rgba(186, 85, 211, 0.3);
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.05) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-limpiar:hover {
+    background: linear-gradient(135deg, rgba(186, 85, 211, 0.1), rgba(186, 85, 211, 0.15)) !important;
+    color: #6A5ACD !important;
+    border-color: rgba(186, 85, 211, 0.6) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(186, 85, 211, 0.15) !important;
+}
+
+.dropdown-item-logout {
+    color: #F08080 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin: 0 8px;
+    width: calc(100% - 16px) !important;
+}
+
+.dropdown-item-logout:hover {
+    background: linear-gradient(135deg, rgba(240, 128, 128, 0.1), rgba(240, 128, 128, 0.15)) !important;
+    color: #CD5C5C !important;
+    transform: translateX(4px);
+}
+
+/* ── Estilos unificados para botones secundarios (Cancelar) ── */
+.btn-secondary {
+    background-color: #ffffff !important;
+    color: #191970 !important;
+    border: 1px solid rgba(25, 25, 112, 0.3) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(25, 25, 112, 0.05) !important;
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08)) !important;
-    color: #7c3aed !important;
-    border-color: rgba(139, 92, 246, 0.6) !important;
+    background: linear-gradient(135deg, rgba(25, 25, 112, 0.08), rgba(25, 25, 112, 0.1)) !important;
+    color: #191970 !important;
+    border-color: rgba(25, 25, 112, 0.6) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(25, 25, 112, 0.15) !important;
 }
 
+/* ── Botones de Acciones en Tablas (Sobrescribiendo outlines) ── */
+.btn-info,
+.btn-outline-info {
+    background: #393395 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(57, 51, 149, 0.2) !important;
+}
+
+.btn-info:hover,
+.btn-outline-info:hover {
+    background: #2a2575 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(57, 51, 149, 0.3) !important;
+}
+
+.btn-warning,
+.btn-outline-warning {
+    background: #BA55D3 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(186, 85, 211, 0.2) !important;
+}
+
+.btn-warning:hover,
+.btn-outline-warning:hover {
+    background: #9d3eb5 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(186, 85, 211, 0.3) !important;
+}
+
+.btn-danger,
+.btn-outline-danger {
+    background: #F08080 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(240, 128, 128, 0.2) !important;
+}
+
+.btn-danger:hover,
+.btn-outline-danger:hover {
+    background: #d66464 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(240, 128, 128, 0.3) !important;
+}

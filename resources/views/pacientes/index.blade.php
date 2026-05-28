@@ -27,8 +27,8 @@
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
-                        <th>Ap. Paterno</th>
-                        <th>Ap. Materno</th>
+                        <th>Primer Apellido</th>
+                        <th>Segundo Apellido</th>
                         <th>Sexo</th>
                         <th>Fecha Nac.</th>
                         <th>Servicio</th>

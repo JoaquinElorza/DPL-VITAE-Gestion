@@ -31,12 +31,12 @@
                                 @error('nombre')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-muted fw-medium">Apellido Paterno <span class="text-danger">*</span></label>
+                                <label class="form-label text-muted fw-medium">Primer Apellido <span class="text-danger">*</span></label>
                                 <input type="text" name="ap_paterno" class="form-control @error('ap_paterno') is-invalid @enderror" value="{{ old('ap_paterno') }}" placeholder="Primer apellido" required>
                                 @error('ap_paterno')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-muted fw-medium">Apellido Materno</label>
+                                <label class="form-label text-muted fw-medium">Segundo Apellido</label>
                                 <input type="text" name="ap_materno" class="form-control @error('ap_materno') is-invalid @enderror" value="{{ old('ap_materno') }}" placeholder="Segundo apellido">
                                 @error('ap_materno')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
@@ -83,8 +83,8 @@
                         </div>
 
                         <div class="mt-5 d-flex align-items-center">
-                            <button type="submit" class="btn btn-primary px-4 shadow-sm" style="transform: none;"><i class="bx bx-save me-2"></i>Crear Cliente</button>
-                            <a href="{{ route('clientes.index') }}" class="btn btn-secondary ms-3"><i class="bx bx-x me-1"></i>Cancelar</a>
+                            <button type="submit" class="btn btn-info px-4 shadow-sm" style="transform: none;"><i class="bx bx-save me-2"></i>Crear Cliente</button>
+                            <a href="{{ route('clientes.index') }}" class="btn btn-danger ms-3"><i class="bx bx-x me-1"></i>Cancelar</a>
                         </div>
                     </form>
                 </div>

@@ -12,9 +12,9 @@
                         <dd class="col-sm-8">{{ $cliente->id_usuario }}</dd>
                         <dt class="col-sm-4">Nombre</dt>
                         <dd class="col-sm-8">{{ $cliente->usuario->nombre ?? '—' }}</dd>
-                        <dt class="col-sm-4">Apellido Paterno</dt>
+                        <dt class="col-sm-4">Primer Apellido</dt>
                         <dd class="col-sm-8">{{ $cliente->usuario->ap_paterno ?? '—' }}</dd>
-                        <dt class="col-sm-4">Apellido Materno</dt>
+                        <dt class="col-sm-4">Segundo Apellido</dt>
                         <dd class="col-sm-8">{{ $cliente->usuario->ap_materno ?? '—' }}</dd>
                         <dt class="col-sm-4">Email</dt>
                         <dd class="col-sm-8">{{ $cliente->usuario->email ?? '—' }}</dd>

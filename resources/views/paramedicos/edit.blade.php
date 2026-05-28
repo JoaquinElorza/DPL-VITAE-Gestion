@@ -140,7 +140,7 @@
             </div>
 
             <div class="d-flex gap-2 mb-4">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-info">
                     <i class="bx bx-save me-1"></i> Guardar cambios
                 </button>
                 <a href="{{ route('paramedicos.index') }}" class="btn btn-outline-secondary">Cancelar</a>

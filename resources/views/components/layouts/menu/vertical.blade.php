@@ -81,19 +81,11 @@
       </a>
     </li>
 
-    <li class="menu-item {{ request()->is('pacientes*') || request()->is('padecimientos*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Pacientes">
+    <li class="menu-item {{ request()->is('pacientes*') ? 'active' : '' }}">
+      <a class="menu-link" href="{{ route('pacientes.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Pacientes">
         <i class="menu-icon tf-icons bx bx-user-circle"></i>
         <div class="text-truncate">Pacientes</div>
       </a>
-      <ul class="menu-sub">
-        <li class="menu-item {{ request()->is('pacientes') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('pacientes.index') }}" wire:navigate>Pacientes</a>
-        </li>
-        <li class="menu-item {{ request()->is('padecimientos*') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('padecimientos.index') }}" wire:navigate>Padecimientos</a>
-        </li>
-      </ul>
     </li>
 
     <li class="menu-header small text-uppercase">
@@ -142,20 +134,6 @@
 
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Catálogos</span>
-    </li>
-
-    <li class="menu-item {{ request()->is('insumos*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('insumos.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Insumos">
-        <i class="menu-icon tf-icons bx bx-package"></i>
-        <div class="text-truncate">Insumos</div>
-      </a>
-    </li>
-
-    <li class="menu-item {{ request()->is('empresas*') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('empresas.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Empresas">
-        <i class="menu-icon tf-icons bx bx-buildings"></i>
-        <div class="text-truncate">Empresas</div>
-      </a>
     </li>
 
     <li class="menu-item {{ request()->is('cotizaciones*') ? 'active' : '' }}">

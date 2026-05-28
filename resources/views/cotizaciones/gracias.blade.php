@@ -15,10 +15,54 @@
             margin: 0 auto 1.5rem;
         }
         .guia-box {
-            background: #f0f0ff; border: 2px dashed #696cff;
+            background: rgba(138, 43, 226, 0.05); border: 2px dashed #8A2BE2;
             border-radius: 12px; padding: 1.25rem;
         }
-        .guia-number { font-size: 1.6rem; font-weight: 700; color: #696cff; letter-spacing: 2px; }
+        .guia-number { font-size: 1.6rem; font-weight: 700; color: #8A2BE2; letter-spacing: 2px; }
+
+        /* Overrides de colores unificados (Admin Estética) */
+        .text-primary { color: #8A2BE2 !important; }
+        .text-info { color: #393395 !important; }
+        
+        .btn { border-radius: 50rem !important; }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important; 
+            border: none !important; 
+            box-shadow: 0 4px 14px 0 rgba(186, 85, 211, 0.39) !important; 
+            transition: all 0.3s ease;
+            color: #fff !important;
+        }
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, #6A5ACD, #483D8B) !important; 
+            box-shadow: 0 6px 20px rgba(186, 85, 211, 0.4) !important; 
+            transform: translateY(-2px); 
+        }
+        
+        .btn-outline-primary { 
+            color: #BA55D3 !important; 
+            border: 1px solid #BA55D3 !important; 
+            background: transparent !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary:hover { 
+            background: #BA55D3 !important;
+            color: #fff !important; 
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-secondary {
+            color: #191970 !important;
+            border: 1px solid rgba(25, 25, 112, 0.3) !important;
+            background: #ffffff !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-secondary:hover {
+            background: linear-gradient(135deg, rgba(25, 25, 112, 0.08), rgba(25, 25, 112, 0.1)) !important;
+            color: #191970 !important;
+            border-color: rgba(25, 25, 112, 0.6) !important;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>

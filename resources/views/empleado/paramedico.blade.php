@@ -11,13 +11,13 @@
 @section('vendor-style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css">
 <style>
-    .estado-Activo     { background:#e8e8ff; color:#696cff; }
+    .estado-Activo     { background:#ede7f6; color:#7E57C2; }
     .estado-Finalizado { background:#f0f0f0; color:#8592a3; }
     .estado-Cancelado  { background:#ffe0dc; color:#ff3e1d; }
     .estado-default    { background:#fff4de; color:#ffab00; }
 
     .fc .fc-toolbar-title { font-size:1.05rem; font-weight:700; }
-    .fc .fc-button-primary { background:#696cff; border-color:#696cff; }
+    .fc .fc-button-primary { background:#7E57C2; border-color:#7E57C2; }
     .fc .fc-button-primary:hover,
     .fc .fc-button-primary:not(:disabled):active,
     .fc .fc-button-primary:not(:disabled).fc-button-active { background:#5f63f2; border-color:#5f63f2; }
@@ -48,58 +48,58 @@
 
 <div class="row g-4 mb-4">
     <div class="col-6 col-xl-3">
-        <div class="card">
-            <div class="card-body d-flex align-items-center justify-content-between gap-2">
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(25, 25, 112, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(57, 51, 149, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(25, 25, 112, 0.05)';">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
                 <div>
-                    <span class="fw-medium d-block mb-1 small">Hoy</span>
-                    <h3 class="card-title mb-0">{{ $serviciosHoy->count() }}</h3>
+                    <span class="fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #8A2BE2;">Hoy</span>
+                    <h3 class="card-title mb-0 fw-bold" style="color: #393395;">{{ $serviciosHoy->count() }}</h3>
                     <small class="text-muted">{{ $serviciosHoy->count() === 1 ? 'ruta' : 'rutas' }}</small>
                 </div>
-                <span class="avatar-initial rounded bg-label-primary" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
-                    <i class="bx bx-calendar-check"></i>
-                </span>
+                <div class="p-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="background-color: rgba(57, 51, 149, 0.1); color: #393395;">
+                    <i class="bx bx-calendar-check fs-3"></i>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-6 col-xl-3">
-        <div class="card">
-            <div class="card-body d-flex align-items-center justify-content-between gap-2">
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(186, 85, 211, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(186, 85, 211, 0.05)';">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
                 <div>
-                    <span class="fw-medium d-block mb-1 small">Este mes</span>
-                    <h3 class="card-title mb-0">{{ $totalMes }}</h3>
+                    <span class="fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #BA55D3;">Este mes</span>
+                    <h3 class="card-title mb-0 fw-bold" style="color: #BA55D3;">{{ $totalMes }}</h3>
                     <small class="text-muted">servicios</small>
                 </div>
-                <span class="avatar-initial rounded bg-label-info" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
-                    <i class="bx bx-calendar"></i>
-                </span>
+                <div class="p-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="background-color: rgba(186, 85, 211, 0.1); color: #BA55D3;">
+                    <i class="bx bx-calendar fs-3"></i>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-6 col-xl-3">
-        <div class="card">
-            <div class="card-body d-flex align-items-center justify-content-between gap-2">
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(138, 43, 226, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(138, 43, 226, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(138, 43, 226, 0.05)';">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
                 <div>
-                    <span class="fw-medium d-block mb-1 small">Próximas</span>
-                    <h3 class="card-title mb-0">{{ $proximos->count() }}</h3>
+                    <span class="fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #8A2BE2;">Próximas</span>
+                    <h3 class="card-title mb-0 fw-bold" style="color: #8A2BE2;">{{ $proximos->count() }}</h3>
                     <small class="text-muted">pendientes</small>
                 </div>
-                <span class="avatar-initial rounded bg-label-warning" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
-                    <i class="bx bx-time-five"></i>
-                </span>
+                <div class="p-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2;">
+                    <i class="bx bx-time-five fs-3"></i>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-6 col-xl-3">
-        <div class="card">
-            <div class="card-body d-flex align-items-center justify-content-between gap-2">
+        <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(240, 128, 128, 0.05);" onmouseover="this.style.boxShadow='0 12px 25px rgba(240, 128, 128, 0.15)';" onmouseout="this.style.boxShadow='0 4px 15px rgba(240, 128, 128, 0.05)';">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
                 <div>
-                    <span class="fw-medium d-block mb-1 small">Completadas</span>
-                    <h3 class="card-title mb-0">{{ $completados }}</h3>
+                    <span class="fw-semibold d-block mb-1 text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px; color: #F08080;">Completadas</span>
+                    <h3 class="card-title mb-0 fw-bold" style="color: #F08080;">{{ $completados }}</h3>
                     <small class="text-muted">finalizadas</small>
                 </div>
-                <span class="avatar-initial rounded bg-label-success" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
-                    <i class="bx bx-check-circle"></i>
-                </span>
+                <div class="p-3 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="background-color: rgba(240, 128, 128, 0.1); color: #F08080;">
+                    <i class="bx bx-check-circle fs-3"></i>
+                </div>
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@
                 @if($s->estado === 'Activo')
                     <form action="{{ route('empleado.servicio.finalizar', $s->id_servicio) }}" method="POST" onsubmit="return confirm('¿Estás seguro de finalizar este servicio?');" class="ms-2">
                         @csrf
-                        <button type="submit" class="btn btn-primary btn-sm">
+                        <button type="submit" class="btn btn-info btn-sm rounded-pill px-3" style="transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='none';">
                             <i class="bx bx-check-circle"></i> Finalizar
                         </button>
                     </form>
@@ -156,7 +156,9 @@
                     <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
                         {{-- CAMBIO REALIZADO AQUÍ: Se eliminó $rol por $user->operador --}}
                         @if($user->operador)
-                            <span class="role-chip bg-label-primary"><i class="bx bx-id-card"></i>Operador</span>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border: 1px solid rgba(138, 43, 226, 0.2);">
+                                <i class="bx bx-headphone me-1"></i>Operador
+                            </span>
                             @if(isset($ambulancias))
                                 @foreach($ambulancias as $amb)
                                     <span class="badge bg-label-secondary" style="font-size:.7rem;">
@@ -165,7 +167,9 @@
                                 @endforeach
                             @endif
                         @else
-                            <span class="role-chip bg-label-success"><i class="bx bx-plus-medical"></i>Paramédico</span>
+                            <span class="badge rounded-pill px-3 py-1" style="background-color: rgba(138, 43, 226, 0.1); color: #8A2BE2; border: 1px solid rgba(138, 43, 226, 0.2);">
+                                <i class="bx bx-plus-medical me-1"></i>Paramédico
+                            </span>
                         @endif
                         
                         @if($user->telefono)
@@ -186,7 +190,7 @@
                     <i class="bx bx-calendar me-1 text-primary"></i>Mi calendario
                 </h5>
                 <div class="d-flex gap-3 flex-wrap align-items-center">
-                    <span class="d-flex align-items-center gap-1 small"><span style="width:10px;height:10px;border-radius:50%;background:#696cff;display:inline-block;"></span>Activo</span>
+                    <span class="d-flex align-items-center gap-1 small"><span style="width:10px;height:10px;border-radius:50%;background:#7E57C2;display:inline-block;"></span>Activo</span>
                     <span class="d-flex align-items-center gap-1 small"><span style="width:10px;height:10px;border-radius:50%;background:#ffab00;display:inline-block;"></span>Programado</span>
                     <span class="d-flex align-items-center gap-1 small"><span style="width:10px;height:10px;border-radius:50%;background:#8592a3;display:inline-block;"></span>Finalizado</span>
                     <span class="d-flex align-items-center gap-1 small"><span style="width:10px;height:10px;border-radius:50%;background:#ff3e1d;display:inline-block;"></span>Cancelado</span>
@@ -216,7 +220,7 @@
                     @foreach($proximos as $s)
                     @php
                         $fechaS   = \Carbon\Carbon::parse($s->fecha_hora);
-                        $dotColor = match($s->estado){ 'Activo'=>'#696cff','Finalizado'=>'#8592a3','Cancelado'=>'#ff3e1d',default=>'#ffab00' };
+                        $dotColor = match($s->estado){ 'Activo'=>'#7E57C2','Finalizado'=>'#8592a3','Cancelado'=>'#ff3e1d',default=>'#ffab00' };
                         $label    = $fechaS->isToday() ? 'Hoy' : ($fechaS->isTomorrow() ? 'Mañana' : $fechaS->format('d/m'));
                     @endphp
                     <div class="ruta-item">
@@ -280,14 +284,14 @@
                             @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-6">
-                            <label class="form-label small">Apellido paterno <span class="text-danger">*</span></label>
+                            <label class="form-label small">Primer Apellido <span class="text-danger">*</span></label>
                             <input type="text" name="ap_paterno"
                                 class="form-control form-control-sm @error('ap_paterno') is-invalid @enderror"
                                 value="{{ old('ap_paterno', $user->ap_paterno) }}" required>
                             @error('ap_paterno')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-6">
-                            <label class="form-label small">Apellido materno</label>
+                            <label class="form-label small">Segundo Apellido</label>
                             <input type="text" name="ap_materno"
                                 class="form-control form-control-sm @error('ap_materno') is-invalid @enderror"
                                 value="{{ old('ap_materno', $user->ap_materno) }}">

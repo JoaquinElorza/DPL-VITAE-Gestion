@@ -21,8 +21,8 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <a href="{{ route('insumos.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                    <button type="submit" class="btn btn-info">Actualizar</button>
+                    <a href="{{ route('insumos.index') }}" class="btn btn-danger ms-2">Cancelar</a>
                 </div>
             </form>
         </div>

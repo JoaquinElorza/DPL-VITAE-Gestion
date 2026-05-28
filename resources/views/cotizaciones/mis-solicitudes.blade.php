@@ -13,45 +13,66 @@
         .navbar-brand img { height: 45px; object-fit: contain; }
         .status-badge { font-size: .78rem; }
 
-        /* Overrides de colores unificados */
-        .text-primary { color: #8b5cf6 !important; }
-        .text-info { color: #3b82f6 !important; }
+        /* Overrides de colores unificados (Admin Estética) */
+        .text-primary { color: #8A2BE2 !important; }
+        .text-info { color: #393395 !important; }
+        
+        .btn { border-radius: 50rem !important; }
+        
         .btn-primary { 
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6); 
-            border: none; 
-            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39); 
+            background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important; 
+            border: none !important; 
+            box-shadow: 0 4px 14px 0 rgba(186, 85, 211, 0.39) !important; 
             transition: all 0.3s ease;
+            color: #fff !important;
         }
         .btn-primary:hover { 
-            background: linear-gradient(135deg, #7c3aed, #2563eb); 
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); 
+            background: linear-gradient(135deg, #6A5ACD, #483D8B) !important; 
+            box-shadow: 0 6px 20px rgba(186, 85, 211, 0.4) !important; 
             transform: translateY(-2px); 
         }
+        
         .btn-outline-primary { 
-            color: #8b5cf6; 
-            border-color: #8b5cf6; 
+            color: #BA55D3 !important; 
+            border: 1px solid #BA55D3 !important; 
+            background: transparent !important;
             transition: all 0.3s ease;
         }
         .btn-outline-primary:hover { 
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            color: #fff; 
-            border-color: transparent;
+            background: #BA55D3 !important;
+            color: #fff !important; 
+            transform: translateY(-2px);
         }
+        
+        .btn-outline-info {
+            color: #393395 !important;
+            border: 1px solid #393395 !important;
+            background: transparent !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-info:hover {
+            background: #393395 !important;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(57, 51, 149, 0.2) !important;
+        }
+        
         .btn-outline-secondary {
-            color: #6b7280;
-            border-color: #d1d5db;
+            color: #191970 !important;
+            border: 1px solid rgba(25, 25, 112, 0.3) !important;
+            background: #ffffff !important;
             transition: all 0.3s ease;
         }
         .btn-outline-secondary:hover {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(59, 130, 246, 0.08));
-            color: #8b5cf6;
-            border-color: rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, rgba(25, 25, 112, 0.08), rgba(25, 25, 112, 0.1)) !important;
+            color: #191970 !important;
+            border-color: rgba(25, 25, 112, 0.6) !important;
             transform: translateY(-2px);
         }
 
         /* Estilo premium para la tabla */
         .table thead {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6) !important;
+            background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important;
         }
         .table thead th {
             background-color: transparent !important;
@@ -67,9 +88,9 @@
             transition: all 0.2s ease;
         }
         .table tbody tr:hover {
-            background-color: rgba(139, 92, 246, 0.04) !important;
+            background-color: rgba(138, 43, 226, 0.04) !important;
             transform: scale(1.002);
-            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.05);
+            box-shadow: 0 2px 10px rgba(138, 43, 226, 0.05);
             z-index: 10;
             position: relative;
         }
@@ -106,7 +127,7 @@
 <section class="py-5">
     <div class="container" style="max-width:860px">
 
-        <h2 class="fw-bold mb-1">Mis solicitudes de cotización</h2>
+        <h2 class="fw-bold mb-1" style="background: linear-gradient(135deg, #393395, #8A2BE2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Mis solicitudes de cotización</h2>
         <p class="text-muted mb-4">Aquí puedes ver el estado de todas tus solicitudes y responder a las propuestas.</p>
 
         @if(session('success'))
@@ -126,73 +147,103 @@
                 </a>
             </div>
         @else
-        <div class="card border-0 shadow-sm rounded-4">
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>N° Guía</th>
-                            <th>Servicio</th>
-                            <th>Fecha solicitada</th>
-                            <th>Estado</th>
-                            <th>Decisión</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cotizaciones as $cot)
-                        @php
-                            $colorEstado = match($cot->estado) {
-                                'Pendiente'   => 'warning',
-                                'En revisión' => 'info',
-                                'Aceptada'    => 'success',
-                                'Cancelada'   => 'danger',
-                                default       => 'secondary',
-                            };
-                            $colorDecision = match($cot->decision_cliente) {
-                                'confirmada' => 'success',
-                                'declinada'  => 'danger',
-                                default      => 'secondary',
-                            };
-                        @endphp
-                        <tr>
-                            <td><span class="fw-semibold text-primary">{{ $cot->numero_guia }}</span></td>
-                            <td>{{ $cot->tipo_servicio }}</td>
-                            <td>{{ $cot->fecha_requerida ? \Carbon\Carbon::parse($cot->fecha_requerida)->format('d/m/Y') : '—' }}</td>
-                            <td><span class="badge bg-{{ $colorEstado }} status-badge">{{ $cot->estado }}</span></td>
-                            <td>
+        <div class="row g-4">
+            @foreach($cotizaciones as $cot)
+            @php
+                $colorEstado = match($cot->estado) {
+                    'Pendiente'   => 'warning',
+                    'En revisión' => 'info',
+                    'Aceptada'    => 'success',
+                    'Cancelada'   => 'danger',
+                    default       => 'secondary',
+                };
+
+                $bgIcon = match($colorEstado) {
+                    'warning' => 'rgba(255, 171, 0, 0.1)',
+                    'info'    => 'rgba(57, 51, 149, 0.1)',
+                    'success' => 'rgba(113, 221, 55, 0.1)',
+                    'danger'  => 'rgba(240, 128, 128, 0.1)',
+                    default   => 'rgba(133, 146, 163, 0.1)',
+                };
+                
+                $colIcon = match($colorEstado) {
+                    'warning' => '#ffab00',
+                    'info'    => '#393395',
+                    'success' => '#71dd37',
+                    'danger'  => '#F08080',
+                    default   => '#8592a3',
+                };
+
+                $colorDecision = match($cot->decision_cliente) {
+                    'confirmada' => 'success',
+                    'declinada'  => 'danger',
+                    default      => 'secondary',
+                };
+            @endphp
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 border-0 rounded-4" style="transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(25, 25, 112, 0.04);" onmouseover="this.style.boxShadow='0 12px 25px rgba(57, 51, 149, 0.12); this.style.transform=\'translateY(-4px)\'';" onmouseout="this.style.boxShadow='0 4px 15px rgba(25, 25, 112, 0.04)'; this.style.transform='none';">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: {{ $bgIcon }}; color: {{ $colIcon }};">
+                                    <i class="bx {{ $cot->tipo_servicio === 'Traslado' ? 'bx-ambulance' : ($cot->tipo_servicio === 'Evento' ? 'bx-calendar-event' : 'bx-file') }} fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-info" style="letter-spacing: 0.5px;">{{ $cot->numero_guia }}</h5>
+                                    <span class="text-muted small fw-medium">{{ $cot->tipo_servicio }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-auto">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bx bx-calendar text-muted fs-5 me-2"></i>
+                                <span class="text-muted small">
+                                    {{ $cot->fecha_requerida ? \Carbon\Carbon::parse($cot->fecha_requerida)->format('d/m/Y') : 'Fecha no especificada' }}
+                                </span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bx bx-info-circle text-muted fs-5 me-2"></i>
+                                <span class="badge bg-{{ $colorEstado }} rounded-pill px-2 py-1 fw-medium status-badge">{{ $cot->estado }}</span>
+                            </div>
+
+                            <div class="p-3 rounded-3 mb-4" style="background-color: #f8f9fa;">
+                                <div class="text-muted small mb-1" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Decisión</div>
                                 @if($cot->decision_cliente)
-                                    <span class="badge bg-{{ $colorDecision }} status-badge">
+                                    <span class="text-{{ $colorDecision }} fw-bold d-flex align-items-center gap-1">
+                                        <i class="bx {{ $cot->decision_cliente === 'confirmada' ? 'bx-check-circle' : 'bx-x-circle' }}"></i>
                                         {{ $cot->decision_cliente === 'confirmada' ? 'Confirmada' : 'Declinada' }}
                                     </span>
                                 @elseif($cot->estado === 'Aceptada')
-                                    <span class="badge bg-warning text-dark status-badge">Pendiente tu respuesta</span>
+                                    <span class="text-warning fw-bold d-flex align-items-center gap-1" style="color: #ffab00 !important;">
+                                        <i class="bx bx-time-five"></i> Pendiente tu respuesta
+                                    </span>
                                 @else
-                                    <span class="text-muted small">—</span>
+                                    <span class="text-muted fw-medium">—</span>
                                 @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('cotizaciones.mi-estado', $cot) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bx bx-show me-1"></i> Ver
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('cotizaciones.mi-estado', $cot) }}" class="btn btn-outline-info w-100">
+                            <i class="bx bx-show me-1"></i> Ver detalles
+                        </a>
+                    </div>
+                </div>
             </div>
-            @if($cotizaciones->hasPages())
-            <div class="card-footer bg-transparent d-flex justify-content-center py-3">
-                {{ $cotizaciones->links() }}
-            </div>
-            @endif
+            @endforeach
         </div>
+
+        @if($cotizaciones->hasPages())
+        <div class="d-flex justify-content-center mt-5">
+            {{ $cotizaciones->links() }}
+        </div>
+        @endif
         @endif
 
     </div>
 </section>
 
-<footer class="py-4 mt-5" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #ffffff;">
+<footer class="py-4 mt-5" style="background: linear-gradient(135deg, #BA55D3, #6A5ACD); color: #ffffff;">
     <div class="container text-center">
         <p class="mb-0">&copy; {{ date('Y') }} <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong> — Todos los derechos reservados.</p>
     </div>

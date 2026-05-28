@@ -7,7 +7,14 @@
           <!-- Logo -->
           <a href="{{url('/')}}" class="app-brand auth-cover-brand gap-2"><x-app-logo /></a>
           <!-- /Logo -->
-          <img src="{{asset('assets/img/illustrations/boy-with-rocket-light.png')}}" class="img-fluid" alt="Login image" width="700"/>
+          @php
+              $empresa = \App\Models\Empresa::first();
+          @endphp
+          @if($empresa && $empresa->logo_nombre)
+              <img src="{{ asset('storage/' . $empresa->logo_nombre) }}" class="img-fluid" alt="{{ $empresa->nombre }}" style="max-height: 400px; object-fit: contain;"/>
+          @else
+              <i class="bx bx-ambulance" style="font-size: 15rem; color: #393395;"></i>
+          @endif
         </div>
       </div>
     </div>

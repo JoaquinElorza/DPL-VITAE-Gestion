@@ -38,7 +38,6 @@ Route::get('cotizaciones/rastrear', [CotizacionController::class, 'rastrear'])->
 Route::middleware(['auth'])->group(function () {
     Route::get('/mis-servicios', [MisServiciosController::class, 'index'])->name('mis-servicios.index');
     Route::get('/mis-servicios/{servicio}', [MisServiciosController::class, 'show'])->name('mis-servicios.show');
-    Route::get('analitica-gerencial', [AnaliticaController::class, 'extraerDatosLimpios'])->name('analitica.dashboard');
 });
 
 Route::middleware(['auth', 'es.empleado'])->group(function () {
@@ -68,6 +67,7 @@ Route::post('webhooks/mercadopago', [PagoController::class, 'webhook'])
 
 Route::middleware(['auth', 'verified', 'es.admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('analitica-gerencial', [AnaliticaController::class, 'extraerDatosLimpios'])->name('analitica.dashboard');
     Route::redirect('settings', 'settings/profile');
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');

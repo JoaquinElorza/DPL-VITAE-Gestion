@@ -14,13 +14,13 @@
                         @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Apellido Paterno <span class="text-danger">*</span></label>
+                        <label class="form-label">Primer Apellido <span class="text-danger">*</span></label>
                         <input type="text" name="ap_paterno" class="form-control @error('ap_paterno') is-invalid @enderror"
                             value="{{ old('ap_paterno', $cliente->usuario->ap_paterno) }}" required>
                         @error('ap_paterno')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Apellido Materno</label>
+                        <label class="form-label">Segundo Apellido</label>
                         <input type="text" name="ap_materno" class="form-control @error('ap_materno') is-invalid @enderror"
                             value="{{ old('ap_materno', $cliente->usuario->ap_materno) }}">
                         @error('ap_materno')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                    <a href="{{ route('clientes.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+                    <button type="submit" class="btn btn-info">Actualizar</button>
+                    <a href="{{ route('clientes.index') }}" class="btn btn-danger ms-2">Cancelar</a>
                 </div>
             </form>
         </div>
