@@ -4,7 +4,7 @@
     <style>
         :root {
             --dpl-primary: #7E57C2;
-            --dpl-primary-hover: #5f61e6;
+            --dpl-primary-hover: #0D0847;
         }
         
         .titulo-morado {
@@ -37,6 +37,372 @@
             background-color: rgba(105, 108, 255, 0.16) !important;
             color: var(--dpl-primary) !important;
         }
+
+
+.dashboard-hero-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #111827
+        );
+
+    border-radius: 32px;
+
+    padding: 3rem;
+
+    color: white;
+
+    min-height: 320px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.dashboard-hero-card::before {
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(167,139,250,.25),
+            transparent 35%
+        );
+}
+
+.dashboard-label {
+
+    font-size: .95rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .12em;
+
+    opacity: .7;
+}
+
+.dashboard-number {
+
+    font-size: clamp(4rem, 7vw, 6rem);
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    margin-top: 1rem;
+}
+
+.dashboard-subtext {
+
+    opacity: .7;
+
+    margin-top: 1rem;
+
+    font-size: 1rem;
+}
+
+.dashboard-icon-lg {
+
+    width: 90px;
+
+    height: 90px;
+
+    border-radius: 24px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 2.5rem;
+}
+
+.dashboard-progress {
+
+    width: 100%;
+
+    height: 10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border-radius: 999px;
+
+    overflow: hidden;
+}
+
+.dashboard-progress-bar {
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #dc2626,
+            #a78bfa
+        );
+
+    border-radius: inherit;
+}
+
+.dashboard-mini-card {
+
+    background: white;
+
+    border-radius: 28px;
+
+    padding: 2rem;
+
+    border:
+        1px solid rgba(15,23,42,.06);
+
+    min-height: 150px;
+
+    transition: .3s ease;
+}
+
+.dashboard-mini-card:hover {
+
+    transform: translateY(-4px);
+}
+
+.dashboard-mini-label {
+
+    font-size: .85rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+
+    color: #64748b;
+}
+
+.dashboard-mini-number {
+
+    font-size: 2.5rem;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+    margin-top: .7rem;
+}
+
+.dashboard-mini-icon {
+
+    width: 64px;
+
+    height: 64px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(167,139,250,.12);
+
+    color: #7e57c2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.8rem;
+}
+
+.services-table th {
+    color: white;
+}
+.services-table td,
+.services-table th {
+    padding: 1.2rem 1rem;
+}
+
+.services-table tbody tr:hover {
+    background: rgba(167,139,250,.04);
+}
+
+.services-panel {
+
+    background: white;
+
+    border-radius: 32px;
+
+    padding: 2rem;
+
+    border:
+        1px solid rgba(15,23,42,.06);
+}
+
+.services-panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 2rem;
+}
+
+.panel-label {
+
+    font-size: .8rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .12em;
+
+    color: #64748b;
+}
+
+.panel-title {
+
+    font-size: 2rem;
+
+    font-weight: 800;
+
+    color: #0f172a;
+
+    margin-top: .4rem;
+}
+
+.services-table-wrapper {
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    border:
+        1px solid rgba(15,23,42,.06);
+}
+
+.services-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.services-table thead {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #111827
+        );
+}
+
+.services-table th {
+
+    color: white;
+
+    padding: 1.2rem 1rem;
+
+    font-size: .85rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+
+    border: none;
+}
+
+.services-table td {
+
+    padding: 1.2rem 1rem;
+
+    border-bottom:
+        1px solid rgba(15,23,42,.05);
+
+    color: #334155;
+}
+
+.services-table tbody tr {
+
+    transition: .2s ease;
+}
+
+.services-table tbody tr:hover {
+
+    background:
+        rgba(167,139,250,.04);
+}
+
+.status-pill {
+
+    padding: .55rem 1rem;
+
+    border-radius: 999px;
+
+    font-size: .8rem;
+
+    font-weight: 600;
+}
+
+.status-active {
+
+    background:
+        rgba(34,197,94,.12);
+
+    color: #15803d;
+}
+
+.status-finished {
+
+    background:
+        rgba(100,116,139,.12);
+
+    color: #475569;
+}
+
+.status-cancelled {
+
+    background:
+        rgba(239,68,68,.12);
+
+    color: #b91c1c;
+}
+
+.empty-state {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 4rem;
+
+    color: #94a3b8;
+}
+
+.empty-state i {
+
+    font-size: 3rem;
+
+    margin-bottom: 1rem;
+}
+
+.services-pagination {
+
+    margin-top: 2rem;
+}
+
     </style>
 
     @php
@@ -50,250 +416,334 @@
         $totalOperadores  = \App\Models\Operador::count();
     @endphp
 
-    <div class="row g-4 mb-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div>
-                            <span class="fw-medium d-block mb-1">Servicios Activos</span>
-                            <h3 class="card-title mb-2 text-primary fw-bold">{{ $serviciosActivos }}</h3>
-                            <small class="text-muted">de {{ $totalServicios }} en total</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-primary">
-                                <i class="bx bx-ambulance bx-sm"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{{-- =========================
+    DASHBOARD HEADER
+========================= --}}
+<div class="dashboard-header mb-5">
+
+    <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-4">
+
+        <div>
+
+            <span class="dashboard-label">
+                Panel de control
+            </span>
+
+            <h1 class="dashboard-title mt-2">
+                Centro Operativo
+            </h1>
+
+            <p class="dashboard-description">
+                Supervisa servicios, ambulancias y personal en tiempo real.
+            </p>
+
         </div>
 
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div>
-                            <span class="fw-medium d-block mb-1">Ambulancias Disponibles</span>
-                            <h3 class="card-title mb-2 text-success fw-bold">{{ $ambulanciasDisp }}</h3>
-                            <small class="text-muted">de {{ $totalAmbulancia }} en total</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-success">
-                                <i class="bx bx-car bx-sm"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div>
-                            <span class="fw-medium d-block mb-1">Pacientes</span>
-                            <h3 class="card-title mb-2 text-warning fw-bold">{{ $totalPacientes }}</h3>
-                            <small class="text-muted">registrados</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-warning">
-                                <i class="bx bx-user-circle bx-sm"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-xl-3">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start justify-content-between">
-                        <div>
-                            <span class="fw-medium d-block mb-1">Personal</span>
-                            <h3 class="card-title mb-2 text-info fw-bold">{{ $totalParamedicos + $totalOperadores }}</h3>
-                            <small class="text-muted">{{ $totalParamedicos }} paramédicos</small>
-                        </div>
-                        <div class="avatar">
-                            <span class="avatar-initial rounded bg-label-info">
-                                <i class="bx bx-group bx-sm"></i>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <div class="card mb-4 border-0 shadow-sm" style="background: linear-gradient(135deg, rgba(105, 108, 255, 0.05), rgba(59, 130, 246, 0.05));">
-        <div class="card-body p-3">
-            <form method="GET" action="{{ url()->current() }}" class="row g-3 align-items-end">
-                
-                <div class="col-md-2">
-                    <label class="form-label fw-bold" style="color: var(--dpl-primary); font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-search me-1"></i>Buscar</label>
-                    <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="# ID o Tipo" class="form-control border-0 shadow-sm">
-                </div>
+</div>
 
-                <div class="col-md-2">
-                    <label class="form-label fw-bold" style="color: var(--dpl-primary); font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-category me-1"></i>Tipo</label>
-                    <select name="tipo" class="form-select border-0 shadow-sm">
-                        <option value="">Todos los tipos</option>
-                        @foreach ($tipos as $value => $label)
-                            <option value="{{ $value }}" {{ request('tipo') == $value ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
+{{-- =========================
+    KPI CARDS
+========================= --}}
+<div class="row g-4 mb-5">
 
-                <div class="col-md-2">
-                    <label class="form-label fw-bold" style="color: var(--dpl-primary); font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-check-circle me-1"></i>Estado</label>
-                    <select name="estado" class="form-select border-0 shadow-sm">
-                        <option value="">Todos</option>
-                        @foreach ($estados as $value => $label)
-                            <option value="{{ $value }}" {{ request('estado') == $value ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
+    {{-- CARD PRINCIPAL --}}
+    <div class="col-lg-7">
 
-                <div class="col-md-2">
-                    <label class="form-label fw-bold" style="color: var(--dpl-primary); font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-calendar me-1"></i>Desde</label>
-                    <input type="date" name="fecha_inicio" value="{{ request('fecha_inicio') }}" class="form-control border-0 shadow-sm">
-                </div>
+        <div class="dashboard-hero-card">
 
-                <div class="col-md-2">
-                    <label class="form-label fw-bold" style="color: var(--dpl-primary); font-size: 0.8rem; text-transform: uppercase;"><i class="bx bx-calendar-event me-1"></i>Hasta</label>
-                    <input type="date" name="fecha_fin" value="{{ request('fecha_fin') }}" class="form-control border-0 shadow-sm">
-                </div>
+            <div class="d-flex justify-content-between align-items-start">
 
-                <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100 shadow-sm"><i class="bx bx-search-alt me-1"></i> Buscar</button>
-                    @if(request()->hasAny(['buscar', 'tipo', 'estado', 'ambulancia', 'fecha_inicio', 'fecha_fin']))
-                        <a href="{{ url()->current() }}" class="btn btn-outline-secondary w-100 bg-white shadow-sm"><i class="bx bx-x me-1"></i> Limpiar</a>
-                    @endif
-                </div>
-            </form>
-        </div>
-    </div>
+                <div>
 
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="titulo-morado">Últimos Servicios</h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fecha</th>
-                                <th>Tipo</th>
-                                <th>Estado</th>
-                                <th>Ambulancia</th>
-                                <th>Costo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($servicios as $servicio)
-                            <tr>
-                                <td>{{ $servicio->id_servicio }}</td>
-                                <td>{{ \Carbon\Carbon::parse($servicio->fecha_hora)->format('d/m/Y H:i') }}</td>
-                                <td>{{ $servicio->tipo ?? '—' }}</td>
-                                <td>
-                                    @php
-                                        $badge = match($servicio->estado) {
-                                            'Activo'     => 'success',
-                                            'Finalizado' => 'secondary',
-                                            'Cancelado'  => 'danger',
-                                            default      => 'warning',
-                                        };
-                                    @endphp
-                                    <span class="badge bg-label-{{ $badge }}">{{ $servicio->estado }}</span>
-                                </td>
-                                <td>{{ $servicio->ambulancia->placa ?? '—' }}</td>
-                                <td>${{ number_format($servicio->costo_total, 2) }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Sin servicios registrados</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                    {{ $servicios->links() }}
-                </div>
-            </div>
-        </div>
+                    <span class="dashboard-label">
+                        Servicios activos
+                    </span>
 
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="titulo-morado">Resumen de Personal</h5>
-                </div>
-                <div class="card-body mt-3">
-                    <ul class="list-unstyled mb-0">
-                        <li class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="avatar avatar-sm"><span class="avatar-initial rounded bg-label-primary"><i class="bx bx-plus-medical"></i></span></span>
-                                <span class="fw-medium">Paramédicos</span>
-                            </div>
-                            <span class="badge bg-primary rounded-pill px-3">{{ $totalParamedicos }}</span>
-                        </li>
-                        <li class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="avatar avatar-sm"><span class="avatar-initial rounded bg-label-success"><i class="bx bx-id-card"></i></span></span>
-                                <span class="fw-medium">Operadores</span>
-                            </div>
-                            <span class="badge bg-success rounded-pill px-3">{{ $totalOperadores }}</span>
-                        </li>
-                        <li class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="avatar avatar-sm"><span class="avatar-initial rounded bg-label-info"><i class="bx bx-user"></i></span></span>
-                                <span class="fw-medium">Clientes</span>
-                            </div>
-                            <span class="badge bg-info rounded-pill px-3">{{ $totalClientes }}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+                    <h2 class="dashboard-number">
+                        {{ $serviciosActivos }}
+                    </h2>
 
-        <div class="col-md-6">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="titulo-morado">Estado de Ambulancias</h5>
-                </div>
-                <div class="card-body mt-3">
-                    @php
-                        $estadosAmb = \App\Models\Ambulancia::selectRaw('estado, count(*) as total')->groupBy('estado')->get();
-                    @endphp
-                    @forelse($estadosAmb as $est)
-                    @php
-                        $color = match($est->estado) {
-                            'Disponible' => 'success',
-                            'En servicio', 'En Servicio' => 'warning',
-                            'Mantenimiento' => 'danger',
-                            default => 'secondary',
-                        };
-                    @endphp
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span class="fw-medium">{{ $est->estado }}</span>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="progress" style="width:150px; height:8px;">
-                                <div class="progress-bar bg-{{ $color }}" style="width:{{ $totalAmbulancia ? ($est->total / $totalAmbulancia) * 100 : 0 }}%"></div>
-                            </div>
-                            <span class="badge bg-label-{{ $color }} px-2">{{ $est->total }}</span>
+                    <p class="dashboard-subtext">
+                        de {{ $totalServicios }} servicios registrados
+                    </p>
+
+                    <div class="dashboard-progress">
+                        <div
+                            class="dashboard-progress-bar"
+                            style="width: {{ $totalServicios ? ($serviciosActivos / $totalServicios) * 100 : 0 }}%">
                         </div>
                     </div>
+
+                </div>
+
+                <div class="dashboard-icon-lg">
+                    <i class="bx bx-ambulance"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- SIDEBAR KPI --}}
+    <div class="col-lg-5">
+
+        <div class="row g-4">
+
+            {{-- Ambulancias --}}
+            <div class="col-12">
+
+                <div class="dashboard-mini-card">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <span class="dashboard-mini-label">
+                                Ambulancias disponibles
+                            </span>
+
+                            <h3 class="dashboard-mini-number">
+                                {{ $ambulanciasDisp }}
+                            </h3>
+
+                            <small class="text-muted">
+                                de {{ $totalAmbulancia }}
+                            </small>
+
+                        </div>
+
+                        <div class="dashboard-mini-icon">
+                            <i class="bx bx-car"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- Personal --}}
+            <div class="col-12">
+
+                <div class="dashboard-mini-card">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <span class="dashboard-mini-label">
+                                Personal operativo
+                            </span>
+
+                            <h3 class="dashboard-mini-number">
+                                {{ $totalParamedicos + $totalOperadores }}
+                            </h3>
+
+                            <small class="text-muted">
+                                {{ $totalParamedicos }} paramédicos
+                            </small>
+
+                        </div>
+
+                        <div class="dashboard-mini-icon">
+                            <i class="bx bx-group"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{{-- =========================
+    FILTROS
+========================= --}}
+<div class="card-body p-3 mb-5">
+
+    <form method="GET" action="{{ url()->current() }}" class="row g-3 align-items-end">
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">
+                <i class="bx bx-search me-1"></i>Buscar
+            </label>
+            <input type="text" name="buscar" value="{{ request('buscar') }}"
+                placeholder="# ID o Tipo"
+                class="form-control border-0 shadow-sm">
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">
+                <i class="bx bx-category me-1"></i>Tipo
+            </label>
+            <select name="tipo" class="form-select border-0 shadow-sm">
+                <option value="">Todos</option>
+                @foreach ($tipos as $value => $label)
+                    <option value="{{ $value }}" {{ request('tipo') == $value ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">
+                <i class="bx bx-check-circle me-1"></i>Estado
+            </label>
+            <select name="estado" class="form-select border-0 shadow-sm">
+                <option value="">Todos</option>
+                @foreach ($estados as $value => $label)
+                    <option value="{{ $value }}" {{ request('estado') == $value ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">
+                <i class="bx bx-calendar me-1"></i>Desde
+            </label>
+            <input type="date" name="fecha_inicio"
+                value="{{ request('fecha_inicio') }}"
+                class="form-control border-0 shadow-sm">
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label fw-bold">
+                <i class="bx bx-calendar-event me-1"></i>Hasta
+            </label>
+            <input type="date" name="fecha_fin"
+                value="{{ request('fecha_fin') }}"
+                class="form-control border-0 shadow-sm">
+        </div>
+
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bx bx-search-alt me-1"></i>Buscar
+            </button>
+
+            @if(request()->hasAny(['buscar','tipo','estado','fecha_inicio','fecha_fin']))
+                <a href="{{ url()->current() }}"
+                    class="btn btn-outline-secondary w-100">
+                    <i class="bx bx-x me-1"></i>Limpiar
+                </a>
+            @endif
+        </div>
+
+    </form>
+
+</div>
+
+{{-- =========================
+    SERVICIOS TABLE
+========================= --}}
+<div class="services-panel">
+
+    {{-- HEADER --}}
+    <div class="services-panel-header">
+
+        <div>
+
+            <span class="panel-label">
+                Centro Operativo
+            </span>
+
+            <h2 class="panel-title">
+                Últimos Servicios
+            </h2>
+
+        </div>
+
+    </div>
+
+    {{-- TABLE --}}
+    <div class="services-table-wrapper">
+
+        <div class="table-responsive">
+
+            <table class="services-table">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Unidad</th>
+                        <th>Costo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @forelse($servicios as $servicio)
+
+                        @php
+                            $statusClass = match($servicio->estado) {
+                                'Activo' => 'status-active',
+                                'Finalizado' => 'status-finished',
+                                'Cancelado' => 'status-cancelled',
+                                default => 'status-pending',
+                            };
+                        @endphp
+
+                        <tr>
+                            <td class="fw-bold">#{{ $servicio->id_servicio }}</td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse($servicio->fecha_hora)->format('d/m/Y H:i') }}
+                            </td>
+
+                            <td>{{ $servicio->tipo ?? '—' }}</td>
+
+                            <td>
+                                <span class="status-pill {{ $statusClass }}">
+                                    {{ $servicio->estado }}
+                                </span>
+                            </td>
+
+                            <td>{{ $servicio->ambulancia->placa ?? '—' }}</td>
+
+                            <td class="fw-semibold">
+                                ${{ number_format($servicio->costo_total, 2) }}
+                            </td>
+                        </tr>
+
                     @empty
-                    <p class="text-muted text-center">Sin ambulancias registradas</p>
+
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="bx bx-folder-open"></i>
+                                    <p>Sin servicios registrados</p>
+                                </div>
+                            </td>
+                        </tr>
+
                     @endforelse
-                </div>
-            </div>
+
+                </tbody>
+
+            </table>
+
         </div>
+
     </div>
+
+    {{-- PAGINATION --}}
+    <div class="services-pagination">
+        {{ $servicios->links() }}
+    </div>
+
+</div>
 </x-layouts.app>
