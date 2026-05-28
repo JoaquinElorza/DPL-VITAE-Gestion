@@ -117,23 +117,16 @@
       <span class="menu-header-text">Flota</span>
     </li>
 
-    <li class="menu-item {{ request()->is('ambulancias*') || request()->is('tipos-ambulancia*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="Ambulancias">
-        <i class="menu-icon tf-icons bx bx-car"></i>
-        <div class="text-truncate">Ambulancias</div>
-      </a>
-      <ul class="menu-sub">
-        <li class="menu-item {{ request()->is('ambulancias') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('ambulancias.index') }}" wire:navigate>Ambulancias</a>
-        </li>
-        <li class="menu-item {{ request()->is('tipos-ambulancia*') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('tipos-ambulancia.index') }}" wire:navigate>Tipos de Ambulancia</a>
-        </li>
-      </ul>
+    <li class="menu-item {{ request()->is('ambulancias*') ? 'active open' : '' }}">
+        <a class="menu-link" href="{{ route('ambulancias.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Ambulancias">
+          <i class="menu-icon tf-icons bx bx-car"></i>
+          <div class="text-truncate">Ambulancias</div>
+        </a>
     </li>
 
+
     <li class="menu-header small text-uppercase">
-      <span class="menu-header-text">Catálogos</span>
+      <span class="menu-header-text">Cotizaciones</span>
     </li>
 
     <li class="menu-item {{ request()->is('cotizaciones*') ? 'active' : '' }}">
@@ -143,24 +136,7 @@
       </a>
     </li>
 
-    <li class="menu-header small text-uppercase">
-      <span class="menu-header-text">Cuenta</span>
-    </li>
 
-    <li class="menu-item {{ request()->is('settings/*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle" data-bs-toggle="tooltip" data-bs-placement="right" title="{{ __('Settings') }}">
-        <i class="menu-icon tf-icons bx bx-cog"></i>
-        <div class="text-truncate">{{ __('Settings') }}</div>
-      </a>
-      <ul class="menu-sub">
-        <li class="menu-item {{ request()->routeIs('settings.profile') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('settings.profile') }}" wire:navigate>{{ __('Profile') }}</a>
-        </li>
-        <li class="menu-item {{ request()->routeIs('settings.password') ? 'active' : '' }}">
-          <a class="menu-link" href="{{ route('settings.password') }}" wire:navigate>{{ __('Password') }}</a>
-        </li>
-      </ul>
-    </li>
 
     @endif
 

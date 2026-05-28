@@ -1,125 +1,207 @@
 <x-layouts.app :title="'Clientes'">
-    
-    <style>
-        :root {
-            --dpl-primary: #696CFF;
-            --dpl-primary-hover: #5f61e6;
-        }
 
-        .titulo-morado {
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-shadow: 
-                -1px -1px 0 #696CFF,  
-                 1px -1px 0 #696CFF,
-                -1px  1px 0 #696CFF,
-                 1px  1px 0 #696CFF,
-                 0px  0px 6px #696CFF,
-                 0px  0px 12px rgba(105, 108, 255, 0.8),
-                 2px  2px 4px rgba(0, 0, 0, 0.25);
-        }
+<style>
+:root{
+    --dpl-primary:#7E57C2;      /* morado */
+    --dpl-secondary:#0D0847;    /* azul marino */
+    --dpl-danger:#dc2626;       /* rojo */
+}
 
-        .btn-primary {
-            background-color: var(--dpl-primary) !important;
-            border-color: var(--dpl-primary) !important;
-            color: #ffffff !important;
-        }
+/* HEADER */
+.dashboard-title{
+    font-weight:800;
+    color: var(--dpl-secondary);
+}
 
-        .btn-primary:hover {
-            background-color: var(--dpl-primary-hover) !important;
-            border-color: var(--dpl-primary-hover) !important;
-        }
-        
-        .bg-label-primary {
-            background-color: rgba(105, 108, 255, 0.16) !important;
-            color: var(--dpl-primary) !important;
-        }
-    </style>
+/* BOTÓN PRINCIPAL */
+.btn-primary{
+    background:var(--dpl-primary) !important;
+    border:none !important;
+}
+.btn-primary:hover{
+    background:var(--dpl-secondary) !important;
+}
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible mb-4 shadow-sm" role="alert">
-            <i class="bx bx-check-circle me-1"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
+/* PANEL */
+.services-panel{
+    background:#fff;
+    border-radius:28px;
+    padding:2rem;
+    border:1px solid rgba(13,8,71,.08);
+}
 
-    <div class="card shadow-sm border-0">
-        <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0 pt-4 pb-3">
-            <h5 class="mb-0 titulo-morado">Clientes</h5>
-            <a href="{{ route('clientes.create') }}" class="btn btn-primary shadow-sm">
-                <i class="bx bx-plus me-1"></i> Nuevo Cliente
-            </a>
-        </div>
-        
-        <div class="table-responsive text-nowrap">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="fw-bold" style="color: var(--dpl-primary);">ID</th>
-                        <th class="fw-bold" style="color: var(--dpl-primary);">Nombre completo</th>
-                        <th class="fw-bold" style="color: var(--dpl-primary);">Email</th>
-                        <th class="fw-bold" style="color: var(--dpl-primary);">Teléfono</th>
-                        <th class="text-center fw-bold" style="color: var(--dpl-primary);">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="table-border-bottom-0">
-                    @forelse($clientes as $cliente)
-                    <tr>
-                        <td><span class="badge bg-label-primary rounded-pill">#{{ $cliente->id_usuario }}</span></td>
-                        <td class="fw-medium">
-                            {{ $cliente->usuario->nombre ?? '—' }}
-                            {{ $cliente->usuario->ap_paterno ?? '' }}
-                            {{ $cliente->usuario->ap_materno ?? '' }}
-                        </td>
-                        <td><i class="bx bx-envelope text-muted me-1"></i> {{ $cliente->usuario->email ?? '—' }}</td>
-                        <td><i class="bx bx-phone text-muted me-1"></i> {{ $cliente->usuario->telefono ?? '—' }}</td>
-                        <td class="text-center">
-                            <a href="{{ route('clientes.show', $cliente) }}"
-                               class="btn btn-sm btn-icon btn-outline-info me-1"
-                               data-bs-toggle="tooltip" title="Ver detalle">
-                                <i class="bx bx-show"></i>
-                            </a>
-                            <a href="{{ route('clientes.edit', $cliente) }}"
-                               class="btn btn-sm btn-icon btn-outline-warning me-1"
-                               data-bs-toggle="tooltip" title="Editar">
-                                <i class="bx bx-edit-alt"></i>
-                            </a>
-                            <form action="{{ route('clientes.destroy', $cliente) }}" method="POST"
-                                  class="d-inline"
-                                  onsubmit="return confirm('¿Seguro que deseas eliminar este cliente?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-icon btn-outline-danger" data-bs-toggle="tooltip" title="Eliminar">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-5">
-                            <i class="bx bx-group bx-lg mb-2 opacity-50"></i>
-                            <p class="mb-0">Aún no hay clientes registrados en el sistema.</p>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="card-footer d-flex justify-content-between align-items-center bg-white border-top-0">
-            <small class="text-muted fw-medium">Total: {{ $clientes->total() }} registros</small>
-            {{ $clientes->links() }}
-        </div>
+/* TABLE WRAPPER */
+.services-table-wrapper{
+    overflow:hidden;
+    border-radius:18px;
+    border:1px solid rgba(13,8,71,.08);
+}
+
+/* TABLE */
+.services-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.services-table thead{
+    background:var(--dpl-secondary);
+    color:#fff;
+}
+
+.services-table th{
+    padding:1rem;
+    font-size:.8rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.services-table td{
+    padding:1rem;
+    border-bottom:1px solid rgba(13,8,71,.06);
+    color:#334155;
+}
+
+/* ROW HOVER */
+.services-table tbody tr:hover{
+    background:rgba(126,87,194,.05);
+}
+
+/* BADGE ID */
+.badge-id{
+    background:rgba(126,87,194,.12);
+    color:var(--dpl-primary);
+    padding:.35rem .7rem;
+    border-radius:999px;
+    font-weight:600;
+    font-size:.75rem;
+}
+
+/* EMPTY */
+.empty-state{
+    text-align:center;
+    padding:3rem;
+    color:#94a3b8;
+}
+</style>
+
+@if(session('success'))
+<div class="alert alert-success mb-4">
+    {{ session('success') }}
+</div>
+@endif
+
+{{-- HEADER --}}
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="dashboard-title mb-1">Clientes</h2>
+        <p class="text-muted mb-0">Gestión de clientes registrados</p>
     </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-        });
-    </script>
+
+    <a href="{{ route('clientes.create') }}" class="btn btn-primary">
+        <i class="bx bx-plus me-1"></i> Nuevo cliente
+    </a>
+
+</div>
+
+{{-- PANEL --}}
+<div class="services-panel">
+
+    <div class="services-table-wrapper">
+
+        <table class="services-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            @forelse($clientes as $cliente)
+
+                <tr>
+
+                    <td>
+                        <span class="badge-id">
+                            #{{ $cliente->id_usuario }}
+                        </span>
+                    </td>
+
+                    <td class="fw-semibold">
+                        {{ $cliente->usuario->nombre ?? '—' }}
+                        {{ $cliente->usuario->ap_paterno ?? '' }}
+                        {{ $cliente->usuario->ap_materno ?? '' }}
+                    </td>
+
+                    <td>{{ $cliente->usuario->email ?? '—' }}</td>
+
+                    <td>{{ $cliente->usuario->telefono ?? '—' }}</td>
+
+                    <td class="text-center">
+
+                        <a href="{{ route('clientes.show', $cliente) }}"
+                           class="btn btn-sm btn-outline-info">
+                            Ver
+                        </a>
+
+                        <a href="{{ route('clientes.edit', $cliente) }}"
+                           class="btn btn-sm btn-outline-warning">
+                            Editar
+                        </a>
+
+                        <form action="{{ route('clientes.destroy', $cliente) }}"
+                              method="POST"
+                              class="d-inline"
+                              onsubmit="return confirm('¿Eliminar cliente?')">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Eliminar
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            <i class="bx bx-group fs-1 mb-2"></i>
+                            Sin clientes registrados
+                        </div>
+                    </td>
+                </tr>
+
+            @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+
+        <small class="text-muted">
+            Total: {{ $clientes->total() }} registros
+        </small>
+
+        {{ $clientes->links() }}
+
+    </div>
+
+</div>
+
 </x-layouts.app>
