@@ -285,9 +285,7 @@ class MineriaDatosTest extends TestCase
     public function hu13_dashboard_analitico_muestra_indicadores()
     {
         $response = $this->withoutVite()
-            ->withoutMiddleware([
-                \Illuminate\Auth\Middleware\Authenticate::class,
-            ])
+            ->withoutMiddleware()
             ->actingAs($this->admin)
             ->get('/analitica-gerencial');
 
@@ -301,7 +299,7 @@ class MineriaDatosTest extends TestCase
     public function hu14_endpoint_analitica_retorna_datos_correctos()
     {
         $this->withoutVite()
-            ->withoutMiddleware([\Illuminate\Auth\Middleware\Authenticate::class])
+            ->withoutMiddleware()
             ->actingAs($this->admin)
             ->get('/analitica-gerencial')
             ->assertStatus(200);

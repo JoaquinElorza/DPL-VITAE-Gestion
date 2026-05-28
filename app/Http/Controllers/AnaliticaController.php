@@ -32,10 +32,15 @@ class AnaliticaController extends Controller
         $labelsEstados = $graficaEstados->keys();
         $valoresEstados = $graficaEstados->values();
 
+        $driver = DB::connection()->getDriverName();
+        $mesExpr = $driver === 'sqlite'
+            ? "strftime('%m', fecha_hora)"
+            : "EXTRACT(MONTH FROM fecha_hora)";
+
         $ingresosMes = DB::table('servicio')
-            ->select(DB::raw('EXTRACT(MONTH FROM fecha_hora) as mes'), DB::raw('SUM(costo_total) as total'))
+            ->select(DB::raw("$mesExpr as mes"), DB::raw('SUM(costo_total) as total'))
             ->where('estado', '=', 'Finalizado')
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM fecha_hora)'))
+            ->groupBy(DB::raw($mesExpr))
             ->orderBy('mes')
             ->pluck('total', 'mes');
         $labelsMeses = $ingresosMes->keys();

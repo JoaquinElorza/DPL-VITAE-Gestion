@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
 
     <style>
         body {
@@ -306,53 +306,51 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-let tipoActual = null;
-let costoKm = {{ $costoKm }};
+function initMapas() {
+    if (typeof L === 'undefined') return;
+    try {
+        window.mapOrigen = L.map('map-origen').setView([17.06, -96.72], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19,
+        }).addTo(mapOrigen);
+        window.markerOrigen = L.marker([17.06, -96.72], {draggable:true}).addTo(mapOrigen);
 
-function selectTipo(nombre, costo, el){
-    document.querySelectorAll('.tipo-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
+        window.mapDestino = L.map('map-destino').setView([17.06, -96.72], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19,
+        }).addTo(mapDestino);
+        window.markerDestino = L.marker([17.06, -96.72], {draggable:true}).addTo(mapDestino);
 
-    tipoActual = {nombre, costo};
+        window.updateDistance = function() {
+            let latLngOrigen = markerOrigen.getLatLng();
+            let latLngDestino = markerDestino.getLatLng();
+            let distanceMeters = latLngOrigen.distanceTo(latLngDestino);
+            let distanceKm = (distanceMeters / 1000).toFixed(2);
+            document.getElementById('km_distancia').value = distanceKm;
+            triggerPrediction();
+        };
 
-    document.getElementById('wrap-estimado').classList.remove('d-none');
-    document.getElementById('est-tipo').innerText = nombre;
-    document.getElementById('est-total').innerText = '$' + costo.toFixed(2);
+        markerOrigen.on('dragend', function(e){
+            let p = e.target.getLatLng();
+            let origenInput = document.getElementById('origen');
+            origenInput.value = p.lat + ', ' + p.lng;
+            origenInput.dispatchEvent(new Event('input'));
+            window.updateDistance();
+        });
+
+        markerDestino.on('dragend', function(e){
+            let p = e.target.getLatLng();
+            let destinoInput = document.getElementById('destino');
+            destinoInput.value = p.lat + ', ' + p.lng;
+            destinoInput.dispatchEvent(new Event('input'));
+            window.updateDistance();
+        });
+    } catch(e) {
+        console.warn('Mapa no disponible:', e);
+    }
 }
-
-// Inicialización de Mapas
-let mapOrigen = L.map('map-origen').setView([17.06, -96.72], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(mapOrigen);
-let markerOrigen = L.marker([17.06, -96.72], {draggable:true}).addTo(mapOrigen);
-
-let mapDestino = L.map('map-destino').setView([17.06, -96.72], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: 'OSM' }).addTo(mapDestino);
-let markerDestino = L.marker([17.06, -96.72], {draggable:true}).addTo(mapDestino);
-
-function updateDistance() {
-    let latLngOrigen = markerOrigen.getLatLng();
-    let latLngDestino = markerDestino.getLatLng();
-    let distanceMeters = latLngOrigen.distanceTo(latLngDestino);
-    let distanceKm = (distanceMeters / 1000).toFixed(2);
-    document.getElementById('km_distancia').value = distanceKm;
-    triggerPrediction();
-}
-
-markerOrigen.on('dragend', function(e){
-    let p = e.target.getLatLng();
-    let origenInput = document.getElementById('origen');
-    origenInput.value = p.lat + ', ' + p.lng;
-    origenInput.dispatchEvent(new Event('input')); 
-    updateDistance();
-});
-
-markerDestino.on('dragend', function(e){
-    let p = e.target.getLatLng();
-    let destinoInput = document.getElementById('destino');
-    destinoInput.value = p.lat + ', ' + p.lng;
-    destinoInput.dispatchEvent(new Event('input'));
-    updateDistance();
-});
 
 // Lógica de Predicción AI
 let predictionTimeout = null;
@@ -447,10 +445,10 @@ radios.forEach(radio => {
         
         if (tipo === 'Traslado') {
             setTimeout(() => {
-                if (typeof mapDestino !== 'undefined') {
-                    mapDestino.invalidateSize();
+                if (window.mapDestino) {
+                    window.mapDestino.invalidateSize();
                 }
-            }, 100);
+            }, 200);
         }
         
         // Al cambiar de tipo de servicio, re-evaluar los campos dependientes
@@ -472,6 +470,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputDestino = document.querySelector('input[name="destino"]');
     const inputPadecimientos = document.querySelector('textarea[name="padecimientos_paciente"]');
     const btnSubmit = document.querySelector('button[type="submit"]');
+
+    initMapas();
 
     // Deshabilitar todos excepto el primero al cargar
     inputPApellido.disabled = true;

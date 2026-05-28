@@ -45,15 +45,11 @@
     $tieneMapa    = $tieneOrigen || $tieneDestino;
 
     if ($tieneOrigen && $tieneDestino) {
-        $iframeSrc = 'https://maps.google.com/maps?saddr='.$cotizacion->lat_origen.','.$cotizacion->lng_origen
-                   . '&daddr='.$cotizacion->lat_destino.','.$cotizacion->lng_destino.'&output=embed';
         $mapsLink  = 'https://www.google.com/maps/dir/'.$cotizacion->lat_origen.','.$cotizacion->lng_origen
                    . '/'.$cotizacion->lat_destino.','.$cotizacion->lng_destino;
     } elseif ($tieneOrigen) {
-        $iframeSrc = 'https://maps.google.com/maps?q='.$cotizacion->lat_origen.','.$cotizacion->lng_origen.'&output=embed';
         $mapsLink  = 'https://www.google.com/maps?q='.$cotizacion->lat_origen.','.$cotizacion->lng_origen;
     } elseif ($tieneDestino) {
-        $iframeSrc = 'https://maps.google.com/maps?q='.$cotizacion->lat_destino.','.$cotizacion->lng_destino.'&output=embed';
         $mapsLink  = 'https://www.google.com/maps?q='.$cotizacion->lat_destino.','.$cotizacion->lng_destino;
     }
 
@@ -172,14 +168,11 @@
 
         @if($tieneMapa)
         <div class="px-3 py-2 d-flex justify-content-between align-items-center border-top">
-            <span class="small fw-semibold text-muted"><i class="bx bx-map-alt me-1 text-primary"></i>Mapa</span>
+            <span class="small fw-semibold text-muted"><i class="bx bx-map-alt me-1 text-primary"></i>Ubicación</span>
             <a href="{{ $mapsLink }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                <i class="bx bx-directions me-1"></i>Google Maps
+                <i class="bx bx-directions me-1"></i>Ver en Google Maps
             </a>
         </div>
-        <iframe src="{{ $iframeSrc }}" width="100%" height="280"
-            style="border:0;display:block;" allowfullscreen loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
         @endif
     </div>
 
