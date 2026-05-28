@@ -8,102 +8,229 @@
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Public Sans', sans-serif; }
-        .navbar-brand img { height: 45px; object-fit: contain; }
-        #hero-carousel .carousel-item {
-            height: 90vh; min-height: 500px; background-color: #4c1d95;
-        }
-        #hero-carousel .carousel-item img {
-            width: 100%; height: 100%; object-fit: cover; opacity: .45;
-        }
-        #hero-carousel .carousel-caption {
-            bottom: 50%; transform: translateY(50%);
-        }
-        #hero-carousel .carousel-caption h1 { font-size: 3rem; font-weight: 700; }
-        #hero-carousel .carousel-caption p  { font-size: 1.25rem; }
-        .section-title {
-            font-weight: 700;
-            display: block;
-            text-align: center;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: #8b5cf6;
-            margin: 8px auto 0;
-        }
-        .section-title-left {
-            font-weight: 700;
-            display: block;
-        }
-        .section-title-left::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: #8b5cf6;
-            margin-top: 8px;
-        }
-        .card-info { border: none; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: transform .2s; }
-        .card-info:hover { transform: translateY(-4px); }
-        footer { background: linear-gradient(135deg, #8b5cf6, #3b82f6); color: #ffffff; }
-        footer a { color: #ffffff; text-decoration: underline; }
-        footer a:hover { color: #e0e7ff; text-decoration: none; }
 
-        /* Overrides for primary/info colors to match dashboard */
-        .text-primary { color: #8b5cf6 !important; }
-        .text-info { color: #3b82f6 !important; }
-        .bg-primary { background-color: #8b5cf6 !important; }
-        .bg-info { background-color: #3b82f6 !important; }
-        .btn-primary { 
-            background: linear-gradient(135deg, #8b5cf6, #7c3aed); 
-            border: none; 
-            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.39); 
-        }
-        .btn-primary:hover { 
-            background: linear-gradient(135deg, #7c3aed, #6d28d9); 
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4); 
-            transform: translateY(-2px); 
-        }
-        .btn-outline-primary { 
-            color: #8b5cf6; 
-            border-color: #8b5cf6; 
-        }
-        .btn-outline-primary:hover { 
-            background-color: #8b5cf6; 
-            color: #fff; 
-        }
-        .border-primary { border-color: #8b5cf6 !important; }
+/* ───────── HERO PREMIUM ───────── */
 
-        /* Estilos animados para los enlaces del Navbar */
-        .navbar .nav-link {
-            color: #4b5563;
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s ease;
-            padding: 0.5rem 0.2rem;
-            margin: 0 0.8rem;
-        }
-        .navbar .nav-link:hover {
-            color: #8b5cf6;
-        }
-        .navbar .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-            transition: width 0.3s ease;
-            border-radius: 2px;
-        }
-        .navbar .nav-link:hover::after {
-            width: 100%;
-        }
+.hero-premium {
+    background:
+        radial-gradient(circle at top left, rgba(167,139,250,.15), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(220,38,38,.08), transparent 25%),
+        #ffffff;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: rgba(167,139,250,.15);
+    color: #6d28d9;
+    border: 1px solid rgba(167,139,250,.25);
+    padding: .7rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .95rem;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    font-weight: 400;
+    color: #64748b;
+}
+
+
+.hero-image {
+    width: 100%;
+    max-width: 420px;
+    height: 520px;
+    object-fit: cover;
+
+    border-radius: 32px;
+    border: 8px solid white;
+
+    box-shadow:
+        0 30px 60px rgba(15,23,42,.12);
+}
+
+.hero-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.hero-image-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(167,139,250,.2),
+            rgba(15,23,42,.08)
+        );
+
+    border-radius: 40px;
+    z-index: -1;
+}
+
+.hero-placeholder {
+    width: 520px;
+    height: 520px;
+    border-radius: 32px;
+    background:
+        linear-gradient(135deg, #dc2626, #ef4444);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 7rem;
+}
+
+.hero-premium .btn-danger {
+    background: linear-gradient(
+        135deg,
+        #dc2626,
+        #991b1b
+    );
+
+    border: none;
+
+    box-shadow:
+        0 10px 30px rgba(220,38,38,.25);
+
+    transition: all .3s ease;
+}
+
+.hero-premium .btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+}
+
+.hero-premium .btn-outline-dark:hover {
+    transform: translateY(-2px);
+}
+
+.card-info {
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 24px;
+
+    padding: 28px 26px;
+
+    transition: all 0.3s ease;
+
+    box-shadow: none;
+}
+
+.card-info:hover {
+    transform: translateY(-6px);
+
+    border-color: rgba(167, 139, 250, 0.35);
+
+    box-shadow:
+        0 20px 40px rgba(15, 23, 42, 0.06);
+}
+
+.card-info h4,
+.card-info h6 {
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.card-info p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.card-info.premium {
+    background: linear-gradient(
+        135deg,
+        rgba(167, 139, 250, 0.04),
+        rgba(220, 38, 38, 0.02)
+    );
+
+    border: 1px solid rgba(167, 139, 250, 0.15);
+}
+
+.section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.section-title-left {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.btn {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+section {
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1240px;
+    }
+}
+
+section + section {
+    margin-top: 40px;
+}
+
+section {
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+    
+
+.section-title,
+.section-title-left {
+    margin-bottom: 48px;
+}
+
+#contacto .row,
+#valores .row {
+    row-gap: 24px;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #475569;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    font-weight: 400;
+}
+
+h1, h2 {
+    letter-spacing: -0.03em;
+}
+
+h1, h2, h3 {
+    font-family: 'Manrope', sans-serif;
+    color: #0f172a;
+    letter-spacing: -0.03em;
+}
+
     </style>
 </head>
 <body>
@@ -158,64 +285,97 @@
     </div>
 </nav>
 
-{{-- ── Hero Carousel ── --}}
-<div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
-        @if($empresa && $empresa->mision)
-            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
-        @endif
-        @if($empresa && $empresa->vision)
-            <button type="button" data-bs-target="#hero-carousel"
-                data-bs-slide-to="{{ ($empresa && $empresa->mision) ? 2 : 1 }}"></button>
-        @endif
-    </div>
 
-    <div class="carousel-inner">
-        <div class="carousel-item active" style="background: linear-gradient(135deg, #4c1d95, #3b82f6);">
-            @if($empresa && $empresa->imagen_nombre)
-                <img src="{{ asset('storage/' . $empresa->imagen_nombre) }}" alt="">
-            @endif
-            <div class="carousel-caption text-center">
-                <h1 class="display-4 fw-bold">{{ $empresa->nombre ?? 'Bienvenido' }}</h1>
-                @if($empresa && $empresa->slogan)
-                    <p class="lead">{{ $empresa->slogan }}</p>
-                @endif
-                <div class="d-flex gap-3 justify-content-center mt-3">
-                    <a href="#nosotros" class="btn btn-primary btn-lg px-4">Conoce más</a>
-                    <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-light btn-lg px-4">
-                        <i class="bx bx-calculator me-2"></i>Solicitar Cotización
+{{-- ── Hero Premium ── --}}
+<section class="hero-premium">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+
+            {{-- Texto --}}
+            <div class="col-lg-6">
+
+                <span class="hero-badge">
+                    Atención médica profesional
+                </span>
+
+                <h1 class="hero-title mt-4">
+                    Atención prehospitalaria
+                    rápida, segura y profesional.
+                </h1>
+
+                <p class="hero-description mt-4">
+                    En DPL VITAE
+                    brindamos servicios médicos y traslados especializados
+                    con personal capacitado y unidades equipadas para cada situación.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-5">
+
+                    <a href="{{ route('cotizaciones.create') }}"
+                       class="btn btn-danger btn-lg px-4 py-3 rounded-pill">
+                        Cotizar Servicio
                     </a>
+
+                    <a href="#nosotros"
+                       class="btn btn-outline-dark btn-lg px-4 py-3 rounded-pill">
+                        Conocer más
+                    </a>
+
                 </div>
-            </div>
-        </div>
 
-        @if($empresa && $empresa->mision)
-        <div class="carousel-item" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
-            <div class="carousel-caption text-center">
-                <h2 class="fw-bold mb-3"><i class="bx bx-target-lock me-2"></i>Nuestra Misión</h2>
-                <p class="lead col-md-8 mx-auto">{{ $empresa->mision }}</p>
-            </div>
-        </div>
-        @endif
+                {{-- Métricas --}}
+                <div class="row mt-5 g-5">
 
-        @if($empresa && $empresa->vision)
-        <div class="carousel-item" style="background: linear-gradient(135deg, #1d4ed8, #8b5cf6);">
-            <div class="carousel-caption text-center">
-                <h2 class="fw-bold mb-3"><i class="bx bx-binoculars me-2"></i>Nuestra Visión</h2>
-                <p class="lead col-md-8 mx-auto">{{ $empresa->vision }}</p>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-danger mb-1">24/7</h3>
+                        <small class="text-muted">
+                            Atención continua
+                        </small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold text-danger mb-1">+100</h3>
+                        <small class="text-muted">
+                            Servicios realizados
+                        </small>
+                    </div>
+
+                    <div class="col-4">
+                        <h3 class="fw-bold text-danger mb-1">100%</h3>
+                        <small class="text-muted">
+                            Personal capacitado
+                        </small>
+                    </div>
+
+                </div>
+
             </div>
+
+            {{-- Imagen --}}
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+
+                <div class="hero-image-wrapper">
+
+                    @if($empresa && $empresa->imagen_nombre)
+                        <img
+                            src="{{ asset('storage/' . $empresa->imagen_nombre) }}"
+                            alt="{{ $empresa->nombre }}"
+                            class="hero-image">
+                    @else
+
+                        <div class="hero-placeholder">
+                            <i class="bx bx-plus-medical"></i>
+                        </div>
+
+                    @endif
+
+                </div>
+
+            </div>
+
         </div>
-        @endif
     </div>
-
-    <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </button>
-</div>
+</section>
 
 {{-- ── Nosotros ── --}}
 @if($empresa)
@@ -256,32 +416,18 @@
         <div class="text-center mb-5">
             <h2 class="section-title">Misión y Visión</h2>
         </div>
-        <div class="row g-4">
+        <div class="row g-5">
             @if($empresa->mision)
-            <div class="col-md-6">
-                <div class="card card-info h-100 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                            <i class="bx bx-target-lock text-primary fs-3"></i>
-                        </div>
-                        <h4 class="mb-0">Misión</h4>
-                    </div>
+                <div class="card card-info h-100 p-2">
+                        <h4>Misión</h4>
                     <p class="text-muted mb-0">{{ $empresa->mision }}</p>
                 </div>
-            </div>
             @endif
             @if($empresa->vision)
-            <div class="col-md-6">
                 <div class="card card-info h-100 p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="bg-info bg-opacity-10 rounded-circle p-3 me-3">
-                            <i class="bx bx-binoculars text-info fs-3"></i>
-                        </div>
-                        <h4 class="mb-0">Visión</h4>
-                    </div>
+                        <h4>Visión</h4>
                     <p class="text-muted mb-0">{{ $empresa->vision }}</p>
                 </div>
-            </div>
             @endif
         </div>
     </div>
