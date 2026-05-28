@@ -13,7 +13,7 @@ class AmbulanciaController extends Controller
         $porPagina = $request->get('por_pagina', 10);
 
         $ambulancias = Ambulancia::paginate($porPagina);
-       // $ambulancias = Ambulancia::with(['tipo'])->paginate(10);
+
         return view('ambulancias.index', compact('ambulancias', 'porPagina'));
     }
 

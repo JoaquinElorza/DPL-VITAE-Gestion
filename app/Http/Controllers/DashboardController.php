@@ -11,30 +11,35 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+
         $ambulancias = Ambulancia::select('id_ambulancia', 'placa')->get();
+        $porPagina = $request->get('por_pagina', 10);
 
         $servicios = Servicio::with(['ambulancia', 'cliente.usuario'])
-        ->when($request->buscar, function ($q, $buscar) {
-            $q->where('id_servicio', 'LIKE', "%$buscar%")
-              ->orWhere('tipo', 'LIKE', "%$buscar%");
-        })
-        ->when($request->tipo, function ($q, $tipo) {
-            $q->where('tipo', $tipo);
-        })
-        ->when($request->estado, function ($q, $estado) {
-            $q->where('estado', $estado);
-        })
-        ->when($request->ambulancia, function ($q, $ambulancia) {
-            $q->where('id_ambulancia', $ambulancia);
-        })
-        ->when($request->fecha_inicio, function ($q, $fecha) {
-            $q->whereDate('fecha_hora', '>=', $fecha);
-        })
-        ->when($request->fecha_fin, function ($q, $fecha) {
-            $q->whereDate('fecha_hora', '<=', $fecha . ' 23:59:59');
-        })
-        ->orderByDesc('fecha_hora')
-        ->paginate(10);
+            ->when($request->buscar, function ($q, $buscar) {
+                $q->where(function ($q) use ($buscar) {
+                    $q->where('id_servicio', 'LIKE', "%$buscar%")
+                    ->orWhere('tipo', 'LIKE', "%$buscar%");
+                });
+            })
+            ->when($request->tipo, fn ($q, $tipo) =>
+                $q->where('tipo', $tipo)
+            )
+            ->when($request->estado, fn ($q, $estado) =>
+                $q->where('estado', $estado)
+            )
+            ->when($request->ambulancia, fn ($q, $ambulancia) =>
+                $q->where('id_ambulancia', $ambulancia)
+            )
+            ->when($request->fecha_inicio, fn ($q, $fecha) =>
+                $q->whereDate('fecha_hora', '>=', $fecha)
+            )
+            ->when($request->fecha_fin, fn ($q, $fecha) =>
+                $q->whereDate('fecha_hora', '<=', $fecha . ' 23:59:59')
+            )
+            ->orderByDesc('fecha_hora')
+            ->paginate($porPagina)
+            ->appends($request->query());
 
         $tipos = [
             'Traslado' => 'Traslados',
@@ -49,6 +54,6 @@ class DashboardController extends Controller
             'Cancelado' => 'Cancelado'
         ];
 
-        return view('dashboard', compact('servicios', 'tipos', 'estados', 'ambulancias'));
+        return view('dashboard', compact('servicios', 'tipos', 'estados', 'ambulancias', 'porPagina'));
     }
 }
