@@ -12,10 +12,8 @@ class Empresa extends Model
 
     protected $fillable = [
         'nombre',
-        'slogan',
         'mision',
         'vision',
-        'valores',
         'descripcion',
         'logo',
         'logo_nombre',
@@ -25,7 +23,6 @@ class Empresa extends Model
         'imagen_tipo',
         'telefono',
         'correo',
-        'sitio_web',
         'direccion',
         'costo_km',
     ];

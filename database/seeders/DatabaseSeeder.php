@@ -12,17 +12,15 @@ class DatabaseSeeder extends Seeder
     {
         // ── EMPRESA ────────────────────────────────────────────────────────
         DB::table('empresa')->insertOrIgnore([
-            'nombre'      => 'Vitae Ambulancias',
-            'slogan'      => 'Tu salud, nuestra prioridad',
+            'nombre'      => 'DPL VITAE',
             'descripcion' => 'Somos una empresa dedicada a brindar servicios de traslado médico y atención prehospitalaria con los más altos estándares de calidad.',
-            'mision'      => 'Proporcionar servicios de atención médica prehospitalaria con rapidez y seguridad.',
-            'vision'      => 'Ser la empresa líder en servicios de ambulancias reconocida por nuestra excelencia.',
-            'valores'     => "Responsabilidad\nCompromiso\nHonestidad\nRespeto\nCalidad\nEmpatía",
+            'mision'      => 'Brindar servicios de traslado de pacientes en ambulancia con seguridad, rapidez y trato humano, ofreciendo atención profesional y oportuna que garantice el bienestar, la comodidad y la confianza de nuestros pacientes y sus familias en cada traslado.',
+            'vision'      => 'Ser una empresa líder y reconocida en el servicio de traslado de pacientes en ambulancia, destacando por nuestra calidad, ética, innovación y compromiso con la vida, convirtiéndonos en un referente de confianza para la comunidad y las instituciones de salud.',
             'telefono'    => '951 123 4567',
             'correo'      => 'contacto@vitae.com',
-            'sitio_web'   => 'https://www.vitae.com',
             'direccion'   => 'Av. Independencia 100, Centro, Oaxaca de Juárez, Oax.',
             'costo_km'    => 25.00,
+            'imagen_nombre' => 'logo.jpeg'
         ]);
 
         // ── USUARIOS ───────────────────────────────────────────────────────

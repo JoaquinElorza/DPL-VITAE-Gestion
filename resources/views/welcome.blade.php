@@ -182,7 +182,7 @@
 }
 
 section {
-    padding-top: 120px;
+    padding-top: 0px;
     padding-bottom: 120px;
 }
 
@@ -206,8 +206,7 @@ section {
     margin-bottom: 48px;
 }
 
-#contacto .row,
-#valores .row {
+#contacto .row {
     row-gap: 24px;
 }
 
@@ -258,28 +257,10 @@ h1, h2, h3 {
 
             <div class="collapse navbar-collapse" id="navMain">
                 <ul class="navbar-nav ms-auto align-items-center gap-2">
-                    <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#mision">Misión y Visión</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#valores">Valores</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
-
                     @auth
-                        <li class="nav-item">
-                            <a href="{{ route('cotizaciones.mis-solicitudes') }}" class="nav-link text-muted">
-                                <i class="bx bx-list-ul me-1"></i> Mis solicitudes
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-primary btn-sm px-3">
-                                <i class="bx bx-calculator me-1"></i> Cotizar
-                            </a>
-                        </li>
+
                     @else
-                        <li class="nav-item">
-                            <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-primary btn-sm px-3">
-                                <i class="bx bx-calculator me-1"></i> Cotizar
-                            </a>
-                        </li>
+
                         <li class="nav-item">
                             <a href="{{ route('login') }}" class="btn btn-nav-login btn-sm px-4">Iniciar Sesión</a>
                         </li>
@@ -289,71 +270,9 @@ h1, h2, h3 {
         </div>
     </nav>
 
-    {{-- ── Hero Carousel ── --}}
-    <div id="hero-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
-            @if($empresa && $empresa->mision)
-                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
-            @endif
-            @if($empresa && $empresa->vision)
-                <button type="button" data-bs-target="#hero-carousel"
-                    data-bs-slide-to="{{ ($empresa && $empresa->mision) ? 2 : 1 }}"></button>
-            @endif
-        </div>
-
-        <div class="carousel-inner">
-            <div class="carousel-item active"
-                style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
-                @if($empresa && $empresa->imagen_nombre)
-                    <img src="{{ asset('storage/' . $empresa->imagen_nombre) }}" alt="">
-                @endif
-                <div class="carousel-caption text-center">
-                    <h1 class="display-4 fw-bold">{{ $empresa->nombre ?? 'Bienvenido' }}</h1>
-                    @if($empresa && $empresa->slogan)
-                        <p class="lead">{{ $empresa->slogan }}</p>
-                    @endif
-                    <div class="d-flex gap-3 justify-content-center mt-3">
-                        <a href="#nosotros" class="btn btn-glass btn-lg px-5">Conoce más</a>
-                        <a href="{{ route('cotizaciones.create') }}" class="btn btn-outline-light btn-lg px-4">
-                            <i class="bx bx-calculator me-2"></i>Solicitar Cotización
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            @if($empresa && $empresa->mision)
-                <div class="carousel-item" style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
-                    <div class="carousel-caption text-center">
-                        <h2 class="fw-bold mb-3"><i class="bx bx-target-lock me-2"></i>Nuestra Misión</h2>
-                        <p class="lead col-md-8 mx-auto">{{ $empresa->mision }}</p>
-                    </div>
-                </div>
-            @endif
-
-            @if($empresa && $empresa->vision)
-                <div class="carousel-item" style="background: linear-gradient(135deg, #191970, #6A5ACD, #BA55D3, #F08080);">
-                    <div class="carousel-caption text-center">
-                        <h2 class="fw-bold mb-3"><i class="bx bx-binoculars me-2"></i>Nuestra Visión</h2>
-                        <p class="lead col-md-8 mx-auto">{{ $empresa->vision }}</p>
-                    </div>
-                </div>
-            @endif
-        </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
 
         <div class="collapse navbar-collapse" id="navMain">
             <ul class="navbar-nav ms-auto align-items-center gap-2">
-                <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
-                <li class="nav-item"><a class="nav-link" href="#mision">Misión y Visión</a></li>
-                <li class="nav-item"><a class="nav-link" href="#valores">Valores</a></li>
-                <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
 
                 @auth
                     <li class="nav-item">
@@ -509,22 +428,41 @@ h1, h2, h3 {
 @if($empresa && ($empresa->mision || $empresa->vision))
 <section id="mision" class="py-5 bg-light">
     <div class="container">
+        
         <div class="text-center mb-5">
             <h2 class="section-title">Misión y Visión</h2>
         </div>
-        <div class="row g-5">
+
+        <div class="row g-4">
+
             @if($empresa->mision)
-                <div class="card card-info h-100 p-2">
-                        <h4>Misión</h4>
-                    <p class="text-muted mb-0">{{ $empresa->mision }}</p>
+                <div class="col-12 col-md-6">
+                    <div class="card card-info h-100 p-4 border-0 shadow-sm">
+                        
+                        <h4 class="mb-3">Misión</h4>
+
+                        <p class="text-muted mb-0">
+                            {{ $empresa->mision }}
+                        </p>
+
+                    </div>
                 </div>
             @endif
+
             @if($empresa->vision)
-                <div class="card card-info h-100 p-4">
-                        <h4>Visión</h4>
-                    <p class="text-muted mb-0">{{ $empresa->vision }}</p>
+                <div class="col-12 col-md-6">
+                    <div class="card card-info h-100 p-4 border-0 shadow-sm">
+                        
+                        <h4 class="mb-3">Visión</h4>
+
+                        <p class="text-muted mb-0">
+                            {{ $empresa->vision }}
+                        </p>
+
+                    </div>
                 </div>
             @endif
+
         </div>
     </div>
 </section>
