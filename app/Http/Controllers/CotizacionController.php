@@ -112,9 +112,10 @@ class CotizacionController extends Controller
         return view('cotizaciones.rastrear', compact('empresa', 'cotizacion', 'buscado', 'precio_ia'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Cotizacion::latest();
+        $porPagina = $request->get('por_pagina', 10);
         if ($search = request('search')) {
             $query->where('nombre', 'LIKE', "%{$search}%")
                   ->orWhere('numero_guia', 'LIKE', "%{$search}%")
@@ -162,7 +163,7 @@ class CotizacionController extends Controller
             else $clusters_ia[$c->id_cotizacion] = 'Alto';
         }
 
-        return view('cotizaciones.index', compact('cotizaciones', 'insightTitulo', 'insightMensaje', 'insightColor', 'precios_ia', 'clusters_ia'));
+        return view('cotizaciones.index', compact('cotizaciones', 'insightTitulo', 'insightMensaje', 'insightColor', 'precios_ia', 'clusters_ia', 'porPagina'));
     }
 
     public function show(Cotizacion $cotizacion)

@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::with('usuario')->paginate(8);
-        return view('clientes.index', compact('clientes'));
+        $porPagina = $request->get('por_pagina', 10);
+        $clientes = Cliente::with('usuario')->paginate($porPagina);
+        return view('clientes.index', compact('clientes', 'porPagina'));
     }
 
     public function create()

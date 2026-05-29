@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class ParamedicoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $paramedicos = Paramedico::with('usuario')->paginate(8);
-        return view('paramedicos.index', compact('paramedicos'));
+        $porPagina = $request->get('por_pagina', 10);
+        $paramedicos = Paramedico::with('usuario')->paginate($porPagina);
+        return view('paramedicos.index', compact('paramedicos', 'porPagina'));
     }
 
     public function create()

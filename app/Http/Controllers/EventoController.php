@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class EventoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $eventos = Evento::with('servicio')->paginate(8);
-        return view('eventos.index', compact('eventos'));
+        $porPagina = $request->get('por_pagina', 10);
+        $eventos = Evento::with('servicio')->paginate($porPagina);
+        return view('eventos.index', compact('eventos', 'porPagina'));
     }
 
     public function create()

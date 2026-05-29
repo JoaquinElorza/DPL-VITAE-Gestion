@@ -22,19 +22,26 @@ class ServicioController extends Controller
         $this->calculadora = $calculadora;
     }
 
-    public function index()
-    {
-        $query = Servicio::with(['ambulancia', 'cliente.usuario', 'operador.usuario']);
-        if ($search = request('search')) {
-            $query->where('estado', 'LIKE', "%{$search}%")
+public function index(Request $request)
+{
+    $porPagina = $request->get('por_pagina', 10);
+
+    $servicios = Servicio::with(['ambulancia', 'cliente.usuario', 'operador.usuario'])
+        ->when($request->search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('estado', 'LIKE', "%{$search}%")
                   ->orWhere('tipo', 'LIKE', "%{$search}%")
-                  ->orWhereHas('cliente.usuario', function($q) use ($search) {
-                      $q->where('nombre', 'LIKE', "%{$search}%");
+                  ->orWhereHas('cliente.usuario', function ($q2) use ($search) {
+                      $q2->where('nombre', 'LIKE', "%{$search}%");
                   });
-        }
-        $servicios = $query->orderBy('created_at', 'desc')->paginate(8)->appends(['search' => request('search')]);
-        return view('servicios.index', compact('servicios'));
-    } 
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate($porPagina)
+        ->appends($request->query());
+
+    return view('servicios.index', compact('servicios', 'porPagina'));
+}
 
     public function create()
     {

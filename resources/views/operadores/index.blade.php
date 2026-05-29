@@ -79,6 +79,21 @@
 
 </div>
 
+
+{{-- CONTROL PAGINACIÓN --}}
+<form method="GET" action="{{ url()->current() }}" class="mb-3">
+
+    <label class="text-muted me-2">Mostrar:</label>
+
+    <select name="por_pagina" onchange="this.form.submit()" class="form-select d-inline w-auto">
+        <option value="5"  {{ $porPagina == 5 ? 'selected' : '' }}>5</option>
+        <option value="10" {{ $porPagina == 10 ? 'selected' : '' }}>10</option>
+        <option value="25" {{ $porPagina == 25 ? 'selected' : '' }}>25</option>
+        <option value="50" {{ $porPagina == 50 ? 'selected' : '' }}>50</option>
+    </select>
+
+</form>
+
 {{-- TABLE --}}
 <div class="card border-0 shadow-sm">
 

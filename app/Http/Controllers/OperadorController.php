@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class OperadorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $porPagina = $request->get('por_pagina', 10);
         $operadores = Operador::with('usuario')
             ->withCount(['servicios as en_servicio' => fn($q) => $q->where('estado', 'Activo')])
-            ->paginate(8);
-        return view('operadores.index', compact('operadores'));
+            ->paginate($porPagina);
+        return view('operadores.index', compact('operadores', 'porPagina'));
     }
 
     public function create()

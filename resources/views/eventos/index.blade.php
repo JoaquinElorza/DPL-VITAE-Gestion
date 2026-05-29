@@ -2,9 +2,9 @@
 
 <style>
 :root {
-    --dpl-primary: #7E57C2;   /* morado */
-    --dpl-secondary: #0D0847; /* azul marino */
-    --dpl-danger: #dc2626;    /* rojo */
+    --dpl-primary: #7E57C2;
+    --dpl-secondary: #0D0847;
+    --dpl-danger: #dc2626;
 }
 
 /* HEADER */
@@ -14,22 +14,40 @@
     color: var(--dpl-secondary);
 }
 
+.dashboard-description {
+    color: #64748b;
+    margin-top: .4rem;
+}
+
 /* BUTTON */
 .btn-primary {
     background: var(--dpl-primary) !important;
     border: none !important;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: .7rem 1rem;
 }
 
 .btn-primary:hover {
     background: var(--dpl-secondary) !important;
 }
 
+/* PAGINATION SELECT */
+.form-select {
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,.08);
+    padding: .5rem 2rem .5rem .8rem;
+    font-weight: 500;
+}
+
 /* PANEL */
 .events-panel {
     background: #fff;
-    border-radius: 24px;
-    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 28px;
+    border: 1px solid rgba(15,23,42,.06);
     overflow: hidden;
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.04);
 }
 
 /* TABLE */
@@ -38,53 +56,201 @@
     border-collapse: collapse;
 }
 
+/* THEAD */
 .events-table thead {
-    background: var(--dpl-secondary);
-    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #111827
+        );
 }
 
 .events-table th {
-    font-size: .8rem;
+    color: white;
+    font-size: .82rem;
     text-transform: uppercase;
     letter-spacing: .08em;
-    padding: 1rem;
+    padding: 1.2rem 1rem;
+    border: none;
+    white-space: nowrap;
 }
 
+/* TD */
 .events-table td {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(0,0,0,.06);
+    padding: 1.15rem 1rem;
+    border-bottom:
+        1px solid rgba(15,23,42,.05);
+    color: #334155;
+    vertical-align: middle;
+}
+
+/* ROW HOVER */
+.events-table tbody tr {
+    transition: .2s ease;
+}
+
+.events-table tbody tr:hover {
+    background:
+        rgba(167,139,250,.04);
 }
 
 /* BADGE */
 .badge-event {
-    background: rgba(126,87,194,.12);
-    color: var(--dpl-primary);
-    padding: .35rem .75rem;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: .8rem;
+    background:
+        rgba(126,87,194,.12);
+
+    color:
+        var(--dpl-primary);
+
+    padding:
+        .45rem .85rem;
+
+    border-radius:
+        999px;
+
+    font-weight:
+        700;
+
+    font-size:
+        .8rem;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
 }
 
-/* ACTIONS */
+/* ACTION BUTTONS */
 .action-btn {
-    border: 1px solid rgba(0,0,0,.08);
-    background: white;
-    padding: .35rem .55rem;
-    border-radius: 8px;
-    font-size: .85rem;
-    transition: .2s;
+
+    border:
+        1px solid rgba(15,23,42,.08);
+
+    background:
+        white;
+
+    padding:
+        .45rem .8rem;
+
+    border-radius:
+        10px;
+
+    font-size:
+        .85rem;
+
+    font-weight:
+        600;
+
+    color:
+        #334155;
+
+    text-decoration:
+        none;
+
+    transition:
+        .2s ease;
 }
 
 .action-btn:hover {
-    transform: translateY(-2px);
-    border-color: var(--dpl-primary);
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--dpl-primary);
+
+    color:
+        var(--dpl-primary);
+
+    box-shadow:
+        0 4px 12px rgba(126,87,194,.12);
 }
 
 /* EMPTY STATE */
 .empty-state {
-    text-align: center;
-    padding: 4rem;
-    color: #94a3b8;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        4rem;
+
+    color:
+        #94a3b8;
+}
+
+.empty-state i {
+
+    font-size:
+        3rem;
+
+    margin-bottom:
+        1rem;
+}
+
+/* FOOTER */
+.events-panel-footer {
+
+    padding:
+        1.2rem 1.5rem;
+
+    border-top:
+        1px solid rgba(15,23,42,.05);
+
+    background:
+        #fff;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+
+    border:
+        none !important;
+
+    color:
+        #475569;
+
+    border-radius:
+        10px !important;
+
+    margin:
+        0 .15rem;
+
+    font-weight:
+        600;
+}
+
+.page-item.active .page-link {
+
+    background:
+        var(--dpl-primary) !important;
+
+    color:
+        white !important;
+}
+
+.page-link:hover {
+
+    background:
+        rgba(126,87,194,.1);
+
+    color:
+        var(--dpl-primary);
 }
 </style>
 
@@ -94,7 +260,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     <div>
-        <h2 class="dashboard-title mb-1">Eventos clínicos</h2>
+        <h2 class="dashboard-title mb-1">Eventos privados</h2>
         <p class="text-muted mb-0">
             Control operativo de eventos registrados
         </p>
@@ -105,6 +271,21 @@
     </a>
 
 </div>
+
+
+{{-- CONTROL PAGINACIÓN --}}
+<form method="GET" action="{{ url()->current() }}" class="mb-3">
+
+    <label class="text-muted me-2">Mostrar:</label>
+
+    <select name="por_pagina" onchange="this.form.submit()" class="form-select d-inline w-auto">
+        <option value="5"  {{ $porPagina == 5 ? 'selected' : '' }}>5</option>
+        <option value="10" {{ $porPagina == 10 ? 'selected' : '' }}>10</option>
+        <option value="25" {{ $porPagina == 25 ? 'selected' : '' }}>25</option>
+        <option value="50" {{ $porPagina == 50 ? 'selected' : '' }}>50</option>
+    </select>
+
+</form>
 
 {{-- =========================
     TABLE PANEL
@@ -118,59 +299,76 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Ap. Paterno</th>
+                    <th>Ap. Materno</th>
+                    <th>Sexo</th>
+                    <th>Fecha Nac.</th>
                     <th>Servicio</th>
-                    <th>Duración</th>
-                    <th>Personas</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
 
-                @forelse($eventos as $evento)
+                @forelse($pacientes as $paciente)
 
                 <tr>
 
                     <td>
                         <span class="badge-event">
-                            #{{ $evento->id_evento }}
+                            #{{ $paciente->id_paciente }}
                         </span>
                     </td>
 
                     <td>
-                        Servicio #{{ $evento->id_servicio }}
+                        {{ $paciente->nombre }}
                     </td>
 
                     <td>
-                        {{ $evento->duracion }} hrs
+                        {{ $paciente->ap_paterno }}
                     </td>
 
                     <td>
-                        {{ $evento->personas }}
+                        {{ $paciente->ap_materno ?? '—' }}
+                    </td>
+
+                    <td>
+                        {{ $paciente->sexo ?? '—' }}
+                    </td>
+
+                    <td>
+                        {{ $paciente->fecha_nacimiento ?? '—' }}
+                    </td>
+
+                    <td>
+                        Servicio #{{ $paciente->id_servicio }}
                     </td>
 
                     <td class="text-center">
 
-                        <div class="d-flex justify-content-center gap-2">
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
 
-                            <a href="{{ route('eventos.show', $evento) }}"
+                            <a href="{{ route('pacientes.show', $paciente) }}"
                                class="action-btn">
                                 Ver
                             </a>
 
-                            <a href="{{ route('eventos.edit', $evento) }}"
+                            <a href="{{ route('pacientes.edit', $paciente) }}"
                                class="action-btn">
                                 Editar
                             </a>
 
-                            <form action="{{ route('eventos.destroy', $evento) }}"
+                            <form action="{{ route('pacientes.destroy', $paciente) }}"
                                   method="POST"
-                                  onsubmit="return confirm('¿Eliminar evento?')">
+                                  class="d-inline"
+                                  onsubmit="return confirm('¿Eliminar paciente?')">
 
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="action-btn text-danger">
+                                <button type="submit"
+                                        class="action-btn text-danger border-0">
                                     Eliminar
                                 </button>
 
@@ -185,12 +383,16 @@
                 @empty
 
                 <tr>
-                    <td colspan="5">
+
+                    <td colspan="8">
+
                         <div class="empty-state">
-                            <i class="bx bx-calendar-x fs-1 mb-3"></i>
-                            <p>Sin eventos registrados</p>
+                            <i class="bx bx-user-x fs-1 mb-3"></i>
+                            <p>Sin pacientes registrados</p>
                         </div>
+
                     </td>
+
                 </tr>
 
                 @endforelse
@@ -201,13 +403,13 @@
 
     </div>
 
-    <div class="p-3 d-flex justify-content-between align-items-center">
+    <div class="p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 
         <small class="text-muted">
-            Total: {{ $eventos->total() }} registros
+            Total: {{ $pacientes->total() }} registros
         </small>
 
-        {{ $eventos->links() }}
+        {{ $pacientes->links() }}
 
     </div>
 
