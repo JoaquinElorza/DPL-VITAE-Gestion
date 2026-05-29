@@ -597,12 +597,18 @@
                             <div class="d-flex gap-1">
 
                                 <a href="{{ route('servicios.show', $servicio) }}"
-                                   class="btn btn-sm btn-icon btn-outline-info">
+                                   class="btn btn-sm btn-icon btn-outline-info"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Ver detalles del servicio">
                                     <i class="bx bx-show"></i>
                                 </a>
 
                                 <a href="{{ route('servicios.edit', $servicio) }}"
-                                   class="btn btn-sm btn-icon btn-outline-warning">
+                                   class="btn btn-sm btn-icon btn-outline-warning"
+                                   data-bs-toggle="tooltip"
+                                   data-bs-placement="top"
+                                   title="Editar servicio">
                                     <i class="bx bx-edit"></i>
                                 </a>
 
@@ -611,7 +617,10 @@
                                       onsubmit="return confirm('¿Eliminar servicio?')">
                                     @csrf @method('DELETE')
 
-                                    <button class="btn btn-sm btn-icon btn-outline-danger">
+                                    <button class="btn btn-sm btn-icon btn-outline-danger"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            title="Eliminar servicio">
                                         <i class="bx bx-trash"></i>
                                     </button>
                                 </form>

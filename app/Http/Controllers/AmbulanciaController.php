@@ -11,9 +11,15 @@ class AmbulanciaController extends Controller
     public function index(Request $request)
     {
         $porPagina = $request->get('por_pagina', 10);
-
-        $ambulancias = Ambulancia::paginate($porPagina);
-
+        $query = Ambulancia::with('tipo');
+        if ($search = $request->get('search')) {
+            $query->where('placa', 'LIKE', "%{$search}%")
+                  ->orWhere('estado', 'LIKE', "%{$search}%")
+                  ->orWhereHas('tipo', function ($q) use ($search) {
+                      $q->where('nombre_tipo', 'LIKE', "%{$search}%");
+                  });
+        }
+        $ambulancias = $query->paginate($porPagina)->appends($request->query());
         return view('ambulancias.index', compact('ambulancias', 'porPagina'));
     }
 

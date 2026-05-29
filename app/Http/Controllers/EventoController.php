@@ -11,7 +11,14 @@ class EventoController extends Controller
     public function index(Request $request)
     {
         $porPagina = $request->get('por_pagina', 10);
-        $eventos = Evento::with('servicio')->paginate($porPagina);
+        $query = Evento::with('servicio');
+        if ($search = $request->get('search')) {
+            $query->where('id_evento', 'LIKE', "%{$search}%")
+                  ->orWhere('duracion', 'LIKE', "%{$search}%")
+                  ->orWhere('personas', 'LIKE', "%{$search}%")
+                  ->orWhere('id_servicio', 'LIKE', "%{$search}%");
+        }
+        $eventos = $query->paginate($porPagina)->appends($request->query());
         return view('eventos.index', compact('eventos', 'porPagina'));
     }
 

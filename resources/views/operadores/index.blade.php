@@ -65,17 +65,37 @@
 }
 </style>
 
-{{-- HEADER --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
     <div>
         <h4 class="page-title mb-0">Operadores</h4>
         <small class="text-muted">Gestión del personal operativo</small>
     </div>
 
-    <a href="{{ route('operadores.create') }}" class="btn btn-primary">
-        <i class="bx bx-plus me-1"></i> Nuevo operador
-    </a>
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+        {{-- SEARCH --}}
+        <form action="{{ route('operadores.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Buscar operador..."
+                   class="form-control form-control-sm"
+                   style="max-width: 250px;">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Buscar operador">
+                <i class="bx bx-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('operadores.index') }}"
+                   class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="Limpiar búsqueda">
+                    <i class="bx bx-x"></i>
+                </a>
+            @endif
+        </form>
+
+        <a href="{{ route('operadores.create') }}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Nuevo operador
+        </a>
+    </div>
 
 </div>
 
@@ -142,14 +162,19 @@
 
                     <td class="text-center">
 
-                        {{-- BOTONES SIN CAMBIO --}}
                         <a href="{{ route('operadores.show', $operador) }}"
-                           class="btn btn-sm btn-outline-primary">
+                           class="btn btn-sm btn-outline-primary"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Ver detalles del operador">
                             Ver
                         </a>
 
                         <a href="{{ route('operadores.edit', $operador) }}"
-                           class="btn btn-sm btn-outline-warning">
+                           class="btn btn-sm btn-outline-warning"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Editar operador">
                             Editar
                         </a>
 
@@ -161,7 +186,10 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Eliminar operador">
                                 Eliminar
                             </button>
 

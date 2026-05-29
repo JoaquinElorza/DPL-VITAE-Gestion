@@ -13,9 +13,22 @@ class OperadorController extends Controller
     public function index(Request $request)
     {
         $porPagina = $request->get('por_pagina', 10);
-        $operadores = Operador::with('usuario')
-            ->withCount(['servicios as en_servicio' => fn($q) => $q->where('estado', 'Activo')])
-            ->paginate($porPagina);
+        $query = Operador::with('usuario')
+            ->withCount(['servicios as en_servicio' => fn($q) => $q->where('estado', 'Activo')]);
+
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('usuario', function ($q2) use ($search) {
+                    $q2->where('nombre', 'LIKE', "%{$search}%")
+                      ->orWhere('ap_paterno', 'LIKE', "%{$search}%")
+                      ->orWhere('ap_materno', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%");
+                })
+                ->orWhere('numero_licencia', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $operadores = $query->paginate($porPagina)->appends($request->query());
         return view('operadores.index', compact('operadores', 'porPagina'));
     }
 
