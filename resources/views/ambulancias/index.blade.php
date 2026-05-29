@@ -97,21 +97,41 @@
 </div>
 @endif
 
-{{-- HEADER --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
     <div>
         <h2 class="dashboard-title mb-1">Ambulancias</h2>
         <p class="text-muted mb-0">Control de unidades disponibles y en servicio</p>
     </div>
 
-    <a href="{{ route('tipos-ambulancia.index') }}" class="btn btn-primary">
-        <i class="bx bx-pen me-1"></i> Tipos de ambulancias
-    </a>
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+        {{-- SEARCH --}}
+        <form action="{{ route('ambulancias.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Buscar ambulancia..."
+                   class="form-control form-control-sm"
+                   style="max-width: 250px;">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Buscar ambulancia">
+                <i class="bx bx-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('ambulancias.index') }}"
+                   class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="Limpiar búsqueda">
+                    <i class="bx bx-x"></i>
+                </a>
+            @endif
+        </form>
 
-    <a href="{{ route('ambulancias.create') }}" class="btn btn-primary">
-        <i class="bx bx-plus me-1"></i> Nueva ambulancia
-    </a>
+        <a href="{{ route('tipos-ambulancia.index') }}" class="btn btn-primary">
+            <i class="bx bx-pen me-1"></i> Tipos
+        </a>
+
+        <a href="{{ route('ambulancias.create') }}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Nueva ambulancia
+        </a>
+    </div>
 
 </div>
 
@@ -179,12 +199,18 @@
                     <td class="text-center">
 
                         <a href="{{ route('ambulancias.show', $ambulancia) }}"
-                           class="btn btn-sm btn-outline-info">
+                           class="btn btn-sm btn-outline-info"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Ver detalles de la ambulancia">
                             Ver
                         </a>
 
                         <a href="{{ route('ambulancias.edit', $ambulancia) }}"
-                           class="btn btn-sm btn-outline-warning">
+                           class="btn btn-sm btn-outline-warning"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Editar ambulancia">
                             Editar
                         </a>
 
@@ -196,7 +222,10 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Eliminar ambulancia">
                                 Eliminar
                             </button>
 

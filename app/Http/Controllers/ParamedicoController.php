@@ -13,7 +13,19 @@ class ParamedicoController extends Controller
     public function index(Request $request)
     {
         $porPagina = $request->get('por_pagina', 10);
-        $paramedicos = Paramedico::with('usuario')->paginate($porPagina);
+        $query = Paramedico::with('usuario');
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('usuario', function ($q2) use ($search) {
+                    $q2->where('nombre', 'LIKE', "%{$search}%")
+                      ->orWhere('ap_paterno', 'LIKE', "%{$search}%")
+                      ->orWhere('ap_materno', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%");
+                })
+                ->orWhere('categoria', 'LIKE', "%{$search}%");
+            });
+        }
+        $paramedicos = $query->paginate($porPagina)->appends($request->query());
         return view('paramedicos.index', compact('paramedicos', 'porPagina'));
     }
 

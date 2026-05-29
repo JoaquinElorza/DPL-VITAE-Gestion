@@ -257,7 +257,7 @@
 {{-- =========================
     HEADER
 ========================= --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
     <div>
         <h2 class="dashboard-title mb-1">Eventos privados</h2>
@@ -266,9 +266,30 @@
         </p>
     </div>
 
-    <a href="{{ route('eventos.create') }}" class="btn btn-primary">
-        + Nuevo
-    </a>
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+        {{-- SEARCH --}}
+        <form action="{{ route('eventos.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Buscar evento..."
+                   class="form-control form-control-sm"
+                   style="max-width: 250px;">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Buscar evento">
+                <i class="bx bx-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('eventos.index') }}"
+                   class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="Limpiar búsqueda">
+                    <i class="bx bx-x"></i>
+                </a>
+            @endif
+        </form>
+
+        <a href="{{ route('eventos.create') }}" class="btn btn-primary">
+            + Nuevo
+        </a>
+    </div>
 
 </div>
 
@@ -299,76 +320,70 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Ap. Paterno</th>
-                    <th>Ap. Materno</th>
-                    <th>Sexo</th>
-                    <th>Fecha Nac.</th>
-                    <th>Servicio</th>
+                    <th>Duración (hrs)</th>
+                    <th>Personas</th>
+                    <th>Servicio Vinculado</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
 
-                @forelse($pacientes as $paciente)
+                @forelse($eventos as $evento)
 
                 <tr>
 
                     <td>
                         <span class="badge-event">
-                            #{{ $paciente->id_paciente }}
+                            #{{ $evento->id_evento }}
                         </span>
                     </td>
 
                     <td>
-                        {{ $paciente->nombre }}
+                        {{ $evento->duracion }} hrs
                     </td>
 
                     <td>
-                        {{ $paciente->ap_paterno }}
+                        {{ $evento->personas }}
                     </td>
 
                     <td>
-                        {{ $paciente->ap_materno ?? '—' }}
-                    </td>
-
-                    <td>
-                        {{ $paciente->sexo ?? '—' }}
-                    </td>
-
-                    <td>
-                        {{ $paciente->fecha_nacimiento ?? '—' }}
-                    </td>
-
-                    <td>
-                        Servicio #{{ $paciente->id_servicio }}
+                        Servicio #{{ $evento->id_servicio }}
                     </td>
 
                     <td class="text-center">
 
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
 
-                            <a href="{{ route('pacientes.show', $paciente) }}"
-                               class="action-btn">
+                            <a href="{{ route('eventos.show', $evento) }}"
+                               class="action-btn"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Ver detalles del evento">
                                 Ver
                             </a>
 
-                            <a href="{{ route('pacientes.edit', $paciente) }}"
-                               class="action-btn">
+                            <a href="{{ route('eventos.edit', $evento) }}"
+                               class="action-btn"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Editar evento">
                                 Editar
                             </a>
 
-                            <form action="{{ route('pacientes.destroy', $paciente) }}"
+                            <form action="{{ route('eventos.destroy', $evento) }}"
                                   method="POST"
                                   class="d-inline"
-                                  onsubmit="return confirm('¿Eliminar paciente?')">
+                                  onsubmit="return confirm('¿Eliminar evento?')">
 
                                 @csrf
                                 @method('DELETE')
 
                                 <button type="submit"
-                                        class="action-btn text-danger border-0">
+                                        class="action-btn text-danger border-0"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Eliminar evento">
                                     Eliminar
                                 </button>
 
@@ -384,11 +399,11 @@
 
                 <tr>
 
-                    <td colspan="8">
+                    <td colspan="5">
 
                         <div class="empty-state">
-                            <i class="bx bx-user-x fs-1 mb-3"></i>
-                            <p>Sin pacientes registrados</p>
+                            <i class="bx bx-calendar-x fs-1 mb-3"></i>
+                            <p>Sin eventos registrados</p>
                         </div>
 
                     </td>
@@ -406,10 +421,10 @@
     <div class="p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
 
         <small class="text-muted">
-            Total: {{ $pacientes->total() }} registros
+            Total: {{ $eventos->total() }} registros
         </small>
 
-        {{ $pacientes->links() }}
+        {{ $eventos->links() }}
 
     </div>
 

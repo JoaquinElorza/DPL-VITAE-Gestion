@@ -47,17 +47,37 @@
 }
 </style>
 
-{{-- HEADER --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
     <div>
         <h4 class="page-title mb-0">Paramédicos</h4>
         <small class="text-muted">Gestión del personal clínico</small>
     </div>
 
-    <a href="{{ route('paramedicos.create') }}" class="btn btn-primary">
-        <i class="bx bx-plus me-1"></i> Nuevo
-    </a>
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+        {{-- SEARCH --}}
+        <form action="{{ route('paramedicos.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Buscar paramédico..."
+                   class="form-control form-control-sm"
+                   style="max-width: 250px;">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Buscar paramédico">
+                <i class="bx bx-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('paramedicos.index') }}"
+                   class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="Limpiar búsqueda">
+                    <i class="bx bx-x"></i>
+                </a>
+            @endif
+        </form>
+
+        <a href="{{ route('paramedicos.create') }}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Nuevo
+        </a>
+    </div>
 
 </div>
 
@@ -114,14 +134,19 @@
 
                     <td class="text-center">
 
-                        {{-- BOTONES SIN CAMBIO --}}
                         <a href="{{ route('paramedicos.show', $paramedico) }}"
-                           class="btn btn-sm btn-outline-info me-1">
+                           class="btn btn-sm btn-outline-info me-1"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Ver detalles del paramédico">
                             <i class="bx bx-show"></i> Ver
                         </a>
 
                         <a href="{{ route('paramedicos.edit', $paramedico) }}"
-                           class="btn btn-sm btn-outline-warning me-1">
+                           class="btn btn-sm btn-outline-warning me-1"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Editar paramédico">
                             <i class="bx bx-edit"></i> Editar
                         </a>
 
@@ -133,7 +158,10 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Eliminar paramédico">
                                 <i class="bx bx-trash"></i> Eliminar
                             </button>
 

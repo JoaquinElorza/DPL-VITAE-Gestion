@@ -13,7 +13,17 @@ class ClienteController extends Controller
     public function index(Request $request)
     {
         $porPagina = $request->get('por_pagina', 10);
-        $clientes = Cliente::with('usuario')->paginate($porPagina);
+        $query = Cliente::with('usuario');
+        if ($search = $request->get('search')) {
+            $query->whereHas('usuario', function ($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('ap_paterno', 'LIKE', "%{$search}%")
+                  ->orWhere('ap_materno', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%")
+                  ->orWhere('telefono', 'LIKE', "%{$search}%");
+            });
+        }
+        $clientes = $query->paginate($porPagina)->appends($request->query());
         return view('clientes.index', compact('clientes', 'porPagina'));
     }
 

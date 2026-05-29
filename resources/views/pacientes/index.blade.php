@@ -240,12 +240,18 @@
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
 
                             <a href="{{ route('pacientes.show', $paciente) }}"
-                               class="action-btn">
+                               class="action-btn"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Ver detalles del paciente">
                                 Ver
                             </a>
 
                             <a href="{{ route('pacientes.edit', $paciente) }}"
-                               class="action-btn">
+                               class="action-btn"
+                               data-bs-toggle="tooltip"
+                               data-bs-placement="top"
+                               title="Editar paciente">
                                 Editar
                             </a>
 
@@ -258,7 +264,10 @@
                                 @method('DELETE')
 
                                 <button type="submit"
-                                        class="action-btn text-danger border-0">
+                                        class="action-btn text-danger border-0"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Eliminar paciente">
                                     Eliminar
                                 </button>
 

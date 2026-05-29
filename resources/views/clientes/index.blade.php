@@ -90,17 +90,37 @@
 </div>
 @endif
 
-{{-- HEADER --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
     <div>
         <h2 class="dashboard-title mb-1">Clientes</h2>
         <p class="text-muted mb-0">Gestión de clientes registrados</p>
     </div>
 
-    <a href="{{ route('clientes.create') }}" class="btn btn-primary">
-        <i class="bx bx-plus me-1"></i> Nuevo cliente
-    </a>
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+        {{-- SEARCH --}}
+        <form action="{{ route('clientes.index') }}" method="GET" class="d-flex gap-2">
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Buscar cliente..."
+                   class="form-control form-control-sm"
+                   style="max-width: 250px;">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="Buscar cliente">
+                <i class="bx bx-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('clientes.index') }}"
+                   class="btn btn-outline-secondary btn-sm" data-bs-toggle="tooltip" title="Limpiar búsqueda">
+                    <i class="bx bx-x"></i>
+                </a>
+            @endif
+        </form>
+
+        <a href="{{ route('clientes.create') }}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Nuevo cliente
+        </a>
+    </div>
 
 </div>
 
@@ -160,12 +180,18 @@
                     <td class="text-center">
 
                         <a href="{{ route('clientes.show', $cliente) }}"
-                           class="btn btn-sm btn-outline-info">
+                           class="btn btn-sm btn-outline-info"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Ver detalles del cliente">
                             Ver
                         </a>
 
                         <a href="{{ route('clientes.edit', $cliente) }}"
-                           class="btn btn-sm btn-outline-warning">
+                           class="btn btn-sm btn-outline-warning"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                           title="Editar cliente">
                             Editar
                         </a>
 
@@ -177,7 +203,10 @@
                             @csrf
                             @method('DELETE')
 
-                            <button class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Eliminar cliente">
                                 Eliminar
                             </button>
 
