@@ -26,6 +26,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
             'terms' => ['accepted'],
+        ], [
+            'terms.accepted' => 'Debes aceptar los términos y el aviso de privacidad para continuar.'
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -41,7 +43,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     }
 }; ?>
 
-@section('title', 'Register Page')
+@section('title', 'Registro de Cuenta')
 
 @section('page-style')
 @vite([
@@ -50,8 +52,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
 @endsection
 
 <div>
-    <h4 class="mb-1">{{ __('Adventure starts here') }} 🚀</h4>
-    <p class="mb-6">{{ __('Make your app management easy and fun!') }}</p>
+    @php
+        $empresa = \App\Models\Empresa::first();
+        $nombreEmpresa = $empresa ? $empresa->nombre : 'Vitae Ambulancias';
+    @endphp
+    
+    <div class="mb-4">
+        <h4 class="mb-2 fw-bold" style="color: #1A2B4C;">Registro de Cliente</h4>
+        <p class="mb-4 text-muted">Crea tu cuenta en <strong>{{ $nombreEmpresa }}</strong> para solicitar y gestionar servicios médicos de forma segura.</p>
+    </div>
 
     @if (session('status'))
         <div class="alert alert-info mb-4">
@@ -59,57 +68,60 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </div>
     @endif
 
-    <form wire:submit="register" class="mb-6">
-        <div class="mb-6">
-            <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
-            <input
-                wire:model="nombre"
-                type="text"
-                class="form-control @error('nombre') is-invalid @enderror"
-                id="nombre"
-                required
-                autofocus
-                autocomplete="given-name"
-                placeholder="{{ __('Nombre') }}"
-            >
-            @error('nombre')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+    <form wire:submit="register" class="mb-5">
+        
+        <div class="row g-3 mb-4">
+            <div class="col-12">
+                <label for="nombre" class="form-label" style="color: #1A2B4C; font-weight: 500;">Nombre(s)</label>
+                <input
+                    wire:model="nombre"
+                    type="text"
+                    class="form-control @error('nombre') is-invalid @enderror"
+                    id="nombre"
+                    required
+                    autofocus
+                    autocomplete="given-name"
+                    placeholder="Ej. Juan Carlos"
+                >
+                @error('nombre')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6">
+                <label for="ap_paterno" class="form-label" style="color: #1A2B4C; font-weight: 500;">Primer Apellido</label>
+                <input
+                    wire:model="ap_paterno"
+                    type="text"
+                    class="form-control @error('ap_paterno') is-invalid @enderror"
+                    id="ap_paterno"
+                    required
+                    autocomplete="family-name"
+                    placeholder="Ej. Pérez"
+                >
+                @error('ap_paterno')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6">
+                <label for="ap_materno" class="form-label" style="color: #1A2B4C; font-weight: 500;">Segundo Apellido</label>
+                <input
+                    wire:model="ap_materno"
+                    type="text"
+                    class="form-control @error('ap_materno') is-invalid @enderror"
+                    id="ap_materno"
+                    autocomplete="additional-name"
+                    placeholder="(Opcional)"
+                >
+                @error('ap_materno')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
 
-        <div class="mb-6">
-            <label for="ap_paterno" class="form-label">{{ __('Primer Apellido') }}</label>
-            <input
-                wire:model="ap_paterno"
-                type="text"
-                class="form-control @error('ap_paterno') is-invalid @enderror"
-                id="ap_paterno"
-                required
-                autocomplete="family-name"
-                placeholder="{{ __('Primer Apellido') }}"
-            >
-            @error('ap_paterno')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="mb-6">
-            <label for="ap_materno" class="form-label">{{ __('Segundo Apellido') }}</label>
-            <input
-                wire:model="ap_materno"
-                type="text"
-                class="form-control @error('ap_materno') is-invalid @enderror"
-                id="ap_materno"
-                autocomplete="additional-name"
-                placeholder="{{ __('Segundo Apellido (opcional)') }}"
-            >
-            @error('ap_materno')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="mb-6">
-            <label for="email" class="form-label">{{ __('Email') }}</label>
+        <div class="mb-4">
+            <label for="email" class="form-label" style="color: #1A2B4C; font-weight: 500;">Correo Electrónico</label>
             <input
                 wire:model="email"
                 type="email"
@@ -117,15 +129,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 id="email"
                 required
                 autocomplete="email"
-                placeholder="{{ __('Enter your email') }}"
+                placeholder="correo@ejemplo.com"
             >
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="mb-6 form-password-toggle" x-data="{ show: false }">
-            <label class="form-label" for="password">{{ __('Password') }}</label>
+        <div class="mb-4 form-password-toggle" x-data="{ show: false }">
+            <label class="form-label" for="password" style="color: #1A2B4C; font-weight: 500;">Contraseña</label>
             <div class="input-group input-group-merge">
                 <input
                     wire:model="password"
@@ -145,8 +157,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             </div>
         </div>
 
-        <div class="mb-6 form-password-toggle" x-data="{ show: false }">
-            <label class="form-label" for="password_confirmation">{{ __('Confirm Password') }}</label>
+        <div class="mb-4 form-password-toggle" x-data="{ show: false }">
+            <label class="form-label" for="password_confirmation" style="color: #1A2B4C; font-weight: 500;">Confirmar Contraseña</label>
             <div class="input-group input-group-merge">
                 <input
                     wire:model="password_confirmation"
@@ -166,28 +178,27 @@ new #[Layout('components.layouts.auth')] class extends Component {
             </div>
         </div>
 
-        <div class="mb-8">
+        <div class="mb-4">
             <div class="form-check mb-0 ms-2">
                 <input wire:model="terms" type="checkbox" class="form-check-input @error('terms') is-invalid @enderror" id="terms">
                 <label class="form-check-label" for="terms">
-                    {{ __('I agree to') }}
-                    <a href="javascript:void(0);">{{ __('privacy policy & terms') }}</a>
+                    Acepto el <a href="javascript:void(0);" style="color: #6d28d9; font-weight: 500;">aviso de privacidad y términos de servicio</a>
                 </label>
                 @error('terms')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary d-grid w-100 mb-6">
-            {{ __('Sign up') }}
+        <button type="submit" class="btn d-grid w-100 mb-4" style="background-color: #6d28d9; color: white; font-weight: 600; border-radius: 8px; padding: 10px; border: none; box-shadow: 0 4px 14px 0 rgba(109, 40, 217, 0.39);">
+            Registrarse
         </button>
     </form>
 
     <p class="text-center">
-        <span>{{ __('Already have an account?') }}</span>
-        <a href="{{ route('login') }}" wire:navigate>
-            <span>{{ __('Sign in instead') }}</span>
+        <span class="text-muted">¿Ya tienes una cuenta registrada?</span>
+        <a href="{{ route('login') }}" wire:navigate style="color: #6d28d9; font-weight: 600; text-decoration: none;">
+            <span>Inicia sesión aquí</span>
         </a>
     </p>
 </div>
