@@ -3,104 +3,209 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solicitar Cotización — {{ $empresa->nombre ?? config('app.name') }}</title>
+    <title>Solicitar Servicio — {{ $empresa->nombre ?? config('app.name') }}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            background:#f5f5f9;
-            font-family:sans-serif;
+        :root {
+            --navy-blue: #1A2B4C;
+            --premium-purple: #6d28d9;
+            --purple-light: #f3f0ff;
+            --danger-red: #e11d48;
+            --bg-color: #f8fafc;
         }
 
-        .form-card {
-            border:none;
-            border-radius:16px;
-            background:#fff;
-            box-shadow: 0 4px 24px 0 rgba(25, 25, 112, 0.08);
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            color: #334155;
         }
-        
+
+        /* Navbar Premium (Sin icono médico) */
+        .navbar-premium {
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(26, 43, 76, 0.05);
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .navbar-brand {
+            color: var(--navy-blue) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        /* Línea de tiempo */
+        .timeline-wrapper {
+            position: relative;
+        }
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            bottom: 100px;
+            left: 20px;
+            width: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-badge {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--premium-purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            z-index: 2;
+            box-shadow: 0 0 0 6px var(--bg-color);
+        }
+
+        /* Tarjetas Flotantes */
+        .premium-card {
+            background: #ffffff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(26, 43, 76, 0.04);
+            padding: 2.2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .premium-card:hover {
+            box-shadow: 0 12px 40px rgba(26, 43, 76, 0.07);
+        }
+
+        .section-title {
+            color: var(--navy-blue);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+
+        /* Inputs Premium */
+        .form-label {
+            font-weight: 500;
+            color: var(--navy-blue);
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
         .form-control, .form-select {
-            background-color: transparent !important;
-            border: 1px solid rgba(138, 43, 226, 0.3) !important;
-            border-radius: 8px;
-            transition: all 0.2s;
-            padding: 0.6rem 1rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1.2rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: none !important;
         }
         .form-control:focus, .form-select:focus {
-            border-color: #8A2BE2 !important;
-            box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.15) !important;
-            background-color: #fff !important;
+            background-color: #ffffff;
+            border-color: var(--premium-purple);
+            box-shadow: 0 0 0 4px rgba(109, 40, 217, 0.1) !important;
         }
-        .form-label {
-            font-weight: 600;
-            color: #566a7f;
-            margin-bottom: 0.25rem;
-            font-size: 0.85rem;
-        }
+        .text-danger { color: var(--danger-red) !important; }
 
-        .step-badge {
-            width:30px;
-            height:30px;
-            border-radius:50%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:#8A2BE2;
-            color:#fff;
-            font-weight:bold;
-        }
-
-        .map-box {
-            height:300px;
-            border-radius:10px;
-        }
-
+        /* Tarjetas de Selección (Traslado/Evento) */
         .tipo-card {
-            border:2px solid #e5e5e5;
-            border-radius:10px;
-            padding:16px;
-            cursor:pointer;
-            transition:.2s ease;
-            background:#fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
         .tipo-card:hover {
-            border-color:#8A2BE2;
-            transform:translateY(-2px);
+            border-color: #cbd5e1;
+            transform: translateY(-3px);
         }
-
         .tipo-card.selected {
-            border-color:#8A2BE2;
-            background:rgba(138, 43, 226, 0.05);
-            box-shadow:0 4px 15px rgba(138,43,226,.15);
+            border-color: var(--premium-purple);
+            background: var(--purple-light);
         }
-
-        .tipo-card input {
-            display:none;
+        .tipo-card input { display: none; }
+        .tipo-card h4 {
+            color: var(--navy-blue);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
-
-        .tipo-title {
-            font-weight:bold;
-            color:#333;
-            margin-bottom:5px;
-        }
-
         .tipo-text {
-            color:#666;
-            font-size:14px;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Mapas */
+        .map-box {
+            height: 280px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            z-index: 1; 
+        }
+
+        /* Botón Principal */
+        .btn-premium {
+            background: var(--premium-purple);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border-radius: 50rem;
+            border: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.3);
+        }
+        .btn-premium:hover:not(:disabled) {
+            background: #5b21b6;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(109, 40, 217, 0.4);
+            color: #fff;
+        }
+        .btn-premium:disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* AI Card Refinada */
+        #ai-prediction-card {
+            background: linear-gradient(145deg, var(--navy-blue) 0%, #2a4374 100%);
+            border-radius: 20px;
+            border: none;
         }
     </style>
 </head>
 
 <body>
 
-<nav class="navbar bg-white shadow-sm">
-    <div class="container">
-        <span class="navbar-brand fw-bold">
-            {{ $empresa->nombre ?? config('app.name') }}
+<!-- Navbar sin cruz -->
+<nav class="navbar navbar-premium sticky-top">
+    <div class="container d-flex align-items-center justify-content-center">
+        <span class="navbar-brand">
+            {{ $empresa->nombre ?? 'Vitae Ambulancias' }}
         </span>
     </div>
 </nav>
@@ -111,195 +216,186 @@
 
 <section class="py-5">
 <div class="container">
-<div class="row justify-content-center">
-<div class="col-lg-8">
 
-<div class="form-card p-4">
-
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach($errors->all() as $e)
-                <li>{{ $e }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-<form method="POST" action="{{ route('cotizaciones.store') }}">
-@csrf
-
-{{-- CONTACTO --}}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div class="d-flex gap-2 align-items-center">
-        <div class="step-badge">1</div>
-        <h5 class="mb-0 fw-bold" style="color: #393395;">Contacto</h5>
-    </div>
-    <span class="text-danger small fw-semibold">* datos obligatorios</span>
-</div>
-
-<div class="row g-3 mb-4">
-    <div class="col-md-6">
-        <label class="form-label">Nombre <span class="text-danger">*</span></label>
-        <input class="form-control" name="nombre" placeholder="Ej. Juan" required>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">Primer apellido <span class="text-danger">*</span></label>
-        <input class="form-control" name="pApellido" placeholder="Ej. Pérez" required>
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">Segundo apellido</label>
-        <input class="form-control" name="sApellido" placeholder="Ej. García (Opcional)">
-    </div>
-    <div class="col-md-6">
-        <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-        <input class="form-control" name="telefono" placeholder="A 10 dígitos" maxlength="10" required>
-    </div>
-</div>
-
-<hr>
-
-{{-- SERVICIO --}}
-<div class="d-flex gap-2 align-items-center mb-3">
-    <div class="step-badge">2</div>
-    <h5 class="mb-0 fw-bold" style="color: #393395;">Servicio</h5>
-</div>
-
-<div style="display:flex; gap:15px; margin-bottom: 15px;">
-
-    <label class="tipo-card w-50" id="card1">
-        <input type="radio" name="tipo_servicio" value="Traslado" required>
-        <h4>Traslado Programado</h4>
-        <p class="tipo-text">Llevamos al paciente de punto A a punto B.</p>
-    </label>
-
-    <label class="tipo-card w-50" id="card2">
-        <input type="radio" name="tipo_servicio" value="Evento" required>
-        <h4>Evento Privado</h4>
-        <p class="tipo-text">Ambulancia y personal capacitado a la disposicion de su evento.</p>
-    </label>
-
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Descripción de la solicitud <span class="text-danger">*</span></label>
-    <textarea class="form-control" name="descripcion" placeholder="Explica brevemente lo que necesitas..."></textarea>
-</div>
-
-<div id="wrap-padecimientos" class="d-none mb-3">
-    <label class="form-label">Padecimientos o estado del paciente <span class="text-danger">*</span></label>
-    <textarea class="form-control" name="padecimientos_paciente"
-        placeholder="Ej. Hipertensión, requiere oxígeno, etc."></textarea>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        <label class="form-label">Fecha requerida <span class="text-danger">*</span></label>
-        <input type="date" class="form-control" name="fecha_requerida" min="{{ date('Y-m-d') }}" required>
-    </div>
-    <div class="col-md-6 mb-3">
-        <label class="form-label">Horas de servicio requeridas <span class="text-danger">*</span></label>
-        <input type="number" class="form-control" name="horas_servicio" id="horas_servicio" value="1" min="1" required>
-    </div>
-</div>
-
-<hr>
-
-{{-- MAPA --}}
-<div class="d-flex gap-2 align-items-center mb-3">
-    <div class="step-badge">3</div>
-    <h5 class="mb-0 fw-bold" style="color: #393395;">Ubicación</h5>
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Dirección de origen <span class="text-danger">*</span></label>
-    <div id="map-origen" class="map-box mb-2"></div>
-    <input class="form-control" name="origen" id="origen" placeholder="Dirección exacta de recolección">
-</div>
-
-<div id="wrap-destino" class="d-none mb-3">
-    <label class="form-label">Dirección de destino <span class="text-danger">*</span></label>
-    <div id="map-destino" class="map-box mb-2"></div>
-    <input class="form-control" name="destino" id="destino" placeholder="Hospital o lugar de destino">
-</div>
-
-<hr>
-
-{{-- PRECIO / PREDICCIÓN AI --}}
-<div id="ai-prediction-card" class="d-none mb-4 p-4" style="border-radius:16px; background: linear-gradient(135deg, #191970 0%, #393395 100%); color:white; box-shadow: 0 10px 30px rgba(57, 51, 149, 0.3); position: relative; overflow: hidden;">
-    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); opacity: 0.5; pointer-events: none;"></div>
-    
-    <div class="d-flex align-items-center mb-3">
-        <i class='bx bx-brain bx-tada fs-2 me-2' style="color: #FF7F50;"></i>
-        <h5 class="mb-0 fw-bold">Predicción Inteligente</h5>
-    </div>
-    
-    <div id="ai-loading" class="text-center py-3">
-        <div class="spinner-border text-light mb-2" role="status"></div>
-        <p class="mb-0 small" style="opacity: 0.8;" id="ai-loading-text">Analizando variables de predicción...</p>
-    </div>
-    
-    <div id="ai-result" class="d-none">
-        <div class="row text-center">
-            <div class="col-6" style="border-right: 1px solid rgba(255,255,255,0.2);">
-                <span class="small d-block mb-1" style="opacity: 0.8;">Precio Sugerido</span>
-                <h3 class="mb-0 fw-bold" id="est-total" style="color: #FF7F50;">$0.00</h3>
-            </div>
-            <div class="col-6">
-                <span class="small d-block mb-1" style="opacity: 0.8;">Tipo de Traslado</span>
-                <h5 class="mb-0 fw-bold mt-1" id="est-tipo">--</h5>
-            </div>
+    @if($errors->any())
+        <div class="alert alert-danger mb-4" style="border-radius: 12px; background: #fff1f2; border: 1px solid #fecdd3;">
+            <ul class="mb-0">
+                @foreach($errors->all() as $e)
+                    <li>{{ $e }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
+
+    <div class="row g-5">
         
-        <!-- Explicabilidad (Collapse custom) -->
-        <div class="mt-3" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px;">
-            <a data-bs-toggle="collapse" href="#collapseExplicacion" role="button" aria-expanded="false" aria-controls="collapseExplicacion" style="color: white; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center;">
-                <i class='bx bx-info-circle me-2'></i> ¿Cómo calculamos este precio? <i class='bx bx-chevron-down ms-auto'></i>
-            </a>
-            <div class="collapse mt-3" id="collapseExplicacion">
-                <div class="p-3" style="background: rgba(0,0,0,0.15); border-radius: 8px; font-size: 0.85rem; color: #f0f0f0;">
-                    Nuestra IA analizó tu solicitud considerando los siguientes factores para ofrecerte la tarifa más precisa y justa:
-                    <ul class="mt-2 mb-2 ps-0" style="list-style: none;">
-                        <li class="mb-2"><i class='bx bx-map-alt me-1' style="color: #FF7F50;"></i> <strong>Distancia de ruta:</strong> Calculado en base al trayecto de <span id="distancia-explicada">0</span> km.</li>
-                        <li class="mb-2"><i class='bx bx-time-five me-1' style="color: #FF7F50;"></i> <strong>Tiempo base:</strong> Incluye la cobertura por <span id="horas-explicadas">1</span> hora(s).</li>
-                        <li><i class='bx bx-plus-medical me-1' style="color: #FF7F50;"></i> <strong>Nivel de atención:</strong> Contempla paramédicos y el equipo médico necesario.</li>
-                    </ul>
-                    <em style="opacity: 0.8; font-size: 0.8rem;">*Nota: Este es un costo base estimado de alta precisión. Si se requiere oxígeno o equipo extra, podría haber un ajuste final.</em>
+        <!-- COLUMNA IZQUIERDA: Textos e Inteligencia Artificial (Sticky) -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 100px;">
+                <h1 class="fw-bold mb-3" style="color: var(--navy-blue); font-size: 2.2rem; line-height: 1.2;">Solicitud de Servicio Médico</h1>
+                <p class="text-muted mb-4" style="font-size: 0.95rem;">Complete el formulario paso a paso. Nuestro motor logístico analizará su requerimiento para ofrecerle una estimación justa y transparente.</p>
+                
+                {{-- PREDICCIÓN AI (PREMIUM) --}}
+                <div id="ai-prediction-card" class="d-none p-4 shadow-lg text-white position-relative overflow-hidden">
+                    <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%); pointer-events: none;"></div>
+                    
+                    <div class="d-flex align-items-center mb-4 border-bottom border-secondary pb-3">
+                        <i class='bx bx-brain fs-1 me-3' style="color: #38bdf8;"></i>
+                        <div>
+                            <h5 class="mb-0 fw-bold">Análisis Predictivo</h5>
+                            <small class="text-light" style="opacity: 0.8;">Motor Minería de Datos DPL</small>
+                        </div>
+                    </div>
+                    
+                    <div id="ai-loading" class="text-center py-4">
+                        <div class="spinner-border text-info mb-3" role="status"></div>
+                        <p class="mb-0 font-monospace small" style="opacity: 0.9;" id="ai-loading-text">Evaluando variables...</p>
+                    </div>
+                    
+                    <div id="ai-result" class="d-none">
+                        <div class="text-center mb-4">
+                            <span class="small d-block mb-1 text-uppercase tracking-wider" style="opacity: 0.7; letter-spacing: 1px;">Estimación Base</span>
+                            <h2 class="mb-0 fw-bold" id="est-total" style="color: #38bdf8; font-size: 2.5rem;">$0.00</h2>
+                            <h6 class="mb-0 fw-bold mt-2 text-white" id="est-tipo">--</h6>
+                        </div>
+                        
+                        <div class="bg-dark bg-opacity-25 p-3 rounded-3 mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class='bx bx-check-shield text-success fs-5 me-2'></i>
+                                <span class="small fw-semibold">Validación Histórica</span>
+                            </div>
+                            <p class="small mb-0 text-light" style="opacity: 0.85;">
+                                Filtrados <strong id="badge-outliers" class="text-white">--</strong> outliers de <strong id="badge-analizados" class="text-white">--</strong> registros para garantizar precisión del <strong id="badge-precision" class="text-success">--%</strong>.
+                            </p>
+                        </div>
+
+                        <div class="d-flex justify-content-between text-center opacity-75 small">
+                            <div><i class='bx bx-map-alt text-info d-block fs-5 mb-1'></i> <span id="distancia-explicada">0</span> km</div>
+                            <div><i class='bx bx-time-five text-info d-block fs-5 mb-1'></i> <span id="horas-explicadas">1</span> hr(s)</div>
+                            <div><i class='bx bx-shield-plus text-info d-block fs-5 mb-1'></i> Seguro DPL</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Trust Badges IA -->
-        <div class="mt-3 pt-3" style="border-top: 1px dashed rgba(255,255,255,0.2); font-size: 0.8rem; opacity: 0.9;">
-            <div class="d-flex align-items-start text-start mb-2">
-                <i class='bx bx-check-shield me-2 mt-1' style="color: #10B981; font-size: 1.1rem;"></i>
-                <div>
-                    <strong>Validado por Inteligencia Artificial:</strong> Precio calculado analizando <span id="badge-analizados" class="fw-bold">--</span> traslados previos con una precisión del <span id="badge-precision" class="fw-bold" style="color: #10B981;">--%</span>.
+
+        <!-- COLUMNA DERECHA: Formulario con Línea de Tiempo -->
+        <div class="col-lg-8">
+            <form method="POST" action="{{ route('cotizaciones.store') }}">
+            @csrf
+            
+            <div class="timeline-wrapper">
+
+                {{-- PASO 1: CONTACTO --}}
+                <div class="timeline-item">
+                    <div class="timeline-badge">1</div>
+                    <div class="premium-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                            <h3 class="section-title border-0 pb-0 mb-0">Datos del Solicitante</h3>
+                            <span class="text-danger small fw-semibold">* Obligatorio</span>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                                <input class="form-control" name="nombre" placeholder="Ej. Juan" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Primer apellido <span class="text-danger">*</span></label>
+                                <input class="form-control" name="pApellido" placeholder="Ej. Pérez" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Segundo apellido</label>
+                                <input class="form-control" name="sApellido" placeholder="Ej. García">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono celular <span class="text-danger">*</span></label>
+                                <input class="form-control" name="telefono" placeholder="A 10 dígitos" maxlength="10" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex align-items-start text-start">
-                <i class='bx bx-filter-alt me-2 mt-1' style="color: #FFB020; font-size: 1.1rem;"></i>
-                <div>
-                    <strong>Garantía de Cobro Justo:</strong> El motor ha filtrado <span id="badge-outliers" class="fw-bold">--</span> anomalías (outliers) de precios históricos para ofrecerte la tarifa más competitiva.
+
+                {{-- PASO 2: SERVICIO --}}
+                <div class="timeline-item">
+                    <div class="timeline-badge">2</div>
+                    <div class="premium-card">
+                        <h3 class="section-title">Detalles del Servicio</h3>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="tipo-card" id="card1">
+                                    <input type="radio" name="tipo_servicio" value="Traslado" required>
+                                    <h4 class="mb-2">Traslado Programado</h4>
+                                    <p class="tipo-text">Llevamos al paciente de un punto A hacia un punto B con total seguridad clínica.</p>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="tipo-card" id="card2">
+                                    <input type="radio" name="tipo_servicio" value="Evento" required>
+                                    <h4 class="mb-2">Cobertura de Evento</h4>
+                                    <p class="tipo-text">Ambulancia y paramédicos a disposición durante toda la duración de su evento.</p>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Descripción de la solicitud <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="descripcion" rows="2" placeholder="Describa brevemente su necesidad operativa..."></textarea>
+                        </div>
+
+                        <div id="wrap-padecimientos" class="d-none mb-4">
+                            <label class="form-label">Cuadro Clínico del Paciente <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="padecimientos_paciente" rows="2" placeholder="Ej. Hipertensión, requiere oxígeno..."></textarea>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha del servicio <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="fecha_requerida" min="{{ date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Duración estimada (Horas) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="horas_servicio" id="horas_servicio" value="1" min="1" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                {{-- PASO 3: UBICACIÓN --}}
+                <div class="timeline-item">
+                    <div class="timeline-badge">3</div>
+                    <div class="premium-card">
+                        <h3 class="section-title">Coordenadas Logísticas</h3>
+
+                        <div class="mb-4">
+                            <label class="form-label">Punto de Origen <span class="text-danger">*</span></label>
+                            <div id="map-origen" class="map-box mb-3"></div>
+                            <input class="form-control" name="origen" id="origen" placeholder="Dirección exacta de recolección">
+                        </div>
+
+                        <div id="wrap-destino" class="d-none mb-2">
+                            <label class="form-label">Punto de Destino <span class="text-danger">*</span></label>
+                            <div id="map-destino" class="map-box mb-3"></div>
+                            <input class="form-control" name="destino" id="destino" placeholder="Hospital, clínica o domicilio">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Elementos ocultos e input submit -->
+                <div class="timeline-item" style="padding-left: 60px;">
+                    <input type="hidden" name="km_distancia" id="km_distancia" value="0">
+                    <input type="hidden" name="precio_final" id="precio_final" value="0">
+
+                    <button class="btn btn-premium w-100 py-3" type="submit">
+                        Confirmar y Solicitar Servicio
+                    </button>
+                </div>
+
             </div>
+            </form>
         </div>
     </div>
-    
-    <!-- Hidden inputs to send distance and predicted price -->
-    <input type="hidden" name="km_distancia" id="km_distancia" value="0">
-    <input type="hidden" name="precio_final" id="precio_final" value="0">
-</div>
-
-<button class="btn w-100 mt-3 text-white fw-bold shadow-sm" style="background: #393395; border: none; padding: 12px; font-size: 1.1rem; border-radius: 50rem; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(57, 51, 149, 0.2);" onmouseover="this.style.background='#2a2575'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='#393395'; this.style.transform='none';" type="submit">
-    Enviar solicitud
-</button>
-
-</form>
-
-</div>
-</div>
-</div>
 </div>
 </section>
 
@@ -311,14 +407,14 @@ function initMapas() {
     try {
         window.mapOrigen = L.map('map-origen').setView([17.06, -96.72], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            attribution: '&copy; OpenStreetMap',
             maxZoom: 19,
         }).addTo(mapOrigen);
         window.markerOrigen = L.marker([17.06, -96.72], {draggable:true}).addTo(mapOrigen);
 
         window.mapDestino = L.map('map-destino').setView([17.06, -96.72], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            attribution: '&copy; OpenStreetMap',
             maxZoom: 19,
         }).addTo(mapDestino);
         window.markerDestino = L.marker([17.06, -96.72], {draggable:true}).addTo(mapDestino);
@@ -352,12 +448,10 @@ function initMapas() {
     }
 }
 
-// Lógica de Predicción AI
 let predictionTimeout = null;
 function triggerPrediction() {
     clearTimeout(predictionTimeout);
     
-    // Check if we have enough data to predict
     const tipoServicio = document.querySelector('input[name="tipo_servicio"]:checked');
     if (!tipoServicio) return;
     
@@ -369,12 +463,11 @@ function triggerPrediction() {
     if (isTraslado && (!inputOrigen.value || !inputDestino.value)) return;
     if (!isTraslado && !inputOrigen.value) return;
 
-    // Show AI Card and Loading State
     document.getElementById('ai-prediction-card').classList.remove('d-none');
     document.getElementById('ai-loading').classList.remove('d-none');
     document.getElementById('ai-result').classList.add('d-none');
     
-    const messages = ["Analizando variables de predicción...", "Ejecutando modelo de regresión...", "Calculando factores de riesgo..."];
+    const messages = ["Extrayendo dataset histórico...", "Filtrando valores atípicos...", "Calculando proyección..."];
     let msgIndex = 0;
     const msgInterval = setInterval(() => {
         document.getElementById('ai-loading-text').innerText = messages[msgIndex % messages.length];
@@ -399,64 +492,47 @@ function triggerPrediction() {
                 document.getElementById('est-tipo').innerText = data.tipo_traslado;
                 document.getElementById('precio_final').value = data.precio_sugerido;
                 
-                // Actualizar valores de explicabilidad
                 document.getElementById('distancia-explicada').innerText = payload.km_distancia;
                 document.getElementById('horas-explicadas').innerText = payload.horas_servicio;
 
-                // Actualizar los Trust Badges
                 if(data.precision_modelo) {
-                    document.getElementById('badge-precision').innerText = data.precision_modelo + '%';
+                    document.getElementById('badge-precision').innerText = data.precision_modelo;
                     document.getElementById('badge-analizados').innerText = data.traslados_analizados;
                     document.getElementById('badge-outliers').innerText = data.outliers_filtrados;
                 }
                 
-                // Actualizar validación de form
                 document.querySelector('button[type="submit"]').disabled = false;
-                document.querySelector('button[type="submit"]').style.opacity = '1';
-                document.querySelector('button[type="submit"]').style.cursor = 'pointer';
             })
             .catch(err => {
                 clearInterval(msgInterval);
                 console.error(err);
             });
-    }, 1500); // Artificial delay to show the "Wow" AI thinking animation
+    }, 1500); 
 }
 
 document.getElementById('horas_servicio').addEventListener('change', triggerPrediction);
 
-// CORRECCIÓN: Lógica correcta para manejar los botones de radio
 const cards = document.querySelectorAll('.tipo-card');
 const radios = document.querySelectorAll('input[name="tipo_servicio"]');
 
 radios.forEach(radio => {
     radio.addEventListener('change', (e) => {
-        // Quitar la clase selected a todos
-        cards.forEach(card => {
-            card.classList.remove('selected');
-        });
-
-        // Añadir la clase selected al contenedor del radio actual
+        cards.forEach(card => card.classList.remove('selected'));
         radio.closest('.tipo-card').classList.add('selected');
 
-        // Mostrar u ocultar padecimientos y destino según la opción
         let tipo = e.target.value;
         document.getElementById('wrap-padecimientos').classList.toggle('d-none', tipo !== 'Traslado');
         document.getElementById('wrap-destino').classList.toggle('d-none', tipo !== 'Traslado');
         
         if (tipo === 'Traslado') {
             setTimeout(() => {
-                if (window.mapDestino) {
-                    window.mapDestino.invalidateSize();
-                }
+                if (window.mapDestino) window.mapDestino.invalidateSize();
             }, 200);
         }
-        
-        // Al cambiar de tipo de servicio, re-evaluar los campos dependientes
         document.querySelector('textarea[name="descripcion"]').dispatchEvent(new Event('input'));
     });
 });
 
-// Lógica de llenado secuencial de izquierda a derecha, de arriba hacia abajo
 document.addEventListener('DOMContentLoaded', function() {
     const inputNombre = document.querySelector('input[name="nombre"]');
     const inputPApellido = document.querySelector('input[name="pApellido"]');
@@ -473,7 +549,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initMapas();
 
-    // Deshabilitar todos excepto el primero al cargar
     inputPApellido.disabled = true;
     inputSApellido.disabled = true;
     inputTelefono.disabled = true;
@@ -484,7 +559,6 @@ document.addEventListener('DOMContentLoaded', function() {
     inputDestino.disabled = true;
     inputPadecimientos.disabled = true;
     btnSubmit.disabled = true;
-    btnSubmit.style.opacity = '0.5';
 
     radiosTipo.forEach(r => {
         r.disabled = true;
@@ -601,13 +675,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         btnSubmit.disabled = !isValid;
-        if(isValid) {
-            btnSubmit.style.opacity = '1';
-            btnSubmit.style.cursor = 'pointer';
-        } else {
-            btnSubmit.style.opacity = '0.5';
-            btnSubmit.style.cursor = 'not-allowed';
-        }
     }
 });
 </script>

@@ -13,7 +13,6 @@
         .navbar-brand img { height: 45px; object-fit: contain; }
         .status-badge { font-size: .78rem; }
 
-        /* Overrides de colores unificados (Admin Estética) */
         .text-primary { color: #8A2BE2 !important; }
         .text-info { color: #393395 !important; }
         
@@ -70,7 +69,6 @@
             transform: translateY(-2px);
         }
 
-        /* Estilo premium para la tabla */
         .table thead {
             background: linear-gradient(135deg, #BA55D3, #6A5ACD) !important;
         }
@@ -96,7 +94,7 @@
         }
     </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <nav class="navbar navbar-light bg-white shadow-sm">
     <div class="container">
@@ -124,7 +122,7 @@
     </div>
 </nav>
 
-<section class="py-5">
+<section class="py-5 flex-grow-1">
     <div class="container" style="max-width:860px">
 
         <h2 class="fw-bold mb-1" style="background: linear-gradient(135deg, #393395, #8A2BE2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Mis solicitudes de cotización</h2>
@@ -243,7 +241,7 @@
     </div>
 </section>
 
-<footer class="py-4 mt-5" style="background: linear-gradient(135deg, #BA55D3, #6A5ACD); color: #ffffff;">
+<footer class="py-4 mt-auto" style="background: linear-gradient(135deg, #BA55D3, #6A5ACD); color: #ffffff;">
     <div class="container text-center">
         <p class="mb-0">&copy; {{ date('Y') }} <strong class="text-white">{{ $empresa->nombre ?? config('app.name') }}</strong> — Todos los derechos reservados.</p>
     </div>
