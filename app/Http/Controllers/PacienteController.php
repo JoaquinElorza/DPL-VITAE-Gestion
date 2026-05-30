@@ -16,11 +16,14 @@ class PacienteController extends Controller
 
         $query = Paciente::with(['servicio', 'direccion']);
         if ($search = request('search')) {
-            $query->where('nombre', 'LIKE', "%{$search}%")
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
                   ->orWhere('ap_paterno', 'LIKE', "%{$search}%")
-                  ->orWhere('ap_materno', 'LIKE', "%{$search}%");
+                  ->orWhere('ap_materno', 'LIKE', "%{$search}%")
+                  ->orWhere('curp', 'LIKE', "%{$search}%");
+            });
         }
-        $pacientes = $query->paginate($porPagina)->appends(['search' => request('search')]);
+        $pacientes = $query->paginate($porPagina)->appends($request->query());
         return view('pacientes.index', compact('pacientes', 'porPagina'));
     }
 
@@ -43,6 +46,7 @@ class PacienteController extends Controller
             'peso' => 'nullable|numeric',
             'id_servicio' => 'required|exists:servicio,id_servicio',
             'id_direccion' => 'nullable|exists:direccion,id_direccion',
+            'curp' => 'required|string|size:18|unique:paciente,curp',
         ]);
         Paciente::create($data);
         return redirect()->route('pacientes.index')->with('success', 'Paciente creado.');
@@ -73,6 +77,7 @@ class PacienteController extends Controller
             'peso' => 'nullable|numeric',
             'id_servicio' => 'required|exists:servicio,id_servicio',
             'id_direccion' => 'nullable|exists:direccion,id_direccion',
+            'curp' => 'required|string|size:18|unique:paciente,curp,' . $paciente->id_paciente . ',id_paciente',
         ]);
         $paciente->update($data);
         return redirect()->route('pacientes.index')->with('success', 'Paciente actualizado.');

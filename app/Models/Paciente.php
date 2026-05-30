@@ -22,7 +22,8 @@ class Paciente extends Model
         'sexo',
         'peso',
         'id_servicio',
-        'id_direccion'
+        'id_direccion',
+        'curp'
     ];
 
     public function servicio()

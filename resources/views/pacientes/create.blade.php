@@ -16,7 +16,7 @@
                     <i class="bx bx-id-card me-1"></i> Datos Personales
                 </h6>
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label text-muted fw-medium">Nombre <span class="text-danger">*</span></label>
                         <div class="input-group input-group-merge shadow-none">
                             <span class="input-group-text bg-transparent text-primary border-end-0"><i class="bx bx-user"></i></span>
@@ -24,15 +24,20 @@
                         </div>
                         @error('nombre')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label text-muted fw-medium">Primer Apellido <span class="text-danger">*</span></label>
                         <input type="text" name="ap_paterno" class="form-control @error('ap_paterno') is-invalid @enderror" value="{{ old('ap_paterno') }}" placeholder="Primer apellido" required>
                         @error('ap_paterno')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label text-muted fw-medium">Segundo Apellido</label>
                         <input type="text" name="ap_materno" class="form-control @error('ap_materno') is-invalid @enderror" value="{{ old('ap_materno') }}" placeholder="Segundo apellido">
                         @error('ap_materno')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted fw-medium">CURP <span class="text-danger">*</span></label>
+                        <input type="text" name="curp" class="form-control @error('curp') is-invalid @enderror" value="{{ old('curp') }}" placeholder="CURP (18 caracteres)" required maxlength="18">
+                        @error('curp')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label text-muted fw-medium">Sexo</label>
