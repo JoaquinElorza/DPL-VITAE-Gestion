@@ -188,7 +188,7 @@
 
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>CURP</th>
                     <th>Nombre</th>
                     <th>Ap. Paterno</th>
                     <th>Ap. Materno</th>
@@ -207,7 +207,7 @@
 
                     <td>
                         <span class="badge-event">
-                            #{{ $paciente->id_paciente }}
+                            {{ $paciente->curp ?? '—' }}
                         </span>
                     </td>
 

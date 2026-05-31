@@ -7,20 +7,25 @@
             <form action="{{ route('pacientes.update', $paciente) }}" method="POST">
                 @csrf @method('PUT')
                 <div class="row g-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Nombre <span class="text-danger">*</span></label>
                         <input type="text" name="nombre" class="form-control @error('nombre') is-invalid @enderror" value="{{ old('nombre', $paciente->nombre) }}" required>
                         @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Primer Apellido <span class="text-danger">*</span></label>
                         <input type="text" name="ap_paterno" class="form-control @error('ap_paterno') is-invalid @enderror" value="{{ old('ap_paterno', $paciente->ap_paterno) }}" required>
                         @error('ap_paterno')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Segundo Apellido</label>
                         <input type="text" name="ap_materno" class="form-control @error('ap_materno') is-invalid @enderror" value="{{ old('ap_materno', $paciente->ap_materno) }}">
                         @error('ap_materno')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">CURP <span class="text-danger">*</span></label>
+                        <input type="text" name="curp" class="form-control @error('curp') is-invalid @enderror" value="{{ old('curp', $paciente->curp) }}" placeholder="CURP" required maxlength="18">
+                        @error('curp')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Sexo</label>

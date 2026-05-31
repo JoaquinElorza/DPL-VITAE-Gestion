@@ -150,6 +150,7 @@ class DatabaseSeeder extends Seeder
                 'peso'             => rand(60, 90),
                 'id_servicio'      => rand(1, 10),
                 'id_direccion'     => rand(1, 10),
+                'curp'             => sprintf("PACI%06dMXYZZ0%02d", 900100 + $i, $i),
             ]);
         }
 
@@ -185,5 +186,8 @@ class DatabaseSeeder extends Seeder
                 'id_padecimiento' => rand(1, 10),
             ]);
         }
+
+        // ── ADMIN ──────────────────────────────────────────────────────────
+        $this->call(AdminSeeder::class);
     }
 }

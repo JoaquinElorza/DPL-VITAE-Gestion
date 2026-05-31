@@ -3,7 +3,7 @@
         <div class="col-md-7">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Paciente #{{ $paciente->id_paciente }}</h5>
+                    <h5 class="mb-0">Paciente #{{ $paciente->curp ?? $paciente->id_paciente }}</h5>
                     <div>
                         <a href="{{ route('pacientes.edit', $paciente) }}" class="btn btn-sm btn-warning"><i class="bx bx-edit me-1"></i>Editar</a>
                         <a href="{{ route('pacientes.index') }}" class="btn btn-sm btn-secondary ms-1">Volver</a>
@@ -11,6 +11,8 @@
                 </div>
                 <div class="card-body">
                     <dl class="row">
+                        <dt class="col-sm-5">CURP</dt>
+                        <dd class="col-sm-7">{{ $paciente->curp ?? '—' }}</dd>
                         <dt class="col-sm-5">Nombre</dt>
                         <dd class="col-sm-7">{{ $paciente->nombre }} {{ $paciente->ap_paterno }} {{ $paciente->ap_materno }}</dd>
                         <dt class="col-sm-5">Sexo</dt>
