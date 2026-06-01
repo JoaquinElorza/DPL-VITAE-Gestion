@@ -206,9 +206,9 @@
                 <tr>
 
                     <td>
-                        <span class="badge-event">
-                            {{ $paciente->curp ?? '—' }}
-                        </span>
+                     <span class="badge-event" style="text-transform: uppercase; letter-spacing: 0.5px;">
+    {{ $paciente->curp ? strtoupper($paciente->curp) : '—' }}
+</span>
                     </td>
 
                     <td>

@@ -25,7 +25,6 @@
             color: #334155;
         }
 
-        /* Navbar Premium (Sin icono médico) */
         .navbar-premium {
             background: #ffffff;
             box-shadow: 0 4px 20px rgba(26, 43, 76, 0.05);
@@ -39,7 +38,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* Línea de tiempo */
         .timeline-wrapper {
             position: relative;
         }
@@ -76,7 +74,6 @@
             box-shadow: 0 0 0 6px var(--bg-color);
         }
 
-        /* Tarjetas Flotantes */
         .premium-card {
             background: #ffffff;
             border: none;
@@ -98,7 +95,6 @@
             padding-bottom: 1rem;
         }
 
-        /* Inputs Premium */
         .form-label {
             font-weight: 500;
             color: var(--navy-blue);
@@ -121,7 +117,6 @@
         }
         .text-danger { color: var(--danger-red) !important; }
 
-        /* Tarjetas de Selección (Traslado/Evento) */
         .tipo-card {
             border: 2px solid #e2e8f0;
             border-radius: 16px;
@@ -156,7 +151,6 @@
             line-height: 1.5;
         }
 
-        /* Mapas */
         .map-box {
             height: 280px;
             border-radius: 16px;
@@ -165,7 +159,6 @@
             z-index: 1; 
         }
 
-        /* Botón Principal */
         .btn-premium {
             background: var(--premium-purple);
             color: #ffffff;
@@ -190,7 +183,6 @@
             transform: none;
         }
 
-        /* AI Card Refinada */
         #ai-prediction-card {
             background: linear-gradient(145deg, var(--navy-blue) 0%, #2a4374 100%);
             border-radius: 20px;
@@ -201,7 +193,6 @@
 
 <body>
 
-<!-- Navbar sin cruz -->
 <nav class="navbar navbar-premium sticky-top">
     <div class="container d-flex align-items-center justify-content-center">
         <span class="navbar-brand">
@@ -229,13 +220,11 @@
 
     <div class="row g-5">
         
-        <!-- COLUMNA IZQUIERDA: Textos e Inteligencia Artificial (Sticky) -->
         <div class="col-lg-4">
             <div class="sticky-top" style="top: 100px;">
                 <h1 class="fw-bold mb-3" style="color: var(--navy-blue); font-size: 2.2rem; line-height: 1.2;">Solicitud de Servicio Médico</h1>
                 <p class="text-muted mb-4" style="font-size: 0.95rem;">Complete el formulario paso a paso. Nuestro motor logístico analizará su requerimiento para ofrecerle una estimación justa y transparente.</p>
                 
-                {{-- PREDICCIÓN AI (PREMIUM) --}}
                 <div id="ai-prediction-card" class="d-none p-4 shadow-lg text-white position-relative overflow-hidden">
                     <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%); pointer-events: none;"></div>
                     
@@ -279,14 +268,12 @@
             </div>
         </div>
 
-        <!-- COLUMNA DERECHA: Formulario con Línea de Tiempo -->
         <div class="col-lg-8">
             <form method="POST" action="{{ route('cotizaciones.store') }}">
             @csrf
             
             <div class="timeline-wrapper">
 
-                {{-- PASO 1: CONTACTO --}}
                 <div class="timeline-item">
                     <div class="timeline-badge">1</div>
                     <div class="premium-card">
@@ -316,7 +303,6 @@
                     </div>
                 </div>
 
-                {{-- PASO 2: SERVICIO --}}
                 <div class="timeline-item">
                     <div class="timeline-badge">2</div>
                     <div class="premium-card">
@@ -362,7 +348,6 @@
                     </div>
                 </div>
 
-                {{-- PASO 3: UBICACIÓN --}}
                 <div class="timeline-item">
                     <div class="timeline-badge">3</div>
                     <div class="premium-card">
@@ -382,7 +367,6 @@
                     </div>
                 </div>
 
-                <!-- Elementos ocultos e input submit -->
                 <div class="timeline-item" style="padding-left: 60px;">
                     <input type="hidden" name="km_distancia" id="km_distancia" value="0">
                     <input type="hidden" name="precio_final" id="precio_final" value="0">
@@ -405,44 +389,61 @@
 function initMapas() {
     if (typeof L === 'undefined') return;
     try {
-        window.mapOrigen = L.map('map-origen').setView([17.06, -96.72], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap',
-            maxZoom: 19,
-        }).addTo(mapOrigen);
-        window.markerOrigen = L.marker([17.06, -96.72], {draggable:true}).addTo(mapOrigen);
-
-        window.mapDestino = L.map('map-destino').setView([17.06, -96.72], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap',
-            maxZoom: 19,
-        }).addTo(mapDestino);
-        window.markerDestino = L.marker([17.06, -96.72], {draggable:true}).addTo(mapDestino);
+        const divOrigen = document.getElementById('map-origen');
+        const divDestino = document.getElementById('map-destino');
 
         window.updateDistance = function() {
-            let latLngOrigen = markerOrigen.getLatLng();
-            let latLngDestino = markerDestino.getLatLng();
+            if (!window.markerOrigen || !window.markerDestino) return;
+            let latLngOrigen = window.markerOrigen.getLatLng();
+            let latLngDestino = window.markerDestino.getLatLng();
             let distanceMeters = latLngOrigen.distanceTo(latLngDestino);
             let distanceKm = (distanceMeters / 1000).toFixed(2);
             document.getElementById('km_distancia').value = distanceKm;
             triggerPrediction();
         };
 
-        markerOrigen.on('dragend', function(e){
-            let p = e.target.getLatLng();
-            let origenInput = document.getElementById('origen');
-            origenInput.value = p.lat + ', ' + p.lng;
-            origenInput.dispatchEvent(new Event('input'));
-            window.updateDistance();
-        });
+        if (divOrigen) {
+            if (window.mapOrigen != undefined) {
+                window.mapOrigen.remove();
+                window.mapOrigen = null;
+            }
+            window.mapOrigen = L.map('map-origen').setView([17.06, -96.72], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap',
+                maxZoom: 19,
+            }).addTo(window.mapOrigen);
+            window.markerOrigen = L.marker([17.06, -96.72], {draggable:true}).addTo(window.mapOrigen);
 
-        markerDestino.on('dragend', function(e){
-            let p = e.target.getLatLng();
-            let destinoInput = document.getElementById('destino');
-            destinoInput.value = p.lat + ', ' + p.lng;
-            destinoInput.dispatchEvent(new Event('input'));
-            window.updateDistance();
-        });
+            window.markerOrigen.on('dragend', function(e){
+                let p = e.target.getLatLng();
+                let origenInput = document.getElementById('origen');
+                origenInput.value = p.lat + ', ' + p.lng;
+                origenInput.dispatchEvent(new Event('input'));
+                window.updateDistance();
+            });
+        }
+
+        if (divDestino) {
+            if (window.mapDestino != undefined) {
+                window.mapDestino.remove();
+                window.mapDestino = null;
+            }
+            window.mapDestino = L.map('map-destino').setView([17.06, -96.72], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap',
+                maxZoom: 19,
+            }).addTo(window.mapDestino);
+            window.markerDestino = L.marker([17.06, -96.72], {draggable:true}).addTo(window.mapDestino);
+
+            window.markerDestino.on('dragend', function(e){
+                let p = e.target.getLatLng();
+                let destinoInput = document.getElementById('destino');
+                destinoInput.value = p.lat + ', ' + p.lng;
+                destinoInput.dispatchEvent(new Event('input'));
+                window.updateDistance();
+            });
+        }
+
     } catch(e) {
         console.warn('Mapa no disponible:', e);
     }
@@ -509,6 +510,8 @@ function triggerPrediction() {
             });
     }, 1500); 
 }
+
+document.addEventListener('livewire:navigated', initMapas);
 
 document.getElementById('horas_servicio').addEventListener('change', triggerPrediction);
 

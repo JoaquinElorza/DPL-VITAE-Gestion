@@ -130,10 +130,8 @@
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN DE IA -->
         <hr class="my-5" style="border-color: rgba(186, 85, 211, 0.3);">
         <h3 class="mb-4 titulo-morado"><i class='bx bx-brain bx-tada me-2' style="color: #FF7F50;"></i>Inteligencia de Precios y Cotizaciones (IA)</h3>
-        <!-- KPIs IA -->
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <div class="card text-white shadow-sm" style="background: linear-gradient(135deg, #FF9A76 0%, #FF7F50 100%); border: none;">
@@ -237,7 +235,29 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        let chartInstances = {};
+        let mapInstance = null;
+
+        function destroyCharts() {
+            Object.keys(chartInstances).forEach(key => {
+                if (chartInstances[key]) {
+                    chartInstances[key].destroy();
+                }
+            });
+            chartInstances = {};
+        }
+
+        function destroyMap() {
+            if (mapInstance) {
+                mapInstance.remove();
+                mapInstance = null;
+            }
+        }
+
         function inicializarDashboard() {
+            destroyCharts();
+            destroyMap();
+
             const chartOptions = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -248,7 +268,7 @@
 
             const ctxServicios = document.getElementById('graficaServicios')?.getContext('2d');
             if (ctxServicios) {
-                new Chart(ctxServicios, {
+                chartInstances['graficaServicios'] = new Chart(ctxServicios, {
                     type: 'doughnut',
                     plugins: [ChartDataLabels],
                     data: {
@@ -267,6 +287,7 @@
                                 color: '#fff', font: { weight: 'bold', size: 12 },
                                 formatter: (value, ctx) => {
                                     let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                    if(sum === 0) return '0%';
                                     return (value * 100 / sum).toFixed(1) + "%";
                                 }
                             }
@@ -277,7 +298,7 @@
 
             const ctxMeses = document.getElementById('graficaMeses')?.getContext('2d');
             if (ctxMeses) {
-                new Chart(ctxMeses, {
+                chartInstances['graficaMeses'] = new Chart(ctxMeses, {
                     type: 'line',
                     data: {
                         labels: {!! json_encode($labelsMeses) !!}.map(m => 'Mes ' + m),
@@ -294,7 +315,7 @@
 
             const ctxDias = document.getElementById('graficaDias')?.getContext('2d');
             if (ctxDias) {
-                new Chart(ctxDias, {
+                chartInstances['graficaDias'] = new Chart(ctxDias, {
                     type: 'line',
                     data: {
                         labels: {!! json_encode($labelsDias) !!},
@@ -311,7 +332,7 @@
 
             const ctxLugares = document.getElementById('graficaLugares')?.getContext('2d');
             if (ctxLugares) {
-                new Chart(ctxLugares, {
+                chartInstances['graficaLugares'] = new Chart(ctxLugares, {
                     type: 'bar',
                     data: {
                         labels: {!! json_encode($labelsLugares) !!},
@@ -327,7 +348,7 @@
 
             const ctxEstados = document.getElementById('graficaEstados')?.getContext('2d');
             if (ctxEstados) {
-                new Chart(ctxEstados, {
+                chartInstances['graficaEstados'] = new Chart(ctxEstados, {
                     type: 'bar',
                     data: {
                         labels: {!! json_encode($labelsEstados) !!},
@@ -342,19 +363,17 @@
             }
 
             const mapElement = document.getElementById('mapaEmergencias');
-            if (mapElement && !mapElement._leaflet_id) {
-                const map = L.map('mapaEmergencias').setView([{{ $lat }}, {{ $lng }}], 13);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            if (mapElement) {
+                mapInstance = L.map('mapaEmergencias').setView([{{ $lat }}, {{ $lng }}], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
                 L.circle([{{ $lat }}, {{ $lng }}], {
                     color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 500
-                }).addTo(map).bindPopup('<b>Punto Caliente Principal</b><br>Colonia ID: {{ $coloniaFrecuente }}');
+                }).addTo(mapInstance).bindPopup('<b>Punto Caliente Principal</b><br>Colonia ID: {{ $coloniaFrecuente }}');
             }
-
-            // --- GRÁFICAS DE INTELIGENCIA DE PRECIOS (IA) ---
 
             const ctxPrecioProm = document.getElementById('graficaPrecioPromedio')?.getContext('2d');
             if (ctxPrecioProm) {
-                new Chart(ctxPrecioProm, {
+                chartInstances['graficaPrecioPromedio'] = new Chart(ctxPrecioProm, {
                     type: 'line',
                     data: {
                         labels: {!! json_encode($labelsPrecioProm) !!},
@@ -371,7 +390,7 @@
 
             const ctxCostoAmb = document.getElementById('graficaCostoAmbulancia')?.getContext('2d');
             if (ctxCostoAmb) {
-                new Chart(ctxCostoAmb, {
+                chartInstances['graficaCostoAmbulancia'] = new Chart(ctxCostoAmb, {
                     type: 'bar',
                     data: {
                         labels: {!! json_encode($labelsCostoAmb) !!},
@@ -388,7 +407,7 @@
 
             const ctxDistanciaPrecio = document.getElementById('graficaDistanciaPrecio')?.getContext('2d');
             if (ctxDistanciaPrecio) {
-                new Chart(ctxDistanciaPrecio, {
+                chartInstances['graficaDistanciaPrecio'] = new Chart(ctxDistanciaPrecio, {
                     type: 'scatter',
                     data: {
                         datasets: [{
@@ -411,7 +430,7 @@
 
             const ctxConversion = document.getElementById('graficaConversion')?.getContext('2d');
             if (ctxConversion) {
-                new Chart(ctxConversion, {
+                chartInstances['graficaConversion'] = new Chart(ctxConversion, {
                     type: 'doughnut',
                     plugins: [ChartDataLabels],
                     data: {
@@ -441,7 +460,7 @@
 
             const ctxFactores = document.getElementById('graficaFactores')?.getContext('2d');
             if (ctxFactores) {
-                new Chart(ctxFactores, {
+                chartInstances['graficaFactores'] = new Chart(ctxFactores, {
                     type: 'radar',
                     data: {
                         labels: {!! json_encode($labelsFactores) !!},
@@ -469,7 +488,11 @@
             }
         }
 
+setTimeout(inicializarDashboard, 150);
+
+        
         document.addEventListener('DOMContentLoaded', inicializarDashboard);
         document.addEventListener('livewire:navigated', inicializarDashboard);
+        window.addEventListener('livewire:load', inicializarDashboard);
     </script>
 </x-layouts.app>
