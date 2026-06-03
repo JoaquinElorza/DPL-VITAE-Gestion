@@ -53,5 +53,71 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 mt-4">
+            <div class="card shadow-sm border-0" style="border-radius: 16px;">
+                <div class="card-header bg-transparent border-bottom py-3">
+                    <h5 class="mb-0 text-primary d-flex align-items-center">
+                        <i class="bx bx-history me-2" style="font-size: 1.4rem;"></i>Historial de Servicios del Paciente
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0" style="border-collapse: collapse; width: 100%;">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">ID de Servicio</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Fecha / Hora</th>
+                                    <th>Costo Total</th>
+                                    <th class="text-center pe-4">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($servicios as $srv)
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-dark">#{{ $srv->id_servicio }}</td>
+                                        <td>
+                                            <span class="badge bg-label-secondary text-capitalize px-3 py-1">
+                                                {{ $srv->tipo ?? '—' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $badgeClass = 'bg-label-secondary';
+                                                if ($srv->estado === 'Activo' || $srv->estado === 'Realizado') {
+                                                    $badgeClass = 'bg-label-success';
+                                                } elseif ($srv->estado === 'Pendiente' || $srv->estado === 'En Curso') {
+                                                    $badgeClass = 'bg-label-warning';
+                                                } elseif ($srv->estado === 'Cancelado') {
+                                                    $badgeClass = 'bg-label-danger';
+                                                }
+                                            @endphp
+                                            <span class="badge {{ $badgeClass }} px-3 py-1">
+                                                {{ $srv->estado }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $srv->fecha_hora ? $srv->fecha_hora->format('d/m/Y H:i') : '—' }}</td>
+                                        <td class="fw-bold text-success">${{ number_format($srv->costo_total, 2) }}</td>
+                                        <td class="text-center pe-4">
+                                            <a href="{{ route('servicios.show', $srv) }}" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
+                                                <i class="bx bx-show me-1"></i>Ver Detalles
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            <i class="bx bx-folder-open fs-2 mb-2 d-block"></i>
+                                            Sin servicios registrados para este paciente.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </x-layouts.app>

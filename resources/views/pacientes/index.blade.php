@@ -232,7 +232,10 @@
                     </td>
 
                     <td>
-                        Servicio #{{ $paciente->id_servicio }}
+                        <span class="badge-event" style="background-color: rgba(3, 195, 236, 0.12); color: #03c3ec; padding: .45rem .9rem; border-radius: 999px; font-size: .82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class="bx bx-pulse" style="font-size: 1rem;"></i>
+                            {{ $paciente->total_servicios ?? 1 }} {{ ($paciente->total_servicios ?? 1) > 1 ? 'Servicios' : 'Servicio' }}
+                        </span>
                     </td>
 
                     <td class="text-center">
