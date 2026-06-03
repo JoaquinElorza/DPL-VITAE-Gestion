@@ -59,6 +59,9 @@ php artisan key:generate
 php artisan migrate  (php artisan migrate:fresh --seed)
 php artisan db:seed
 php artisan db:seed --class=AdminSeeder
+php artisan db:seed --class=DatabaseSeeder
+php artisan db:seed --class=PadecimientoSeeder
+php artisan db:seed --class=SimuladorMineriaSeeder
 pnpm dev
 php artisan serve
 
