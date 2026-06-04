@@ -285,7 +285,7 @@
     border-radius: 24px;
 
     border:
-        1px solid rgba(15,23,42,.06);
+        1px solid rgba(38, 15, 42, 0.06);
 }
 
 .services-table {
@@ -300,8 +300,8 @@
     background:
         linear-gradient(
             135deg,
-            #0f172a,
-            #111827
+            #7e3da4,
+            #a72a9e
         );
 }
 
@@ -419,6 +419,7 @@
 {{-- =========================
     DASHBOARD HEADER
 ========================= --}}
+@unless(request()->hasAny(['buscar','tipo','estado','fecha_inicio','fecha_fin']))
 <div class="dashboard-header mb-5">
 
     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-4">
@@ -442,6 +443,7 @@
     </div>
 
 </div>
+@endunless
 
 {{-- =========================
     KPI CARDS
@@ -570,7 +572,7 @@
 ========================= --}}
 <div class="card-body p-3 mb-5">
 
-    <form method="GET" action="{{ url()->current() }}" class="row g-3 align-items-end">
+    <form method="GET" action="{{ url()->current() }}#services-panel" class="row g-3 align-items-end">
 
         <div class="col-md-2">
             <label class="form-label fw-bold">
@@ -662,7 +664,7 @@
 {{-- =========================
     SERVICIOS TABLE
 ========================= --}}
-<div class="services-panel">
+<div id="services-panel" class="services-panel">
 
     {{-- HEADER --}}
     <div class="services-panel-header">

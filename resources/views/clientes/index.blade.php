@@ -3,7 +3,7 @@
 <style>
 :root{
     --dpl-primary:#7E57C2;      /* morado */
-    --dpl-secondary:#0D0847;    /* azul marino */
+    --dpl-secondary:#7f00ff;    /* azul marino */
     --dpl-danger:#dc2626;       /* rojo */
 }
 

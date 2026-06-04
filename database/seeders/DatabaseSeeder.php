@@ -187,6 +187,12 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // ── SEMILLAS DE EVENTOS Y TRASLADOS ────────────────────────────────
+        $this->call([
+            EventoSeeder::class,
+            TrasladoSeeder::class,
+        ]);
+
         // ── ADMIN ──────────────────────────────────────────────────────────
         $this->call(AdminSeeder::class);
     }

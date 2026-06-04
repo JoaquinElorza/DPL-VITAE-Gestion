@@ -286,7 +286,7 @@
     border-radius: 24px;
 
     border:
-        1px solid rgba(15,23,42,.06);
+        1px solid rgb(158, 52, 196);
 }
 
 .services-table {
@@ -301,8 +301,8 @@
     background:
         linear-gradient(
             135deg,
-            #0f172a,
-            #111827
+            #9f3fc5,
+            #a833c9
         );
 }
 

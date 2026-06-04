@@ -5,21 +5,15 @@
         :root {
             --dpl-primary: #BA55D3;
             --dpl-primary-hover: #5f61e6;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .titulo-morado {
-            color: #ffffff !important;
-            font-weight: 800 !important;
+            color: #111827 !important;
+            font-weight: 700 !important;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-shadow: 
-                -1px -1px 0 #BA55D3,  
-                 1px -1px 0 #BA55D3,
-                -1px  1px 0 #BA55D3,
-                 1px  1px 0 #BA55D3,
-                 0px  0px 6px #BA55D3,
-                 0px  0px 12px rgba(105, 108, 255, 0.8),
-                 2px  2px 4px rgba(0, 0, 0, 0.25);
+            letter-spacing: 0.08em;
+            text-shadow: none;
         }
     </style>
 

@@ -26,8 +26,8 @@
 .events-table thead{
     background: linear-gradient(
         135deg,
-        #0f172a,
-        #111827
+        #ae2598,
+        #b931d1
     );
 }
 
@@ -190,8 +190,8 @@
                 <tr>
                     <th>CURP</th>
                     <th>Nombre</th>
-                    <th>Ap. Paterno</th>
-                    <th>Ap. Materno</th>
+                    <th>Primer apellido</th>
+                    <th>Segundo apellido</th>
                     <th>Sexo</th>
                     <th>Fecha Nac.</th>
                     <th>Servicio</th>

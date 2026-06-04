@@ -3,7 +3,7 @@
 <style>
 :root{
     --dpl-primary:#7E57C2;
-    --dpl-secondary:#0D0847;
+    --dpl-secondary:#7f00ff;
     --dpl-danger:#dc2626;
 }
 

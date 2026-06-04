@@ -9,8 +9,8 @@
 
 <style>
 :root{
-    --primary:#7E57C2;
-    --secondary:#0D0847;
+    --primary:#7f00ff;
+    --secondary:#7f00ff;
     --danger:#dc2626;
 }
 
@@ -35,7 +35,7 @@
 
 .operators-table td{
     padding:1rem;
-    border-bottom:1px solid rgba(0,0,0,.06);
+    border-bottom:1px solid rgb(212, 65, 212);
 }
 
 /* BADGES */
