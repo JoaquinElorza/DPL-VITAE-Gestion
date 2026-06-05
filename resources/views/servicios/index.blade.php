@@ -45,8 +45,8 @@
     background:
         linear-gradient(
             135deg,
-            #0f172a,
-            #111827
+            #393395,
+            #8A2BE2
         );
 
     border-radius: 32px;
@@ -301,8 +301,8 @@
     background:
         linear-gradient(
             135deg,
-            #9f3fc5,
-            #a833c9
+            #393395,
+            #8A2BE2
         );
 }
 

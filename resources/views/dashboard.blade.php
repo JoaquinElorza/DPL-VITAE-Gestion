@@ -39,123 +39,6 @@
         }
 
 
-.dashboard-hero-card {
-
-    background:
-        linear-gradient(
-            135deg,
-            #0f172a,
-            #111827
-        );
-
-    border-radius: 32px;
-
-    padding: 3rem;
-
-    color: white;
-
-    min-height: 320px;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-.dashboard-hero-card::before {
-
-    content: '';
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(167,139,250,.25),
-            transparent 35%
-        );
-}
-
-.dashboard-label {
-
-    font-size: .95rem;
-
-    text-transform: uppercase;
-
-    letter-spacing: .12em;
-
-    opacity: .7;
-}
-
-.dashboard-number {
-
-    font-size: clamp(4rem, 7vw, 6rem);
-
-    font-weight: 800;
-
-    line-height: 1;
-
-    margin-top: 1rem;
-}
-
-.dashboard-subtext {
-
-    opacity: .7;
-
-    margin-top: 1rem;
-
-    font-size: 1rem;
-}
-
-.dashboard-icon-lg {
-
-    width: 90px;
-
-    height: 90px;
-
-    border-radius: 24px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 2.5rem;
-}
-
-.dashboard-progress {
-
-    width: 100%;
-
-    height: 10px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    border-radius: 999px;
-
-    overflow: hidden;
-}
-
-.dashboard-progress-bar {
-
-    height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #dc2626,
-            #a78bfa
-        );
-
-    border-radius: inherit;
-}
-
 .dashboard-mini-card {
 
     background: white;
@@ -219,6 +102,17 @@
     justify-content: center;
 
     font-size: 1.8rem;
+}
+
+.dashboard-label {
+
+    font-size: .95rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .12em;
+
+    opacity: .7;
 }
 
 .services-table th {
@@ -300,8 +194,8 @@
     background:
         linear-gradient(
             135deg,
-            #7e3da4,
-            #a72a9e
+            #393395,
+            #8A2BE2
         );
 }
 
@@ -450,38 +344,31 @@
 ========================= --}}
 <div class="row g-4 mb-5">
 
-    {{-- CARD PRINCIPAL --}}
-    <div class="col-lg-7">
+    {{-- Servicios Activos --}}
+    <div class="col-lg-4">
 
-        <div class="dashboard-hero-card">
+        <div class="dashboard-mini-card">
 
-            <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex justify-content-between align-items-center">
 
                 <div>
 
-                    <span class="dashboard-label">
+                    <span class="dashboard-mini-label">
                         Servicios activos
                     </span>
 
-                    <h2 class="dashboard-number">
+                    <h3 class="dashboard-mini-number">
                         {{ $serviciosActivos }}
-                    </h2>
+                    </h3>
 
-                    <p class="dashboard-subtext">
-                        de {{ $totalServicios }} servicios registrados
-                    </p>
-
-                    <div class="dashboard-progress">
-                        <div
-                            class="dashboard-progress-bar"
-                            style="width: {{ $totalServicios ? ($serviciosActivos / $totalServicios) * 100 : 0 }}%">
-                        </div>
-                    </div>
+                    <small class="text-muted">
+                        de {{ $totalServicios }} registrados
+                    </small>
 
                 </div>
 
-                <div class="dashboard-icon-lg">
-                    <i class="bx bx-ambulance"></i>
+                <div class="dashboard-mini-icon">
+                    <i class="bx bx-pulse"></i>
                 </div>
 
             </div>
@@ -490,73 +377,64 @@
 
     </div>
 
-    {{-- SIDEBAR KPI --}}
-    <div class="col-lg-5">
+    {{-- Ambulancias --}}
+    <div class="col-lg-4">
 
-        <div class="row g-4">
+        <div class="dashboard-mini-card">
 
-            {{-- Ambulancias --}}
-            <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
 
-                <div class="dashboard-mini-card">
+                <div>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                    <span class="dashboard-mini-label">
+                        Ambulancias disponibles
+                    </span>
 
-                        <div>
+                    <h3 class="dashboard-mini-number">
+                        {{ $ambulanciasDisp }}
+                    </h3>
 
-                            <span class="dashboard-mini-label">
-                                Ambulancias disponibles
-                            </span>
+                    <small class="text-muted">
+                        de {{ $totalAmbulancia }}
+                    </small>
 
-                            <h3 class="dashboard-mini-number">
-                                {{ $ambulanciasDisp }}
-                            </h3>
+                </div>
 
-                            <small class="text-muted">
-                                de {{ $totalAmbulancia }}
-                            </small>
-
-                        </div>
-
-                        <div class="dashboard-mini-icon">
-                            <i class="bx bx-car"></i>
-                        </div>
-
-                    </div>
-
+                <div class="dashboard-mini-icon">
+                    <i class="bx bxs-ambulance"></i>
                 </div>
 
             </div>
 
-            {{-- Personal --}}
-            <div class="col-12">
+        </div>
 
-                <div class="dashboard-mini-card">
+    </div>
 
-                    <div class="d-flex justify-content-between align-items-center">
+    {{-- Personal --}}
+    <div class="col-lg-4">
 
-                        <div>
+        <div class="dashboard-mini-card">
 
-                            <span class="dashboard-mini-label">
-                                Personal operativo
-                            </span>
+            <div class="d-flex justify-content-between align-items-center">
 
-                            <h3 class="dashboard-mini-number">
-                                {{ $totalParamedicos + $totalOperadores }}
-                            </h3>
+                <div>
 
-                            <small class="text-muted">
-                                {{ $totalParamedicos }} paramédicos
-                            </small>
+                    <span class="dashboard-mini-label">
+                        Personal operativo
+                    </span>
 
-                        </div>
+                    <h3 class="dashboard-mini-number">
+                        {{ $totalParamedicos + $totalOperadores }}
+                    </h3>
 
-                        <div class="dashboard-mini-icon">
-                            <i class="bx bx-group"></i>
-                        </div>
+                    <small class="text-muted">
+                        {{ $totalParamedicos }} paramédicos
+                    </small>
 
-                    </div>
+                </div>
 
+                <div class="dashboard-mini-icon">
+                    <i class="bx bx-group"></i>
                 </div>
 
             </div>
