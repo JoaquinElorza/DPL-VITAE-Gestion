@@ -41,14 +41,14 @@
 
 .dashboard-mini-card {
 
-    background: white;
+    background: #e4d5f7;
 
     border-radius: 28px;
 
     padding: 2rem;
 
     border:
-        1px solid rgba(15,23,42,.06);
+        1px solid rgba(57,51,149,.1);
 
     min-height: 150px;
 
@@ -58,6 +58,8 @@
 .dashboard-mini-card:hover {
 
     transform: translateY(-4px);
+
+    box-shadow: 0 8px 24px rgba(57,51,149,.12);
 }
 
 .dashboard-mini-label {
