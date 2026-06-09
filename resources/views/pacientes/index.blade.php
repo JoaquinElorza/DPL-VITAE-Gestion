@@ -26,8 +26,8 @@
 .events-table thead{
     background: linear-gradient(
         135deg,
-        #ae2598,
-        #b931d1
+        #393395,
+        #8A2BE2
     );
 }
 

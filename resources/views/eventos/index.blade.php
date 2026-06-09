@@ -61,8 +61,8 @@
     background:
         linear-gradient(
             135deg,
-            #7426bc,
-            #8427a8
+            #393395,
+            #8A2BE2
         );
 }
 
