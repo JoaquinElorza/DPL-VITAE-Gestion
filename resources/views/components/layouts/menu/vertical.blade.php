@@ -49,12 +49,6 @@
       </a>
     </li>
 
-    <li class="menu-item {{ request()->routeIs('mis-servicios.index') ? 'active' : '' }}">
-      <a class="menu-link" href="{{ route('mis-servicios.index') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Mis Servicios">
-        <i class="menu-icon tf-icons bx bx-list-check"></i>
-        <div class="text-truncate">Mis Servicios</div>
-      </a>
-    </li>
 
     <li class="menu-item {{ request()->routeIs('analitica.dashboard') ? 'active' : '' }}">
       <a class="menu-link" href="{{ route('analitica.dashboard') }}" wire:navigate data-bs-toggle="tooltip" data-bs-placement="right" title="Analítica (Gerente)">
